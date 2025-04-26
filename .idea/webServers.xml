@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1a16d9b6-06b0-47da-8ad1-2d63c6bb308e" name="47.110.51.159" url="http://47.110.51.159">
+        <fileTransfer rootFolder="/battery" host="47.110.51.159" port="2121">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

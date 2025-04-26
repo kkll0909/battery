@@ -1,0 +1,4 @@
+<?php
+//000000000000
+ exit();?>
+a:11:{s:7:"upgrade";a:1:{i:0;s:29:"\addons\department\Department";}s:9:"app_begin";a:1:{i:0;s:29:"\addons\department\Department";}s:16:"epay_config_init";a:1:{i:0;s:17:"\addons\epay\Epay";}s:18:"addon_action_begin";a:1:{i:0;s:17:"\addons\epay\Epay";}s:12:"action_begin";a:2:{i:0;s:17:"\addons\epay\Epay";i:1;s:19:"\addons\third\Third";}s:8:"app_init";a:1:{i:0;s:21:"\addons\qrcode\Qrcode";}s:21:"user_delete_successed";a:1:{i:0;s:19:"\addons\third\Third";}s:21:"user_logout_successed";a:1:{i:0;s:19:"\addons\third\Third";}s:11:"module_init";a:1:{i:0;s:19:"\addons\third\Third";}s:11:"config_init";a:2:{i:0;s:19:"\addons\third\Third";i:1;s:25:"\addons\umeditor\Umeditor";}s:11:"view_filter";a:1:{i:0;s:19:"\addons\third\Third";}}
