@@ -11,11 +11,14 @@ namespace PhpMqtt\Client\Exceptions;
  */
 class DataTransferException extends MqttClientException
 {
-    public const EXCEPTION_TX_DATA = 0101;
-    public const EXCEPTION_RX_DATA = 0102;
+    const EXCEPTION_TX_DATA = 0101;
+    const EXCEPTION_RX_DATA = 0102;
 
     /**
      * DataTransferException constructor.
+     *
+     * @param int    $code
+     * @param string $error
      */
     public function __construct(int $code, string $error)
     {

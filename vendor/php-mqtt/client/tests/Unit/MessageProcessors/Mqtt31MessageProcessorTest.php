@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class Mqtt31MessageProcessorTest extends TestCase
 {
-    public const CLIENT_ID = 'test-client';
+    const CLIENT_ID = 'test-client';
 
     /** @var Mqtt31MessageProcessor */
     protected $messageProcessor;
@@ -49,6 +49,8 @@ class Mqtt31MessageProcessorTest extends TestCase
     /**
      * @dataProvider tryFindMessageInBuffer_testDataProvider
      *
+     * @param string      $buffer
+     * @param bool        $expectedResult
      * @param string|null $expectedMessage
      * @param int|null    $expectedRequiredBytes
      */
@@ -127,6 +129,10 @@ class Mqtt31MessageProcessorTest extends TestCase
 
     /**
      * @dataProvider buildConnectMessage_testDataProvider
+     *
+     * @param ConnectionSettings $connectionSettings
+     * @param bool               $useCleanSession
+     * @param string             $expectedResult
      */
     public function test_buildConnectMessage_builds_correct_message(
         ConnectionSettings $connectionSettings,
@@ -166,7 +172,9 @@ class Mqtt31MessageProcessorTest extends TestCase
     /**
      * @dataProvider buildSubscribeMessage_testDataProvider
      *
+     * @param int            $messageId
      * @param Subscription[] $subscriptions
+     * @param string         $expectedResult
      */
     public function test_buildSubscribeMessage_builds_correct_message(
         int $messageId,
@@ -206,7 +214,10 @@ class Mqtt31MessageProcessorTest extends TestCase
     /**
      * @dataProvider buildUnsubscribeMessage_testDataProvider
      *
+     * @param int      $messageId
      * @param string[] $topics
+     * @param bool     $isDuplicate
+     * @param string   $expectedResult
      */
     public function test_buildUnsubscribeMessage_builds_correct_message(
         int $messageId,
@@ -243,6 +254,14 @@ class Mqtt31MessageProcessorTest extends TestCase
 
     /**
      * @dataProvider buildPublishMessage_testDataProvider
+     *
+     * @param string $topic
+     * @param string $message
+     * @param int    $qualityOfService
+     * @param bool   $retain
+     * @param int    $messageId
+     * @param bool   $isDuplicate
+     * @param string $expectedResult
      */
     public function test_buildPublishMessage_builds_correct_message(
         string $topic,
@@ -287,6 +306,9 @@ class Mqtt31MessageProcessorTest extends TestCase
 
     /**
      * @dataProvider buildPublishAcknowledgementMessage_testDataProvider
+     *
+     * @param int    $messageId
+     * @param string $expectedResult
      */
     public function test_buildPublishAcknowledgementMessage_builds_correct_message(int $messageId, string $expectedResult): void
     {
@@ -316,6 +338,9 @@ class Mqtt31MessageProcessorTest extends TestCase
 
     /**
      * @dataProvider buildPublishReceivedMessage_testDataProvider
+     *
+     * @param int    $messageId
+     * @param string $expectedResult
      */
     public function test_buildPublishReceivedMessage_builds_correct_message(int $messageId, string $expectedResult): void
     {
@@ -345,6 +370,9 @@ class Mqtt31MessageProcessorTest extends TestCase
 
     /**
      * @dataProvider buildPublishCompleteMessage_testDataProvider
+     *
+     * @param int    $messageId
+     * @param string $expectedResult
      */
     public function test_buildPublishCompleteMessage_builds_correct_message(int $messageId, string $expectedResult): void
     {

@@ -14,10 +14,6 @@ namespace Symfony\Contracts\Service;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-// Help opcache.preload discover always-needed symbols
-class_exists(ContainerExceptionInterface::class);
-class_exists(NotFoundExceptionInterface::class);
-
 /**
  * A trait to help implement ServiceProviderInterface.
  *
@@ -26,24 +22,30 @@ class_exists(NotFoundExceptionInterface::class);
  */
 trait ServiceLocatorTrait
 {
-    private array $factories;
-    private array $loading = [];
-    private array $providedTypes;
+    private $factories;
+    private $loading = [];
+    private $providedTypes;
 
     /**
-     * @param array<string, callable> $factories
+     * @param callable[] $factories
      */
     public function __construct(array $factories)
     {
         $this->factories = $factories;
     }
 
-    public function has(string $id): bool
+    /**
+     * {@inheritdoc}
+     */
+    public function has($id)
     {
         return isset($this->factories[$id]);
     }
 
-    public function get(string $id): mixed
+    /**
+     * {@inheritdoc}
+     */
+    public function get($id)
     {
         if (!isset($this->factories[$id])) {
             throw $this->createNotFoundException($id);
@@ -65,9 +67,12 @@ trait ServiceLocatorTrait
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProvidedServices(): array
     {
-        if (!isset($this->providedTypes)) {
+        if (null === $this->providedTypes) {
             $this->providedTypes = [];
 
             foreach ($this->factories as $name => $factory) {
@@ -76,7 +81,7 @@ trait ServiceLocatorTrait
                 } else {
                     $type = (new \ReflectionFunction($factory))->getReturnType();
 
-                    $this->providedTypes[$name] = $type ? ($type->allowsNull() ? '?' : '').($type instanceof \ReflectionNamedType ? $type->getName() : $type) : '?';
+                    $this->providedTypes[$name] = $type ? ($type->allowsNull() ? '?' : '').$type->getName() : '?';
                 }
             }
         }

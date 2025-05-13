@@ -5,7 +5,20 @@
       <sourceFolder url="file://$MODULE_DIR$/addons" isTestSource="false" packagePrefix="addons\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/thinkphp/library/think" isTestSource="false" packagePrefix="think\" />
-      <sourceFolder url="file://$MODULE_DIR$/thinkphp/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/context/src" isTestSource="false" packagePrefix="Hyperf\Context\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/context/tests" isTestSource="true" packagePrefix="HyperfTest\Context\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/contract/src" isTestSource="false" packagePrefix="Hyperf\Contract\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/engine/src" isTestSource="false" packagePrefix="Hyperf\Engine\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/engine/tests" isTestSource="true" packagePrefix="HyperfTest\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/macroable/src" isTestSource="false" packagePrefix="Hyperf\Macroable\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/macroable/tests" isTestSource="true" packagePrefix="HyperfTest\Macroable\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/pimple/src" isTestSource="false" packagePrefix="Hyperf\Pimple\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/pimple/tests" isTestSource="true" packagePrefix="HyperfTest\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/utils/src" isTestSource="false" packagePrefix="Hyperf\Utils\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/epay/library/hyperf/utils/tests" isTestSource="true" packagePrefix="HyperfTest\Utils\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/qrcode/library/qr-code/src" isTestSource="false" packagePrefix="Endroid\QrCode\" />
+      <sourceFolder url="file://$MODULE_DIR$/addons/qrcode/library/qr-code/tests" isTestSource="true" packagePrefix="Endroid\QrCode\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/thinkphp/tests/thinkphp" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/easywechat-composer/easywechat-composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
@@ -52,6 +65,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-helper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-installer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/topthink/think-queue" />
+      <excludeFolder url="file://$MODULE_DIR$/addons/qrcode/library/qr-code/vendor/bacon/bacon-qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/addons/qrcode/library/qr-code/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/addons/qrcode/library/qr-code/vendor/dasprid/enum" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

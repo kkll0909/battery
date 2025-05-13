@@ -13,6 +13,8 @@ class PendingMessageNotFoundException extends RepositoryException
 {
     /**
      * PendingMessageNotFoundException constructor.
+     *
+     * @param int $messageId
      */
     public function __construct(int $messageId)
     {

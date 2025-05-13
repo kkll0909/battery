@@ -19,6 +19,9 @@ trait TranscodesData
      *   \x00\x0bhello world
      *
      * where \x00\0x0b is the hex representation of 00000000 00001011 = 11
+     *
+     * @param string $data
+     * @return string
      */
     protected function buildLengthPrefixedString(string $data): string
     {
@@ -32,6 +35,9 @@ trait TranscodesData
     /**
      * Converts the given string to a number, assuming it is an MSB encoded message id.
      * MSB means preceding characters have higher value.
+     *
+     * @param string $encodedMessageId
+     * @return int
      */
     protected function decodeMessageId(string $encodedMessageId): int
     {
@@ -47,6 +53,9 @@ trait TranscodesData
 
     /**
      * Encodes the given message identifier as string.
+     *
+     * @param int $messageId
+     * @return string
      */
     protected function encodeMessageId(int $messageId): string
     {
@@ -56,6 +65,9 @@ trait TranscodesData
     /**
      * Encodes the length of a message as string, so it can be transmitted
      * over the wire.
+     *
+     * @param int $length
+     * @return string
      */
     protected function encodeMessageLength(int $length): string
     {

@@ -21,6 +21,8 @@ trait ValidatesConfiguration
      * which means they are misconfigured, an exception containing information about
      * the configuration error is thrown.
      *
+     * @param ConnectionSettings $settings
+     * @return void
      * @throws ConfigurationInvalidException
      */
     protected function ensureConnectionSettingsAreValid(ConnectionSettings $settings): void

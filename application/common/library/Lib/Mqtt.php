@@ -1,132 +1,90 @@
 <?php
 
 namespace app\common\library\Lib;
-use PhpMqtt\Client\ConnectionSettings;
+
 use PhpMqtt\Client\MqttClient;
+use PhpMqtt\Client\ConnectionSettings;
 
 class Mqtt
 {
-    private $host = 'api.666x.cc';
+    private $client;
+    private $server = 'api.666x.cc';
     private $port = 1882;
     private $username = 'public';
     private $password = '123456';
     private $token;
-    private $client;
 
     public function __construct($token)
     {
-        if (empty($token)) {
-            throw new \Exception("设备令牌不能为空");
-        }
         $this->token = $token;
     }
 
-    public function sendCommand($deviceId, $deviceType, $commandType, $parameters = [])
+    public function connect()
     {
         try {
-            // 创建连接设置
-            $settings = new ConnectionSettings();
-            $settings->setUsername($this->username);
-            $settings->setPassword($this->password);
-            $settings->setKeepAliveInterval(60);
-            $settings->setConnectTimeout(3);
+            $this->client = new MqttClient($this->server, $this->port, uniqid());
 
-            // 创建客户端
-            $clientId = 'php-mqtt-' . uniqid();
-            $this->client = new MqttClient($this->host, $this->port, $clientId);
+            $connectionSettings = (new ConnectionSettings())
+                ->setUsername($this->username)
+                ->setPassword($this->password)
+                ->setKeepAliveInterval(60)
+                ->setConnectTimeout(10);
 
-            // 连接
-            $this->client->connect($settings);
+            $this->client->connect($connectionSettings, true);
 
-            // 准备命令
-            $command = [
-                'message_type' => 'command',
-                'content' => [
-                    'device_id' => (string)$deviceId,
-                    'device_type' => (string)$deviceType,
-                    'command' => [
-                        'type' => (string)$commandType,
-                        'parameters' => $parameters
-                    ]
-                ]
-            ];
-
-            // 发布命令
-            $topic = "command/{$this->token}";
-            $message = json_encode($command);
-            
-            $this->client->publish($topic, $message, 0);
-            
-            // 断开连接
-            $this->client->disconnect();
-            
-            return true;
-        } catch (\Exception $e) {
-            if (isset($this->client)) {
-                try {
-                    $this->client->disconnect();
-                } catch (\Exception $disconnectError) {
-                    // 忽略断开连接时的错误
-                }
-            }
-            throw new \Exception("命令发送失败: " . $e->getMessage());
-        }
-    }
-
-    public function subscribe($callback)
-    {
-        try {
-            // 创建连接设置
-            $settings = new ConnectionSettings();
-            $settings->setUsername($this->username);
-            $settings->setPassword($this->password);
-            $settings->setKeepAliveInterval(60);
-            $settings->setConnectTimeout(3);
-
-            // 创建客户端
-            $clientId = 'php-mqtt-' . uniqid();
-            $this->client = new MqttClient($this->host, $this->port, $clientId);
-
-            // 连接
-            $this->client->connect($settings);
-
-            // 订阅主题
-            $topic = "message/{$this->token}";
-            $this->client->subscribe($topic, function ($topic, $message) use ($callback) {
-                $data = json_decode($message, true);
-                if ($data && isset($data['message_type']) && $data['message_type'] === 'status_report') {
-                    $callback($data);
-                }
+            // 订阅消息主题
+            $this->client->subscribe("message/{$this->token}", function ($topic, $message) {
+                $this->handleIncomingMessage($message);
             }, 0);
 
-            // 保持连接
-            $this->client->loop(true);
-
+            return true;
         } catch (\Exception $e) {
-            if (isset($this->client)) {
-                try {
-                    $this->client->disconnect();
-                } catch (\Exception $disconnectError) {
-                    // 忽略断开连接时的错误
-                }
-            }
-            throw new \Exception("订阅失败: " . $e->getMessage());
+            error_log("MQTT连接失败: " . $e->getMessage());
+            return false;
         }
     }
 
     public function disconnect()
     {
-        if (isset($this->client)) {
-            try {
-                $this->client->disconnect();
-            } catch (\Exception $e) {
-                // 忽略断开连接时的错误
-            }
+        $this->client->disconnect();
+    }
+
+    public function sendCommand($deviceId, $commandType, $parameters)
+    {
+        $command = [
+            'message_type' => 'command',
+            'content' => [
+                'device_id' => $deviceId,
+                'device_type' => 'G2',
+                'command' => [
+                    'type' => $commandType,
+                    'parameters' => $parameters
+                ]
+            ]
+        ];
+        echo json_encode($command);
+        $this->client->publish("command/{$this->token}", json_encode($command), 0);
+    }
+
+    private function handleIncomingMessage($message)
+    {
+        echo $message;
+        $data = json_decode($message, true);
+
+        if ($data['message_type'] === 'status_report') {
+            // 处理设备上报的状态信息
+            $deviceId = $data['content']['device_id'];
+            $status = $data['content']['status'];
+
+            // 在这里添加您的业务逻辑
+            echo "收到设备 {$deviceId} 状态更新:\n";
+            //print_r($status);
+            echo $status;
         }
     }
 
-    public function __destruct()
+    public function loop()
     {
-        $this->disconnect();
+        $this->client->loop(true);
     }
-} 
+}

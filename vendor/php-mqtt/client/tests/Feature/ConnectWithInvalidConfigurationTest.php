@@ -186,6 +186,8 @@ class ConnectWithInvalidConfigurationTest extends TestCase
     /**
      * Performs the actual connection test using the given connection settings. Expects the settings to be invalid.
      *
+     * @param ConnectionSettings $connectionSettings
+     * @return void
      * @throws ConfigurationInvalidException
      * @throws ConnectingToBrokerFailedException
      * @throws ProtocolNotSupportedException

@@ -23,7 +23,7 @@ The package is available on [packagist.org](https://packagist.org/packages/php-m
 composer require php-mqtt/client
 ```
 
-The package requires PHP version 8.0 or higher.
+The package requires PHP version 7.4 or higher.
 
 ## Usage
 
@@ -243,10 +243,6 @@ $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
     // This option requires ConnectionSettings::setTlsClientCertificateFile() and
     // ConnectionSettings::setTlsClientCertificateKeyFile() to be used as well.
     ->setTlsClientCertificateKeyPassphrase(null);
-
-     // The TLS ALPN is used to establish a TLS encrypted mqtt connection on port 443,
-     // which usually is reserved for TLS encrypted HTTP traffic.
-     ->setTlsAlpn(null);
 ```
 
 ## Features

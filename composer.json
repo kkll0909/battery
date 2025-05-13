@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
+        "php": "^7.4.0",
         "topthink/framework": "dev-master",
         "topthink/think-captcha": "^1.0.9",
         "topthink/think-installer": "^1.0.14",
@@ -30,7 +30,7 @@
         "ext-curl": "*",
         "ext-pdo": "*",
         "ext-bcmath": "*",
-        "php-mqtt/client": "^2.2"
+        "php-mqtt/client": "1.8.1"
     },
     "config": {
         "preferred-install": "dist",
