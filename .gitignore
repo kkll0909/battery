@@ -10,3 +10,4 @@ composer.lock
 .vscode
 node_modules
 .user.ini
+/runtime/cache/
