@@ -1,0 +1,81 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+    {:token()}
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Orderno')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-orderno" class="form-control" name="row[orderno]" type="text" value="{$row.orderno|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Fromid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-fromid" class="form-control" name="row[fromid]" type="number" value="{$row.fromid|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Toid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-toid" class="form-control" name="row[toid]" type="number" value="{$row.toid|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Monay')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-monay" class="form-control" step="0.01" name="row[monay]" type="number" value="{$row.monay|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Payway')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-payway" class="form-control" name="row[payway]" type="text" value="{$row.payway|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-type" class="form-control" name="row[type]" type="text" value="{$row.type|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Paytype')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-paytype" class="form-control" name="row[paytype]" type="text" value="{$row.paytype|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sum')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-sum" class="form-control" name="row[sum]" type="number" value="{$row.sum|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Stime')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-stime" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[stime]" type="text" value="{:$row.stime?datetime($row.stime):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Etime')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-etime" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[etime]" type="text" value="{:$row.etime?datetime($row.etime):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <div class="radio">
+            {foreach name="statusList" item="vo"}
+            <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="$row.status"}checked{/in} /> {$vo}</label> 
+            {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>

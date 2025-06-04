@@ -70,6 +70,7 @@ class Sms extends Api
      * @ApiParams (name="mobile", type="string", required=true, description="手机号")
      * @ApiParams (name="event", type="string", required=true, description="事件名称")
      * @ApiParams (name="captcha", type="string", required=true, description="验证码")
+     * @ApiInternal
      */
     public function check()
     {

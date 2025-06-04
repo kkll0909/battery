@@ -22,7 +22,7 @@ return [
     // 用户名
     'username'        => Env::get('database.username', 'battery'),
     // 密码
-    'password'        => Env::get('database.password', 'Roy123!@#'),
+    'password'        => Env::get('database.password', '547Rt2GajJiDdCYW'),
     // 端口
     'hostport'        => Env::get('database.hostport', ''),
     // 连接dsn

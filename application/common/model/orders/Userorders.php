@@ -1,0 +1,74 @@
+<?php
+
+namespace app\common\model\orders;
+
+use think\Model;
+
+
+class Userorders extends Model
+{
+
+    
+
+    
+
+    // 表名
+    protected $name = 'userorders';
+    
+    // 自动写入时间戳字段
+    protected $autoWriteTimestamp = false;
+
+    // 定义时间戳字段名
+    protected $createTime = false;
+    protected $updateTime = false;
+    protected $deleteTime = false;
+
+    // 追加属性
+    protected $append = [
+        'stime_text',
+        'etime_text',
+        'status_text'
+    ];
+    
+
+    
+    public function getStatusList()
+    {
+        //nopay,wait,ok,fail
+        return ['nopay' => __('Nopay'),'wait' => __('Wait'),'ok' => __('Ok'),'fail' => __('Fail')];
+    }
+
+
+    public function getStimeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['stime'] ?? '');
+        return is_numeric($value) ? date("Y-m-d H:i:s", $value) : $value;
+    }
+
+
+    public function getEtimeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['etime'] ?? '');
+        return is_numeric($value) ? date("Y-m-d H:i:s", $value) : $value;
+    }
+
+
+    public function getStatusTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['status'] ?? '');
+        $list = $this->getStatusList();
+        return $list[$value] ?? '';
+    }
+
+    protected function setStimeAttr($value)
+    {
+        return $value === '' ? null : ($value && !is_numeric($value) ? strtotime($value) : $value);
+    }
+
+    protected function setEtimeAttr($value)
+    {
+        return $value === '' ? null : ($value && !is_numeric($value) ? strtotime($value) : $value);
+    }
+
+
+}

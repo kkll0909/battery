@@ -7,6 +7,7 @@ use fast\Random;
 
 /**
  * Token接口
+ * @ApiInternal
  */
 class Token extends Api
 {
@@ -15,7 +16,7 @@ class Token extends Api
 
     /**
      * 检测Token是否过期
-     *
+     * @ApiInternal
      */
     public function check()
     {
@@ -26,7 +27,7 @@ class Token extends Api
 
     /**
      * 刷新Token
-     *
+     * @ApiInternal
      */
     public function refresh()
     {

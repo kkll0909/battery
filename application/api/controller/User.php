@@ -5,6 +5,8 @@ namespace app\api\controller;
 use app\common\controller\Api;
 use app\common\library\Ems;
 use app\common\library\Sms;
+use app\common\model\orders\Cgorders;
+use app\common\model\orders\Cgordersub;
 use fast\Random;
 use think\Config;
 use think\Validate;
@@ -29,6 +31,7 @@ class User extends Api
 
     /**
      * 会员中心
+     * @ApiInternal
      */
     public function index()
     {
@@ -41,6 +44,7 @@ class User extends Api
      * @ApiMethod (POST)
      * @ApiParams (name="account", type="string", required=true, description="账号")
      * @ApiParams (name="password", type="string", required=true, description="密码")
+     * @ApiInternal
      */
     public function login()
     {
@@ -106,6 +110,7 @@ class User extends Api
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
      * @ApiParams (name="mobile", type="string", required=true, description="手机号")
      * @ApiParams (name="code", type="string", required=true, description="验证码")
+     * @ApiInternal
      */
     public function register()
     {
@@ -191,6 +196,7 @@ class User extends Api
      * @ApiMethod (POST)
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
      * @ApiParams (name="captcha", type="string", required=true, description="验证码")
+     * @ApiInternal
      */
     public function changeemail()
     {
@@ -344,5 +350,77 @@ class User extends Api
         } else {
             $this->error($this->auth->getError());
         }
+    }
+
+    /**
+     * 我的订单
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="type", type="string", required=false, description="订单类型(buy,zp,默认zp)")
+     * @ApiParams (name="status", type="string", required=false, description="状态,默认空")
+     * @ApiParams (name="page", type="string", required=false, description="当前页码默认1")
+     * @ApiParams (name="pagesize", type="int", required=false, description="显示记录数默认20")
+     */
+    public function myOrder()
+    {
+        $type = $this->request->post("type", "zp");
+        $where['type'] = $type;
+        $status = $this->request->post("status", "");
+        if ($status){
+            $where['status'] = $status;
+        }
+        $page = $this->request->post("page", "1");
+        $pageSize = $this->request->post("pagesize", "20");
+        $user = $this->auth->getUser();
+        $where['toid'] = $user->id;
+        $Cgo = new Cgorders();
+        $list = $Cgo->where($where)
+            ->order('id desc')
+            ->paginate($pageSize,false,['page'=>$page]);
+        $this->success(__('Success'),$list);
+    }
+
+    /**
+     * 订单设备明细
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="oid", type="int", required=true, description="订单ID")
+     */
+    public function myOrderSub()
+    {
+        $oid = $this->request->post("oid");
+        if (empty($oid)){
+            $this->error(__('Invalid parameters'));
+        }
+        $where['oid'] = $oid;
+        $user = $this->auth->getUser();
+        //$where['toid'] = $user->id;
+        $Cgo = new Cgordersub();
+        $list = $Cgo->where($where)
+            ->order('id desc')
+            ->select();
+        $this->success(__('Success'),$list);
+    }
+
+    /**
+     * 订单支付详情
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="oid", type="int", required=true, description="订单ID")
+     */
+    public function myOrderPay()
+    {
+        $oid = $this->request->post("oid");
+        if (empty($oid)){
+            $this->error(__('Invalid parameters'));
+        }
+        $where['cgoid'] = $oid;
+        $user = $this->auth->getUser();
+        //$where['toid'] = $user->id;
+        $Cgo = new Cgorders();
+        $list = $Cgo->where($where)
+            ->order('id desc')
+            ->select();
+        $this->success(__('Success'),$list);
     }
 }

@@ -221,4 +221,10 @@ return [
     'User Module'                                           => '会员模块',
     'Register'                                              => '注册',
     'User Center'                                           => '会员中心',
+    'Show'                                                  => '打开',
+    'Nopay'                                                  => '未支付',
+    'Wait'                                                  => '等待支付',
+    'Ok'                                                  => '完成',
+    'Fail'                                                  => '失败',
+    'Pay'                                                  => '已支付',
 ];

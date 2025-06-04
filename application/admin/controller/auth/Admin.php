@@ -290,7 +290,7 @@ class Admin extends Backend
      */
     public function selectpage()
     {
-        $this->dataLimit = 'auth';
+        //$this->dataLimit = 'auth';
         $this->dataLimitField = 'id';
         return parent::selectpage();
     }

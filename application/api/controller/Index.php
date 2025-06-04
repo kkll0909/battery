@@ -6,6 +6,7 @@ use app\common\controller\Api;
 
 /**
  * 首页接口
+ * @ApiInternal
  */
 class Index extends Api
 {
@@ -14,7 +15,7 @@ class Index extends Api
 
     /**
      * 首页
-     *
+     * @ApiInternal
      */
     public function index()
     {

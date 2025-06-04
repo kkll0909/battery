@@ -6,6 +6,7 @@ use app\common\controller\Api;
 
 /**
  * 示例接口
+ * @ApiInternal
  */
 class Demo extends Api
 {
@@ -22,6 +23,7 @@ class Demo extends Api
     /**
      * 测试方法
      *
+     * @ApiInternal
      * @ApiTitle    (测试名称)
      * @ApiSummary  (测试描述信息)
      * @ApiMethod   (POST)
@@ -45,7 +47,7 @@ class Demo extends Api
 
     /**
      * 无需登录的接口
-     *
+     * @ApiInternal
      */
     public function test1()
     {
@@ -54,7 +56,7 @@ class Demo extends Api
 
     /**
      * 需要登录的接口
-     *
+     * @ApiInternal
      */
     public function test2()
     {
@@ -63,7 +65,7 @@ class Demo extends Api
 
     /**
      * 需要登录且需要验证有相应组的权限
-     *
+     * @ApiInternal
      */
     public function test3()
     {

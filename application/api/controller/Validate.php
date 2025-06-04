@@ -25,6 +25,7 @@ class Validate extends Api
      * @ApiMethod (POST)
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
      * @ApiParams (name="id", type="string", required=true, description="排除会员ID")
+     * @ApiInternal
      */
     public function check_email_available()
     {
@@ -79,6 +80,7 @@ class Validate extends Api
      * @ApiMethod (POST)
      * @ApiParams (name="mobile", type="string", required=true, description="手机号")
      * @ApiParams (name="id", type="string", required=true, description="排除会员ID")
+     * @ApiInternal
      */
     public function check_mobile_available()
     {
@@ -112,6 +114,7 @@ class Validate extends Api
      *
      * @ApiMethod (POST)
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
+     * @ApiInternal
      */
     public function check_email_exist()
     {
@@ -130,6 +133,7 @@ class Validate extends Api
      * @ApiParams (name="mobile", type="string", required=true, description="手机号")
      * @ApiParams (name="captcha", type="string", required=true, description="验证码")
      * @ApiParams (name="event", type="string", required=true, description="事件")
+     * @ApiInternal
      */
     public function check_sms_correct()
     {
@@ -149,6 +153,7 @@ class Validate extends Api
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
      * @ApiParams (name="captcha", type="string", required=true, description="验证码")
      * @ApiParams (name="event", type="string", required=true, description="事件")
+     * @ApiInternal
      */
     public function check_ems_correct()
     {

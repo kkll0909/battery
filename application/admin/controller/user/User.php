@@ -15,6 +15,7 @@ class User extends Backend
 
     protected $relationSearch = true;
     protected $searchFields = 'id,username,nickname';
+    protected $selectpageFields = 'id,username,nickname,avatar';
 
     /**
      * @var \app\admin\model\User
@@ -100,6 +101,16 @@ class User extends Backend
         }
         Auth::instance()->delete($row['id']);
         $this->success();
+    }
+
+    /**
+     * 下拉搜索
+     */
+    public function selectpage()
+    {
+        //$this->dataLimit = 'auth';
+        $this->dataLimitField = 'id';
+        return parent::selectpage();
     }
 
 }

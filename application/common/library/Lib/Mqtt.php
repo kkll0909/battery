@@ -70,7 +70,7 @@ class Mqtt
     {
         echo $message;
         $data = json_decode($message, true);
-
+        \app\index\controller\Mqtt::addlog($data);
         if ($data['message_type'] === 'status_report') {
             // 处理设备上报的状态信息
             $deviceId = $data['content']['device_id'];

@@ -9,6 +9,7 @@ use think\Hook;
 
 /**
  * 邮箱验证码接口
+ * @ApiInternal
  */
 class Ems extends Api
 {
@@ -26,6 +27,7 @@ class Ems extends Api
      * @ApiMethod (POST)
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
      * @ApiParams (name="event", type="string", required=true, description="事件名称")
+     * @ApiInternal
      */
     public function send()
     {
@@ -90,6 +92,7 @@ class Ems extends Api
      * @ApiParams (name="email", type="string", required=true, description="邮箱")
      * @ApiParams (name="event", type="string", required=true, description="事件名称")
      * @ApiParams (name="captcha", type="string", required=true, description="验证码")
+     * @ApiInternal
      */
     public function check()
     {
