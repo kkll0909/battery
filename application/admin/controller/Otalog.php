@@ -37,10 +37,11 @@ class Otalog extends Backend
     /**
      * 查看
      */
-    public function index($ids='')
+    public function index()
     {
-        if(!empty($ids)){
-            $sb = Bat::get($ids);
+        $batid = $this->request->get('batid',0);
+        if(!empty($batid)){
+            $sb = Bat::get($batid);
             $where2 = ['sbno'=>$sb['batno']];
         }else{
             $where2 = '';
@@ -57,7 +58,12 @@ class Otalog extends Backend
                 ->where($where)
                 ->where($where2)
                 ->order($sort, $order)
-                ->paginate($limit);
+                ->paginate($limit)->each(function ($item,$index){
+                    $cont = json_decode($item['lognote'],true);
+                    $item['messagetype'] = $cont['message_type'];
+                    $item['raw'] = $cont['content']['raw'];
+                    return $item;
+                });
             $result = array("total" => $list->total(), "rows" => $list->items());
 
             return json($result);

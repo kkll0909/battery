@@ -22,13 +22,15 @@ return [
     'Status'    => '电池状态',
     'Islike'    => '自动更新',
     //
-    'Auto'=>'自动更新',
-    'Noauto'=>'关闭更新',
+    'Auto'=>'自动',
+    'Noauto'=>'关闭',
 
     'Ambienttemperature'    => '主板温度℃',
     'Celltemperature'    => '电芯温度℃',
     'Boardtemperature'    => 'MOS温度℃',
     'Soh'    => '健康度%',
+    'Soc'    => '电量SOC',
+    'Remainingcapacity'    => '剩余电量',
     'Balance'    => '电池均衡',
     //0 禁止 / 1 开启
     'Enabled'=>'开启',

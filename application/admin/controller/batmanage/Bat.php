@@ -28,6 +28,7 @@ class Bat extends Backend
         $this->view->assign("balanceList", $this->model->getBalanceList());
         $this->view->assign("chargedischargeswitchList", $this->model->getChargedischargeswitchList());
         $this->view->assign("mosstatusList", $this->model->getMosstatusList());
+        $this->view->assign('admin_id',$this->auth->id);
     }
 
 
@@ -69,7 +70,21 @@ class Bat extends Backend
     public function selectpage()
     {
         //$this->dataLimit = 'auth';
-        $this->dataLimitField = 'id';
+        //$this->dataLimitField = 'id';
         return parent::selectpage();
+    }
+
+    //电池充放电配置(指令)
+    public function sendcf()
+    {
+        //2491000542
+        $deviceid = $this->request->param('deviceid','');
+        $status = $this->request->param('status',1);
+        $commandt = "charge_control";
+        $params = ['status'=>$status];
+        $params = json_encode($params);
+        $c = "php /www/wwwroot/bat/public/index.php index/mqtt/sendc/deviceid/{$deviceid}/commandt/{$commandt}/params/{$params}";
+        $re = exec($c);
+        $this->success('指令下发成功，会自动更新电池数据');
     }
 }

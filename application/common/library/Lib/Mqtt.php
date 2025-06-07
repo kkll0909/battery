@@ -68,7 +68,7 @@ class Mqtt
 
     private function handleIncomingMessage($message)
     {
-        echo $message;
+        //echo $message;
         $data = json_decode($message, true);
         \app\index\controller\Mqtt::addlog($data);
         if ($data['message_type'] === 'status_report') {

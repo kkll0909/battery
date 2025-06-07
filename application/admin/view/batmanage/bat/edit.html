@@ -24,48 +24,48 @@
             <input id="c-batno" class="form-control" name="row[batno]" type="text" value="{$row.batno|htmlentities}">
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Voltage')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-voltage" class="form-control" name="row[voltage]" type="text" value="{$row.voltage|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Capacity')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <div class='control-relative'><input id="c-capacity" class="form-control" data-toggle="city-picker" name="row[capacity]" type="text" value="{$row.capacity|htmlentities}"></div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Energy')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-energy" class="form-control" name="row[energy]" type="text" value="{$row.energy|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Ir')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-ir" class="form-control" name="row[ir]" type="text" value="{$row.ir|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Size')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-size" class="form-control" name="row[size]" type="text" value="{$row.size|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Weigth')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-weigth" class="form-control" name="row[weigth]" type="text" value="{$row.weigth|htmlentities}">
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Voltage')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-voltage" class="form-control" name="row[voltage]" type="text" value="{$row.voltage|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Capacity')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <div class='control-relative'><input id="c-capacity" class="form-control" data-toggle="city-picker" name="row[capacity]" type="text" value="{$row.capacity|htmlentities}"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Energy')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-energy" class="form-control" name="row[energy]" type="text" value="{$row.energy|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Ir')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-ir" class="form-control" name="row[ir]" type="text" value="{$row.ir|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Size')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-size" class="form-control" name="row[size]" type="text" value="{$row.size|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Weigth')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-weigth" class="form-control" name="row[weigth]" type="text" value="{$row.weigth|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Battype')}:</label>
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="battypeList" item="vo"}
-                <label for="row[battype]-{$key}"><input id="row[battype]-{$key}" name="row[battype]" type="radio" value="{$key}" {in name="key" value="2"}checked{/in} /> {$vo}</label>
+                <label for="row[battype]-{$key}"><input id="row[battype]-{$key}" name="row[battype]" type="radio" value="{$key}" {in name="key" value="$row.battype"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -75,7 +75,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="balanceList" item="vo"}
-                <label for="row[balance]-{$key}"><input id="row[balance]-{$key}" name="row[balance]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>
+                <label for="row[balance]-{$key}"><input id="row[balance]-{$key}" name="row[balance]" type="radio" value="{$key}" {in name="key" value="$row.balance"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -85,7 +85,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="chargedischargeswitchList" item="vo"}
-                <label for="row[chargedischargeswitch]-{$key}"><input id="row[chargedischargeswitch]-{$key}" name="row[chargedischargeswitch]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>
+                <label for="row[chargedischargeswitch]-{$key}"><input id="row[chargedischargeswitch]-{$key}" name="row[chargedischargeswitch]" type="radio" value="{$key}" {in name="key" value="$row.chargedischargeswitch"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -95,7 +95,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="mosstatusList" item="vo"}
-                <label for="row[mosstatus]-{$key}"><input id="row[mosstatus]-{$key}" name="row[mosstatus]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>
+                <label for="row[mosstatus]-{$key}"><input id="row[mosstatus]-{$key}" name="row[mosstatus]" type="radio" value="{$key}" {in name="key" value="$row.mosstatus"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -106,7 +106,7 @@
 
             <div class="radio">
                 {foreach name="statusList" item="vo"}
-                <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="show"}checked{/in} /> {$vo}</label>
+                <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="$row.status"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
 

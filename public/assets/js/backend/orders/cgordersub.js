@@ -3,11 +3,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
     var Controller = {
         index: function () {
             // 初始化表格参数配置
+            const urlParams = new URLSearchParams(location.search);
+            // console.log(urlParams);
+            // console.log(location.search);
+            var cgid = urlParams.get('cgid');
             Table.api.init({
                 extend: {
                     index_url: 'orders/cgordersub/index' + location.search,
-                    add_url: 'orders/cgordersub/add',
-                    edit_url: 'orders/cgordersub/edit',
+                    add_url: 'orders/cgordersub/add?cgid='+cgid,
+                    edit_url: 'orders/cgordersub/edit?cgid='+cgid,
                     del_url: 'orders/cgordersub/del',
                     multi_url: 'orders/cgordersub/multi',
                     import_url: 'orders/cgordersub/import',

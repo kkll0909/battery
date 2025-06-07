@@ -35,10 +35,12 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'batno', title: __('Batno'), operate: 'LIKE'},
                         {field: 'voltage', title: __('Voltage'), operate: 'LIKE'},
                         {field: 'capacity', title: __('Capacity'), operate: 'LIKE'},
-                        {field: 'energy', title: __('Energy'), operate: 'LIKE'},
-                        {field: 'ir', title: __('Ir'), operate: 'LIKE'},
-                        {field: 'size', title: __('Size'), operate: false},
-                        {field: 'weigth', title: __('Weigth'), operate: false},
+                        {field: 'ambienttemperature', title: __('Ambienttemperature'), operate: false},
+                        {field: 'celltemperature', title: __('Celltemperature'), operate: false},
+                        {field: 'boardtemperature', title: __('Boardtemperature'), operate: false},
+                        {field: 'soc', title: __('Soc'), operate: false},
+                        {field: 'remainingcapacity', title: __('Remainingcapacity'), operate: false},
+                        {field: 'soh', title: __('Soh'), operate: false},
                         {field: 'battype', title: __('Battype'), operate: 'LIKE', searchList: {"1" : __('Ternary'),"2":__('Lithiumiron'),"3":__('Lithiumtitanium')}, formatter: Table.api.formatter.status},
                         {field: 'cyclelife', title: __('Cyclelife'), operate: false},
                         {field: 'balance', title: __('Balance'), operate: 'LIKE', searchList: {'0' : __('Proscribe'),'1':__('Enabled')}, formatter: Table.api.formatter.status},
@@ -48,7 +50,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'islike', title: __('Islike'), operate: false, searchList: {"auto":__('Auto'),"noauto":__('Noauto')}, formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
                             buttons:[
-                                {name:'otalog',text:'日志',title:'OTA明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'Otalog/index'},
+                                {name:'otalog',text:'日志',title:'OTA明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'Otalog/index?batid={id}'},
+                                {name:'otaopen',text:'打开充放电',title:'打开充放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=1'},
+                                {name:'otaclose',text:'关闭充放电',title:'关闭充放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=5'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]

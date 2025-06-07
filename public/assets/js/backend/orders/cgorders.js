@@ -41,7 +41,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'status', title: __('Status'), searchList: {"nopay":__('Nopay'),"pay":__('Pay')}, formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
                             buttons:[
-                                {name:'ordersub',text:'明细',title:'订单明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'orders/cgordersub/index'},
+                                {name:'ordersub',text:'明细',title:'订单明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'orders/cgordersub/index?cgid={id}'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]

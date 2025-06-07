@@ -9,45 +9,45 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Fromid')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-fromid" class="form-control" name="row[fromid]" type="number" value="{$row.fromid|htmlentities}">
+            <input id="c-fromid" data-rule="required" data-source="auth/admin/selectpage" class="form-control selectpage" data-primary-key="id" data-format-item="{username}-{nickname}" data-field="nickname" data-search-field="username,nickname" name="row[fromid]" type="text" value="{$row.fromid|htmlentities}">
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Toid')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-toid" class="form-control" name="row[toid]" type="number" value="{$row.toid|htmlentities}">
+            <input id="c-toid" data-rule="required" data-source="user/user/selectpage" class="form-control selectpage" data-primary-key="id" data-format-item="{username}-{nickname}" data-field="nickname" data-search-field="username,nickname" name="row[toid]" type="text" value="{$row.toid|htmlentities}">
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Monay')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-monay" class="form-control" step="0.01" name="row[monay]" type="number" value="{$row.monay|htmlentities}">
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Monay')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-monay" class="form-control" step="0.01" name="row[monay]" type="number" value="{$row.monay|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Payway')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-payway" class="form-control" name="row[payway]" type="text" value="{$row.payway|htmlentities}">
+            {:build_radios('row[payway]', ['multiple'=>__('Multiple'), 'single'=>__('single')],$row['payway'])}
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-type" class="form-control" name="row[type]" type="text" value="{$row.type|htmlentities}">
+            {:build_radios('row[type]', ['buy'=>__('Buy'), 'zp'=>__('Zp')],$row['type'])}
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Paytype')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-paytype" class="form-control" name="row[paytype]" type="text" value="{$row.paytype|htmlentities}">
+            {:build_radios('row[paytype]', ['a'=>__('A'), 'm'=>__('M'),'j'=>__('J'),'n'=>__('N')],$row['paytype'])}
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Sum')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-sum" class="form-control" name="row[sum]" type="number" value="{$row.sum|htmlentities}">
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Sum')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-sum" class="form-control" name="row[sum]" type="number" value="{$row.sum|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Stime')}:</label>
         <div class="col-xs-12 col-sm-8">

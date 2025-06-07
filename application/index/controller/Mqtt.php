@@ -2,10 +2,15 @@
 
 namespace app\index\controller;
 
+use app\admin\model\batmanage\Bat;
 use app\admin\model\Otalog;
+use app\common\controller\Frontend;
+use app\common\library\Log;
 
-class Mqtt
+class Mqtt extends Frontend
 {
+    protected $noNeedLogin = ['*'];
+    protected $noNeedRight = ['*'];
     const token = "DFXFyMg7VmQcFYfL7Q3RYxDL8Qs0EceL";
 
     public function sc()
@@ -32,16 +37,37 @@ class Mqtt
         }
     }
 
-    public function a()
+    //指令下发
+    public function sendc()
     {
-        $a = '{"message_type":"POLLING_REPORT","content":{"device_id":"2491000542","device_type":"G2","timestamp":1748827019214,"raw":1003,"status":{"total_voltage":66.5,"cell_count":20,"soc":100,"remaining_capacity":50.0,"soh":91,"charging_current":0.04,"ambient_temperature":29,"cell_temperature":22,"board_temperature":23,"cell_voltage_1":3.312,"cell_voltage_2":3.315,"cell_voltage_3":3.313,"cell_voltage_4":3.314,"cell_voltage_5":3.312,"cell_voltage_6":3.313,"cell_voltage_7":3.314,"cell_voltage_8":3.315,"cell_voltage_9":3.313,"cell_voltage_10":3.314,"cell_voltage_11":3.312,"cell_voltage_12":3.313,"cell_voltage_13":3.312,"cell_voltage_14":3.313,"cell_voltage_15":3.311,"cell_voltage_16":3.314,"cell_voltage_17":3.312,"cell_voltage_18":3.313,"cell_voltage_19":3.311,"cell_voltage_20":3.315,"cell_voltage_21":0.0,"cell_voltage_22":0.0,"cell_voltage_23":0.0,"cell_voltage_24":0.0,"cell_voltage_25":0.0,"cell_voltage_26":0.0,"cell_voltage_27":0.0,"cell_voltage_28":0.0,"cell_voltage_29":0.0,"cell_voltage_30":0.0,"cell_voltage_31":0.0,"cell_voltage_32":0.0,"battery_type":2,"cycle_count":80,"nominal_capacity":50,"charge_discharge_switch":1,"request_charge_current":0.54,"request_charge_voltage":73.08,"balance":0,"mos_status":0,"heating_status":0,"light_trigger":0,"over_voltage_protection":0,"undervoltage_protection":0,"short_circuit_protection":0,"discharge_overcurrent_protection":0,"charge_overcurrent_protection":0,"high_temperature_protection":0,"low_temperature_protection":0,"large_pressure_difference":0,"raw":"01036619FA001400641388005B0004001D001600170CF00CF30CF10CF20CF00CF10CF20CF30CF10CF20CF00CF10CF00CF10CEF0CF20CF00CF10CEF0CF3000000000000000000000000000000000000000000000000000200500032000100361C8C00000000000000004397"}},"version":"1.1.8-b3"}';
-        $a = json_decode($a,true);
-        dump($a);
+        $deviceid = $this->request->param('deviceid','');
+        $commandt = $this->request->param('commandt','');
+        $params = $this->request->param('params','');
+
+        // 使用示例
+        $token = self::token; // 替换为您的实际token
+        $mqttClient = new \app\common\library\Lib\Mqtt($token);
+
+        if ($mqttClient->connect()) {
+            echo "成功连接到MQTT服务器\n";
+
+            // 示例：发送设置参数命令
+            $mqttClient->sendCommand($deviceid, $commandt,$params);
+
+            // 保持连接并处理消息
+//            while (true) {
+//                $mqttClient->loop();
+//                sleep(1); // 避免CPU占用过高
+//            }
+        } else {
+            echo "无法连接到MQTT服务器\n";
+        }
     }
 
     public static function addlog($p)
     {
         $d = is_array($p)?$p:json_decode($p,true);
+        //添加设备日志
         $data['message_type'] = $d['message_type'];
         $data['type'] = 'bat';
         $data['sbno'] = $d['content']['device_id']??'';
@@ -49,7 +75,53 @@ class Mqtt
         $data['lognote'] = json_encode($d,JSON_UNESCAPED_UNICODE);
         $otalog = new Otalog();
         $otalog->insert($data);
+        //更新设备
+        if($d['content']['raw']=='1003'){
+            //电池
+            self::updateBat($d['content']);
+        }elseif($d['content']['raw']=='1000'){
+            //基站
+            self::updateJz($d['content']);
+        }elseif($d['content']['raw']=='1001'){
+            //坐标
+            self::updateMove($d['content']);
+        }
+
     }
-    //1
+    //更新设备信息
+    public static function updateBat($data)
+    {
+        \think\Log::write('设备信息:'.json_encode($data));
+        $device_id = $data['device_id'];
+        $data = $data['status'];
+        $data_params['voltage'] = $data['total_voltage']??0;
+        $data_params['capacity'] = $data['nominal_capacity']??0;
+        $data_params['cellcount'] = $data['cell_count']??0;
+        $data_params['ambienttemperature'] = $data['ambient_temperature']??0;
+        $data_params['celltemperature'] = $data['cell_temperature']??0;
+        $data_params['boardtemperature'] = $data['board_temperature']??0;
+        $data_params['soh'] = $data['soh']??0;
+        $data_params['soc'] = $data['soc']??0;
+        $data_params['cyclelife'] = $data['cycle_count']??0;
+        $data_params['battype'] = $data['battery_type']??0;
+        $data_params['balance'] = $data['balance']??0;
+        $data_params['chargedischargeswitch'] = $data['charge_discharge_switch']??0;
+        $data_params['mosstatus'] = $data['mos_status']??0;
+        $data_params['remainingcapacity'] = $data['remaining_capacity']??0;
+        $bat = new Bat();
+        $bat->save($data_params,['batno'=>$device_id]);
+    }
+
+    //基站
+    public static function updateJz($data)
+    {
+        \think\Log::write('基站信息:'.json_encode($data));
+    }
+
+    //坐标
+    public static function updateMove($data)
+    {
+        \think\Log::write('运动坐标信息:'.json_encode($data));
+    }
 
 }

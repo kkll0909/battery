@@ -6,7 +6,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             // console.log(urlParams);
             // console.log(location.search);
             var shopid = urlParams.get('shopid');
-            console.log(shopid);
+            //console.log(shopid);
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
