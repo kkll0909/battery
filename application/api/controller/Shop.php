@@ -36,10 +36,10 @@ class Shop extends Api
         if ($shopname) {
             $where[] = ['shopname', 'like', "%{$shopname}%"];
         }
-        
-        $list = model('Shop')
+        $shop = new \app\common\model\shop\Shop();
+        $list = $shop
             ->where($where)
-            ->field('*, ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((' . $lat . ' * PI() / 180 - lat * PI() / 180) / 2),2) + COS(' . $lat . ' * PI() / 180) * COS(lat * PI() / 180) * POW(SIN((' . $lng . ' * PI() / 180 - lng * PI() / 180) / 2),2))) * 1000) AS distance')
+            ->field('*, ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((' . $lat . ' * PI() / 180 - splat * PI() / 180) / 2),2) + COS(' . $lat . ' * PI() / 180) * COS(splat * PI() / 180) * POW(SIN((' . $lng . ' * PI() / 180 - splng * PI() / 180) / 2),2))) * 1000) AS distance')
             ->order('distance ASC')
             ->paginate($pagesize,false,['page'=>$page]);
         
