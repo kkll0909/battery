@@ -12,7 +12,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 extend: {
                     index_url: 'shop/shoplist/index' + location.search,
                     add_url: 'shop/shoplist/add?shopid='+shopid,
-                    edit_url: 'shop/shoplist/edit',
+                    edit_url: 'shop/shoplist/edit?shopid='+shopid,
                     del_url: 'shop/shoplist/del',
                     multi_url: 'shop/shoplist/multi',
                     import_url: 'shop/shoplist/import',
@@ -36,11 +36,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     [
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
-                        {field: 'shopid', title: __('Shopid')},
+                        // {field: 'shopid', title: __('Shopid')},
                         {field: 'sbname', title: __('Sbname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
+                        {field: 'sbgg', title: __('Sbgg'), operate: 'LIKE'},
                         {field: 'sbtype', title: __('Sbtype'), operate: 'LIKE'},
-                        {field: 'money', title: __('Money'), operate:'BETWEEN'},
-                        {field: 'status', title: __('Status'), searchList: {"1":__('Status 1')}, formatter: Table.api.formatter.status},
+                        {field: 'buymoney', title: __('Buymoney'), operate:'BETWEEN'},
+                        {field: 'zpmoney', title: __('Zpmoney'), operate:'BETWEEN'},
+                        {field: 'status', title: __('Status'), searchList: {"1":__('Publish'),"0":__('Unpublish')}, formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]
@@ -58,6 +60,18 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
         api: {
             bindevent: function () {
                 Form.api.bindevent($("form[role=form]"));
+                
+                // Handle Zpmoney and Buymoney visibility
+                $('input[name="row[sbtype][]"]').on('change', function() {
+                    var zpChecked = $('#row\\[sbtype\\]-zp').is(':checked');
+                    var buyChecked = $('#row\\[sbtype\\]-buy').is(':checked');
+                    
+                    $('.zpmoney-group').toggle(zpChecked);
+                    $('.buymoney-group').toggle(buyChecked);
+                });
+                
+                // Trigger change event on page load
+                $('input[name="row[sbtype][]"]').trigger('change');
             }
         }
     };

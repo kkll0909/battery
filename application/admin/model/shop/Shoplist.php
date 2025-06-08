@@ -32,7 +32,12 @@ class Shoplist extends Model
     
     public function getStatusList()
     {
-        return ['1' => __('Status 1')];
+        return ['1' => __('Publish'),'0' => __('Unpublish')];
+    }
+
+    public function getSbtypeList()
+    {
+        return ['buy' => __('Buy'),'zp' => __('Zp')];
     }
 
 

@@ -227,4 +227,6 @@ return [
     'Ok'                                                  => '完成',
     'Fail'                                                  => '失败',
     'Pay'                                                  => '已支付',
+    'Unpublish'                                                  => '下架',
+    'Publish'                                                  => '上架',
 ];

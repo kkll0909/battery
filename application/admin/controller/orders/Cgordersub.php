@@ -89,7 +89,7 @@ class Cgordersub extends Backend
         if ($this->dataLimit && $this->dataLimitFieldAutoFill) {
             $params[$this->dataLimitField] = $this->auth->id;
         }
-        $params['orderno'] = "CG".Random::build('unique',10).rand(1000,9999);
+        //$params['orderno'] = "CG".Random::build('unique',10).rand(1000,9999);
         $params['oid'] = $cgid;
         $result = false;
         Db::startTrans();

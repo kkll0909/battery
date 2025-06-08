@@ -1,9 +1,10 @@
 <form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
-
+    {:token()}
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Shopid')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-shopid" class="form-control" name="row[shopid]" type="number" value="0">
+<!--            <input id="c-shopid" class="form-control" name="row[shopid]" type="number" value="0">-->
+            {$spname}
         </div>
     </div>
     <div class="form-group">
@@ -13,15 +14,32 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Sbtype')}:</label>
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sbgg')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-sbtype" class="form-control" name="row[sbtype]" type="text" value="">
+            <input id="c-sbgg" data-rule="" class="form-control" placeholder="输入后空格确认" name="row[sbgg]" type="text" value="">
+            <span class="text-gray">输入后空格确认(如48V 60V)</span>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Money')}:</label>
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sbtype')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-money" class="form-control" step="0.01" name="row[money]" type="number" value="0.00">
+            <div class="checkbox">
+                {foreach name="sbtypeList" item="vo"}
+                <label for="row[sbtype]-{$key}"><input id="row[sbtype]-{$key}" name="row[sbtype][]" type="checkbox" value="{$key}" {in name="key" value="zp"}checked{/in} /> {$vo}</label>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="form-group zpmoney-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Zpmoney')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-zpmoney" class="form-control" step="0.01" name="row[zpmoney]" type="number" value="0.00">
+        </div>
+    </div>
+    <div class="form-group buymoney-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Buymoney')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-buymoney" class="form-control" step="0.01" name="row[buymoney]" type="number" value="0.00">
         </div>
     </div>
     <div class="form-group">
@@ -34,6 +52,12 @@
             {/foreach}
             </div>
 
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sbtext')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-sbtext" class="form-control editor" rows="5" name="row[sbtext]" cols="50"></textarea>
         </div>
     </div>
     <div class="form-group layer-footer">

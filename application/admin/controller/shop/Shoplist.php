@@ -3,6 +3,10 @@
 namespace app\admin\controller\shop;
 
 use app\common\controller\Backend;
+use fast\Random;
+use think\Db;
+use think\exception\PDOException;
+use think\exception\ValidateException;
 
 /**
  * 
@@ -23,6 +27,7 @@ class Shoplist extends Backend
         parent::_initialize();
         $this->model = new \app\admin\model\shop\Shoplist;
         $this->view->assign("statusList", $this->model->getStatusList());
+        $this->view->assign("sbtypeList", $this->model->getSbtypeList());
     }
 
 
@@ -65,5 +70,79 @@ class Shoplist extends Backend
             return json($result);
         }
         return $this->view->fetch();
+    }
+
+    /**
+     * 添加
+     *
+     * @return string
+     * @throws \think\Exception
+     */
+    public function add()
+    {
+        $shopid = $this->request->get('shopid',0);
+        if (!$shopid){
+            $this->error(__('Parameter %s can not be empty', ''));
+        }else{
+            $shop = new \app\admin\model\shop\Shop();
+            $spname=$shop->where(['id'=>$shopid])->value('spname');
+            $this->assign('spname',$spname);
+        }
+        if (false === $this->request->isPost()) {
+            return $this->view->fetch();
+        }
+        $this->token();
+        $params = $this->request->post('row/a');
+        if (empty($params)) {
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params = $this->preExcludeFields($params);
+        if ($this->dataLimit && $this->dataLimitFieldAutoFill) {
+            $params[$this->dataLimitField] = $this->auth->id;
+        }
+        if(isset($params['sbtype']) && is_array($params['sbtype'])){
+            $params['sbtype'] = implode(',',$params['sbtype']);
+        }else{
+            $params['sbtype'] = '';
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params['shopid'] = $shopid;
+//        dump($params);
+//        exit;
+        $result = false;
+        Db::startTrans();
+        try {
+            //是否采用模型验证
+            if ($this->modelValidate) {
+                $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : $name) : $this->modelValidate;
+                $this->model->validateFailException()->validate($validate);
+            }
+            $result = $this->model->allowField(true)->save($params);
+            Db::commit();
+        } catch (ValidateException|PDOException|Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if ($result === false) {
+            $this->error(__('No rows were inserted'));
+        }
+        $this->success();
+    }
+
+    /**
+     * 编辑
+     */
+    public function edit($ids = null)
+    {
+        if ($this->request->isPost()) {
+            $this->token();
+        }
+        $row = $this->model->get($ids);
+        $this->modelValidate = true;
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        return parent::edit($ids);
     }
 }
