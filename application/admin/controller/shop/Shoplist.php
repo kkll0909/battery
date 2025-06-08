@@ -34,4 +34,36 @@ class Shoplist extends Backend
      */
 
 
+    /**
+     * 查看
+     */
+    public function index()
+    {
+        $shopid = $this->request->get('shopid',0);
+        $where2=[];
+        if (!$shopid){
+            $this->error(__('Parameter %s can not be empty', ''));
+        }else{
+            $where2=['shopid'=>$shopid];
+        }
+        //设置过滤方法
+        $this->request->filter(['strip_tags', 'trim']);
+        if ($this->request->isAjax()) {
+            //如果发送的来源是Selectpage，则转发到Selectpage
+            if ($this->request->request('keyField')) {
+                return $this->selectpage();
+            }
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $list = $this->model
+                //->with(['admin'])
+                ->where($where)
+                ->where($where2)
+                ->order($sort, $order)
+                ->paginate($limit);
+            $result = array("total" => $list->total(), "rows" => $list->items());
+
+            return json($result);
+        }
+        return $this->view->fetch();
+    }
 }
