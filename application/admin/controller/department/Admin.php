@@ -175,7 +175,7 @@ class Admin extends Backend
                     $params['salt'] = Random::alnum();
                     $params['password'] = md5(md5($params['password']) . $params['salt']);
                     $params['avatar'] = '/assets/img/avatar.png'; //设置新管理员默认头像。
-                    $result = $adminModel->validate('Admin.add')->save($params);
+                    $result = $adminModel->validate('Admin.add')->allowField(true)->save($params);
                     if ($result === false) {
                         exception($adminModel->getError());
                     }
@@ -187,7 +187,7 @@ class Admin extends Backend
                     $dadmin = array();
                     //添加部门信息
                     foreach ($d_list as $d_row) {
-                        $dadmin[] = ['is_principal'=>$is_principal==1?1:0,'department_id' => $d_row->id, 'organise_id' => $d_row->organise_id ? $d_row->organise_id : $d_row->id, 'admin_id' => $admin_id];
+                        $dadmin[] = ['is_principal'=>$is_principal==1?1:0,'department_id' => $d_row->id, 'organise_id' => $d_row->organise_id ? $d_row->organise_id : $d_row->id, 'admin_id' => $admin_id,'commrate'=>$params['commrate'],'bankname'=>$params['bankname'],'bankno'=>$params['bankno'],'bankckr'=>$params['bankckr']];
                     }
                     $this->dadminModel->saveAll($dadmin);
 
@@ -237,6 +237,12 @@ class Admin extends Backend
         $row = $this->model->get($ids);
         if (!$row) {
             $this->error(__('No Results were found'));
+        }else{
+            $departrow = $this->dadminModel->where(['admin_id'=>$row->id])->field('commrate,bankname,bankno,bankckr')->find();
+            $row['commrate'] = $departrow['commrate'];
+            $row['bankname'] = $departrow['bankname'];
+            $row['bankno'] = $departrow['bankno'];
+            $row['bankckr'] = $departrow['bankckr'];
         }
         if (!\app\admin\model\department\Admin::checkDataAuth($this->auth,$row,'id')){
             $this->error(__('You have no permission'));
@@ -284,7 +290,7 @@ class Admin extends Backend
                         'mobile'    => 'regex:1[3-9]\d{9}|unique:admin,mobile,' . $row->id,
                         'password' => 'regex:\S{32}',
                     ]);
-                    $result = $row->validate('Admin.edit')->save($params);
+                    $result = $row->validate('Admin.edit')->allowField(true)->save($params);
                     if ($result === false) {
                         exception($row->getError());
                     }
@@ -294,7 +300,7 @@ class Admin extends Backend
                     //添加部门信息
                     foreach ($d_list as $d_row) {
                         if (!in_array($d_row->id, $exist_departmentids)) {
-                            $dadmin[] = ['department_id' => $d_row->id, 'organise_id' => $d_row->organise_id ? $d_row->organise_id : $d_row->id, 'admin_id' => $row->id];
+                            $dadmin[] = ['department_id' => $d_row->id, 'organise_id' => $d_row->organise_id ? $d_row->organise_id : $d_row->id, 'admin_id' => $row->id,'commrate'=>$params['commrate'],'bankname'=>$params['bankname'],'bankno'=>$params['bankno'],'bankckr'=>$params['bankckr']];
                         }
                     }
                     if ($deleteids) {
@@ -302,6 +308,9 @@ class Admin extends Backend
                     }
                     if (count($dadmin) > 0) {
                         $this->dadminModel->saveAll($dadmin);
+                    }else{
+                        $ndadmin = ['commrate'=>$params['commrate'],'bankname'=>$params['bankname'],'bankno'=>$params['bankno'],'bankckr'=>$params['bankckr']];
+                        $this->dadminModel->save($ndadmin,['admin_id'=>$row->id]);
                     }
 
 

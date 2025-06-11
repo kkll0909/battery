@@ -10,7 +10,7 @@
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Batid')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-batid" data-rule="required" data-source="batmanage/bat/selectpage" data-params='{"custom[admin_id]":"normal","custom[type]":"1"}' class="form-control selectpage" data-primary-key="id" data-format-item="{brand}-{batno}" data-field="batno" data-search-field="brand,batno" name="row[batid]" type="text" value="">
+            <input id="c-batid" data-rule="required" data-source="batmanage/bat/selectpage" data-params='{"custom[admin_id]":"{$admin_id}"}' class="form-control selectpage" data-primary-key="id" data-format-item="{brand}-{batno}" data-field="batno" data-search-field="brand,batno" name="row[batid]" type="text" value="">
         </div>
     </div>
     <div class="form-group">

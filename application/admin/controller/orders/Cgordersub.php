@@ -26,7 +26,7 @@ class Cgordersub extends Backend
     {
         parent::_initialize();
         $this->model = new \app\admin\model\orders\Cgordersub;
-
+        $this->assign('admin_id',$this->auth->id);
     }
 
 

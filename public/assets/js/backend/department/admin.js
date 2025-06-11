@@ -25,6 +25,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
 
                 {field: 'username', title: __('Username'), operate: "LIKE",},
                 {field: 'nickname', title: __('Nickname'), operate: "LIKE",},
+                {field: 'money', title: __('Money'), operate: false,},
                 {field: 'status', title: __("Status"), searchList: {"normal":__('Normal'),"hidden":__('离职')}, formatter: Table.api.formatter.status},
                 {field: 'dadmin', title: __('Principal') , operate:false,
                     formatter: function (value, row, index) {
