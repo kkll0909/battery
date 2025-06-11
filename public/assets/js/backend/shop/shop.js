@@ -39,6 +39,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
                             buttons:[
                                 {name:'shoplist',text:'商品',title:'商品明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'shop/shoplist/index?shopid={id}'},
+                                {name:'shopservice',text:'服务',title:'服务明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'shop/shopservice/index?shopid={id}'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]
