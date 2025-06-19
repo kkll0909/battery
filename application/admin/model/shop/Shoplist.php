@@ -25,11 +25,14 @@ class Shoplist extends Model
 
     // 追加属性
     protected $append = [
-        'status_text'
+        'status_text',
+        'sbtype_text',
+        'usetype_text',
+        'paytype_text',
     ];
-    
 
-    
+
+
     public function getStatusList()
     {
         return ['1' => __('Publish'),'0' => __('Unpublish')];
@@ -39,12 +42,41 @@ class Shoplist extends Model
     {
         return ['buy' => __('Buy'),'zp' => __('Zp')];
     }
+    public function getUsetypeList()
+    {
+        return ['payuse' => __('Payuse'),'usepay' => __('Usepay')];
+    }
+    public function getPaytypeList()
+    {
+        return ['m' => __('M'),'j' => __('J'),'n' => __('N')];
+    }
 
 
     public function getStatusTextAttr($value, $data)
     {
         $value = $value ?: ($data['status'] ?? '');
         $list = $this->getStatusList();
+        return $list[$value] ?? '';
+    }
+
+    public function getSbtypeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['sbtype'] ?? '');
+        $list = $this->getSbtypeList();
+        return $list[$value] ?? '';
+    }
+
+    public function getUsetypeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['usetype'] ?? '');
+        $list = $this->getUsetypeList();
+        return $list[$value] ?? '';
+    }
+
+    public function getPaytypeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['paytype'] ?? '');
+        $list = $this->getPaytypeList();
         return $list[$value] ?? '';
     }
 

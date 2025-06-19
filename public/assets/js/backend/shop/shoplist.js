@@ -37,11 +37,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         // {field: 'shopid', title: __('Shopid')},
+                        {field: 'sbimg', title: __('Sbimg'),operate: false,formatter: Table.api.formatter.image},
                         {field: 'sbname', title: __('Sbname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'sbgg', title: __('Sbgg'), operate: 'LIKE'},
-                        {field: 'sbtype', title: __('Sbtype'), operate: 'LIKE'},
+                        {field: 'sbtype', title: __('Sbtype'), searchList: {"zp":__('Zp'),"buy":__('Buy')}, formatter: Table.api.formatter.status},
+                        {field: 'paytype', title: __('Paytype'), searchList: {"m":__('M'),"j":__('J'),"n":__('N')}, formatter: Table.api.formatter.status},
                         {field: 'buymoney', title: __('Buymoney'), operate:'BETWEEN'},
                         {field: 'zpmoney', title: __('Zpmoney'), operate:'BETWEEN'},
+                        {field: 'deposit', title: __('Deposit'), operate:'BETWEEN'},
+                        {field: 'usetype', title: __('Usetype'), searchList: {"payuse":__('Payuse'),"usepay":__('Usepay')}, formatter: Table.api.formatter.status},
                         {field: 'status', title: __('Status'), searchList: {"1":__('Publish'),"0":__('Unpublish')}, formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
@@ -67,6 +71,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     var buyChecked = $('#row\\[sbtype\\]-buy').is(':checked');
                     
                     $('.zpmoney-group').toggle(zpChecked);
+                    $('.usetype-group').toggle(zpChecked);
+                    $('.deposit-group').toggle(zpChecked);
+                    $('.paytype-group').toggle(zpChecked);
                     $('.buymoney-group').toggle(buyChecked);
                 });
                 

@@ -89,7 +89,7 @@ class Shopservice extends Backend
         if (false === $this->request->isPost()) {
             return $this->view->fetch();
         }
-        $this->token();
+//        $this->token();
         $params = $this->request->post('row/a');
         if (empty($params)) {
             $this->error(__('Parameter %s can not be empty', ''));

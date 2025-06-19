@@ -31,15 +31,15 @@ class Training extends Api
         $page = $this->request->post('page', 1);
         $pagesize = $this->request->post('pagesize', 20);
 
-        $where[] = ['status', '=', 'show'];
+        $where['status'] = 'show';
         if ($recommend) {
-            $where[] = ['recommend', '=', $recommend];
+            $where['recommend'] = $recommend;
         }
         if ($ntype) {
-            $where[] = ['ntype', '=', $ntype];
+            $where['ntype'] = $ntype;
         }
         if ($title) {
-            $where[] = ['title', 'like', "%{$title}%"];
+            $where['title'] = [ 'like', "%{$title}%"];
         }
         $train = new \app\common\model\Training();
         $list = $train
@@ -62,8 +62,8 @@ class Training extends Api
         if (!$nid) {
             $this->error(__('Invalid parameters'));
         }
-        $where[] = ['status', '=', 'show'];
-        $where[] = ['id', '=', $nid];
+        $where['status'] = 'show';
+        $where['id'] = $nid;
         $train = new \app\common\model\Training();
         $list = $train
             ->where($where)

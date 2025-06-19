@@ -55,8 +55,8 @@ class Dashboard extends Backend
         }
         $this->view->assign([
             'totaluser'         => User::count(),
-            'totaladdon'        => $totaladdon,
-            'totaladmin'        => Admin::count(),
+            'totalrevenue'        => 0,
+            'totalshops'        => 0,
             'totalcategory'     => \app\common\model\Category::count(),
             'todayusersignup'   => User::whereTime('jointime', 'today')->count(),
             'todayuserlogin'    => User::whereTime('logintime', 'today')->count(),
@@ -64,15 +64,14 @@ class Dashboard extends Backend
             'thirtydau'         => User::whereTime('jointime|logintime|prevtime', '-30 days')->count(),
             'threednu'          => User::whereTime('jointime', '-3 days')->count(),
             'sevendnu'          => User::whereTime('jointime', '-7 days')->count(),
-            'dbtablenums'       => count($dbTableList),
-            'dbsize'            => array_sum(array_map(function ($item) {
-                return $item['Data_length'] + $item['Index_length'];
-            }, $dbTableList)),
-            'totalworkingaddon' => $totalworkingaddon,
-            'attachmentnums'    => Attachment::count(),
-            'attachmentsize'    => Attachment::sum('filesize'),
-            'picturenums'       => Attachment::where('mimetype', 'like', 'image/%')->count(),
-            'picturesize'       => Attachment::where('mimetype', 'like', 'image/%')->sum('filesize'),
+            'investornums'       => 0,
+            'investorreturns'    => 0,
+            'todayorders' => 0,
+            'nextmonthmoney'    => 0,
+            'revenueday'    => 0,
+            'revenuemonth'    => 0,
+            'devicesidle'       => 0,
+            'devicesuse'       => 0,
         ]);
 
         $this->assignconfig('column', array_keys($userlist));

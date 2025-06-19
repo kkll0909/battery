@@ -99,4 +99,12 @@ return [
     'You have no permission'                         => '你没有权限访问',
     'An unexpected error occurred'                   => '发生了一个意外错误,程序猿正在紧急处理中',
     'This page will be re-directed in %s seconds'    => '页面将在 %s 秒后自动跳转',
+    'Show'                                                  => '打开',
+    'Nopay'                                                  => '未支付',
+    'Wait'                                                  => '等待支付',
+    'Ok'                                                  => '完成',
+    'Fail'                                                  => '失败',
+    'Pay'                                                  => '已支付',
+    'Unpublish'                                                  => '下架',
+    'Publish'                                                  => '上架',
 ];

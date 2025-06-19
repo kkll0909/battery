@@ -28,6 +28,8 @@ class Shoplist extends Backend
         $this->model = new \app\admin\model\shop\Shoplist;
         $this->view->assign("statusList", $this->model->getStatusList());
         $this->view->assign("sbtypeList", $this->model->getSbtypeList());
+        $this->view->assign("usetypeList", $this->model->getUsetypeList());
+        $this->view->assign("paytypeList", $this->model->getPaytypeList());
     }
 
 

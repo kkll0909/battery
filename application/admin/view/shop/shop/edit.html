@@ -43,6 +43,13 @@
             <span class="text-gray">输入后空格确认</span>
         </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Opentime')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-opentime" data-rule="" class="form-control" placeholder="" name="row[opentime]" type="text" value="{$row.opentime|htmlentities}">
+            <span class="text-gray">格式：08:00|17:00</span>
+        </div>
+    </div>
     <div  class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('获取坐标')}:</label>
         <div class="col-xs-12 col-sm-8">

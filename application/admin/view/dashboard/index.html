@@ -161,10 +161,10 @@
 </style>
 <div class="panel panel-default panel-intro">
     <div class="panel-heading">
-        {:build_heading(null, false)}
+<!--        {:build_heading(null, false)}-->
         <ul class="nav nav-tabs">
             <li class="active"><a href="#one" data-toggle="tab">{:__('Dashboard')}</a></li>
-            <li><a href="#two" data-toggle="tab">{:__('Custom')}</a></li>
+<!--            <li><a href="#two" data-toggle="tab">{:__('Custom')}</a></li>-->
         </ul>
     </div>
     <div class="panel-body">
@@ -185,8 +185,8 @@
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-violet"><i class="fa fa-magic"></i></span>
                             <div class="sm-st-info">
-                                <span>{$totaladdon|htmlentities}</span>
-                                {:__('Total addon')}
+                                <span>{$totalshops|htmlentities}</span>
+                                {:__('Total shops')}
                             </div>
                         </div>
                     </div>
@@ -194,8 +194,8 @@
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-blue"><i class="fa fa-leaf"></i></span>
                             <div class="sm-st-info">
-                                <span>{$attachmentnums|htmlentities}</span>
-                                {:__('Total attachment')}
+                                <span>{$totalrevenue|htmlentities}</span>
+                                {:__('Total revenue')}
                             </div>
                         </div>
                     </div>
@@ -203,8 +203,8 @@
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-green"><i class="fa fa-user"></i></span>
                             <div class="sm-st-info">
-                                <span>{$totaladmin|htmlentities}</span>
-                                {:__('Total admin')}
+                                <span>{$nextmonthmoney|htmlentities}</span>
+                                {:__('Receive next month')}
                             </div>
                         </div>
                     </div>
@@ -293,14 +293,14 @@
                             <div class="panel-body">
                                 <div class="panel-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
-                                    <h5>{:__('Working addon count')}</h5>
+                                    <h5>{:__('Today orders')}</h5>
                                 </div>
                                 <div class="panel-content">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h1 class="no-margins">{$totalworkingaddon|htmlentities}</h1>
+                                            <h1 class="no-margins">{$todayorders|htmlentities}</h1>
                                             <div class="font-bold"><i class="fa fa-magic"></i>
-                                                <small>{:__('Working addon count tips')}</small>
+                                                <small>{:__('Today orders tips')}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -313,20 +313,20 @@
                             <div class="panel-body">
                                 <div class="ibox-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
-                                    <h5>{:__('Database count')}</h5>
+                                    <h5>{:__('Investor')}</h5>
                                 </div>
                                 <div class="ibox-content">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h1 class="no-margins">{$dbtablenums|htmlentities}</h1>
+                                            <h1 class="no-margins">{$investornums|htmlentities}</h1>
                                             <div class="font-bold"><i class="fa fa-database"></i>
-                                                <small>{:__('Database table nums')}</small>
+                                                <small>{:__('Investor nums')}</small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <h1 class="no-margins">{$dbsize|format_bytes=###,'',0}</h1>
+                                            <h1 class="no-margins">{$investorreturns|number_format=2,'.',','}</h1>
                                             <div class="font-bold"><i class="fa fa-filter"></i>
-                                                <small>{:__('Database size')}</small>
+                                                <small>{:__('Investor returns')}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -340,21 +340,21 @@
                             <div class="panel-body">
                                 <div class="ibox-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
-                                    <h5>{:__('Attachment count')}</h5>
+                                    <h5>{:__('Revenue situation')}</h5>
                                 </div>
                                 <div class="ibox-content">
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h1 class="no-margins">{$attachmentnums|htmlentities}</h1>
+                                            <h1 class="no-margins">{$revenueday|number_format=2,'.',','}</h1>
                                             <div class="font-bold"><i class="fa fa-files-o"></i>
-                                                <small>{:__('Attachment nums')}</small>
+                                                <small>{:__('Revenue day')}</small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <h1 class="no-margins">{$attachmentsize|format_bytes=###,'',0}</h1>
+                                            <h1 class="no-margins">{$revenuemonth|number_format=2,'.',','}</h1>
                                             <div class="font-bold"><i class="fa fa-filter"></i>
-                                                <small>{:__('Attachment size')}</small>
+                                                <small>{:__('Revenue month')}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -367,21 +367,21 @@
                             <div class="panel-body">
                                 <div class="ibox-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
-                                    <h5>{:__('Picture count')}</h5>
+                                    <h5>{:__('Number of devices')}</h5>
                                 </div>
                                 <div class="ibox-content">
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h1 class="no-margins">{$picturenums|htmlentities}</h1>
+                                            <h1 class="no-margins">{$devicesuse|htmlentities}</h1>
                                             <div class="font-bold"><i class="fa fa-picture-o"></i>
-                                                <small>{:__('Picture nums')}</small>
+                                                <small>{:__('Number of use')}</small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <h1 class="no-margins">{$picturesize|format_bytes=###,'',0}</h1>
+                                            <h1 class="no-margins">{$devicesidle|htmlentities}</h1>
                                             <div class="font-bold"><i class="fa fa-filter"></i>
-                                                <small>{:__('Picture size')}</small>
+                                                <small>{:__('Number of idle')}</small>
                                             </div>
                                         </div>
                                     </div>

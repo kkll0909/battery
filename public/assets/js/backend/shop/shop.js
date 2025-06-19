@@ -29,6 +29,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'admin.nickname', title: __('Admin_id'),operate: false},
                         {field: 'spimgs', title: __('Spimgs'),operate: false,formatter: Table.api.formatter.image},
                         {field: 'spname', title: __('Spname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
+                        {field: 'opentime', title: __('Opentime'), operate: false},
                         {field: 'isopen', title: __('Isopen'),searchList: {"1":__('Opening'),"2":__('Closing')}, formatter: Table.api.formatter.status},
                         {field: 'tag', title: __('Tag'), operate: false, formatter: Table.api.formatter.flag},
                         {field: 'status', title: __('Status'), searchList: {"show":__('Show'),"close":__('Close')}, formatter: Table.api.formatter.status},
@@ -40,6 +41,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                             buttons:[
                                 {name:'shoplist',text:'商品',title:'商品明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'shop/shoplist/index?shopid={id}'},
                                 {name:'shopservice',text:'服务',title:'服务明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'shop/shopservice/index?shopid={id}'},
+                                {name:'shoplike',text:'收藏评分',title:'收藏评分',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'shop/shoplike/index?shopid={id}'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]

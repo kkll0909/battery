@@ -13,6 +13,5 @@ return [
     'Spaddr' => '定位地址',
     'Spaddrbc' => '具体地址',
     'Opening' => '营业中',
-    'Closing' => '休息中',
-    'Opentime' => '营业时间',
+    'Closing' => '休息中'
 ];
