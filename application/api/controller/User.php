@@ -5,8 +5,13 @@ namespace app\api\controller;
 use app\common\controller\Api;
 use app\common\library\Ems;
 use app\common\library\Sms;
+use app\common\model\Messge;
+use app\common\model\Messgeread;
 use app\common\model\orders\Cgorders;
 use app\common\model\orders\Cgordersub;
+use app\common\model\orders\Orderpay;
+use app\common\model\shop\Shoplike;
+use app\common\model\Useraddr;
 use fast\Random;
 use think\Config;
 use think\Validate;
@@ -353,6 +358,79 @@ class User extends Api
     }
 
     /**
+     * 我的押金
+     *
+     * @ApiMethod (POST)
+     */
+    public function mydeposi()
+    {
+        $user = $this->auth->getUser();
+        $orderpay = new Orderpay();
+        $where['userid'] = $user->id;
+        $where['paystatus'] = 'pay';
+        $list = $orderpay->where($where)->select();
+        $this->success(__('Success'),$list);
+    }
+
+    /**
+     * 我的消息
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="page", type="string", required=false, description="当前页码默认1")
+     * @ApiParams (name="pagesize", type="int", required=false, description="显示记录数默认20")
+     */
+    public function myMsg()
+    {
+        $page = empty($this->request->post('page'))?1:$this->request->post('page');
+        $pagesize = empty($this->request->post('pagesize'))?20:$this->request->post('pagesize');
+        $userid = $this->auth->id;
+        $message = new Messge();
+        $where['status'] = 'show';
+        $list = $message
+            ->where($where)
+            ->order('id desc')
+            ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index) use ($userid){
+                $msgread = new Messgeread();
+                $w['msgid']=$item['id'];
+                $w['userid']=$userid;
+                $c = $msgread->where($w)->count();
+                if($c>0){$item['isread']=1;}else{$item['isread']=0;}
+                return $item;
+            });
+        $this->success(__('Success'),$list);
+    }
+
+    /**
+     * 我的收藏
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="page", type="string", required=false, description="当前页码默认1")
+     * @ApiParams (name="pagesize", type="int", required=false, description="显示记录数默认20")
+     */
+    public function mycollect()
+    {
+        $page = empty($this->request->post('page'))?1:$this->request->post('page');
+        $pagesize = empty($this->request->post('pagesize'))?20:$this->request->post('pagesize');
+        $userid = $this->auth->id;
+        $shoplike = new Shoplike();
+        $where['type'] = 'collect';
+        $where['userid'] = $userid;
+        $list = $shoplike
+            ->where($where)
+            ->order('id desc')
+            ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index){
+                $shop = new \app\common\model\shop\Shop();
+                $w['id']=$item['shopid'];
+                $shopinfo = $shop->where($w)->find();
+                $item['shopinfo'] = $shopinfo;
+                return $item;
+            });
+        $this->success(__('Success'),$list);
+    }
+
+
+
+    /**
      * 我的订单
      *
      * @ApiMethod (POST)
@@ -423,4 +501,67 @@ class User extends Api
             ->select();
         $this->success(__('Success'),$list);
     }
+
+    /**
+     * 添加修改地址(addrid为空时表示新增)
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="address", type="string", required=true, description="地址")
+     * @ApiParams (name="tel", type="string", required=true, description="电话")
+     * @ApiParams (name="name", type="string", required=true, description="姓名")
+     * @ApiParams (name="addrid", type="int", required=false, description="地址ID")
+     */
+    public function addmodiaddr()
+    {
+        $address = $this->request->post("address");
+        $tel = $this->request->post("tel");
+        $name = $this->request->post("name");
+        $addrid = empty($this->request->post("addrid"))?'':$this->request->post("addrid");
+        if (!$address || !$tel || !$name){
+            $this->error(__('Invalid parameters'));
+        }
+        $addr = new Useraddr();
+        $data['address'] = $address;
+        $data['tel'] = $tel;
+        $data['name'] = $name;
+        if($addrid){
+            $addr->save($data,['id'=>$addrid]);
+        }else{
+            $data['userid'] = $this->auth->id;
+            $addr->save($data);
+        }
+        $this->success(__('Success'));
+    }
+
+    /**
+     * 删除地址
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="addrid", type="int", required=false, description="地址ID")
+     */
+    public function deladdr()
+    {
+        $addrid = $this->request->post("addrid");
+        if (!$addrid){
+            $this->error(__('Invalid parameters'));
+        }
+        $userid = $this->auth->id;
+        $addr = new Useraddr();
+        $addr->where(['userid'=>$userid,'id'=>$addrid])->delete();
+        $this->success(__('Success'));
+    }
+
+    /**
+     * 我的地址
+     *
+     * @ApiMethod (POST)
+     */
+    public function addrlist()
+    {
+        $userid = $this->auth->id;
+        $addr = new Useraddr();
+        $list = $addr->where(['userid'=>$userid])->order('id desc')->select();
+        $this->success(__('Success'),$list);
+    }
+
 }

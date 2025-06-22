@@ -1,0 +1,65 @@
+<?php
+
+namespace app\admin\model\orders;
+
+use think\Model;
+
+
+class Orderpay extends Model
+{
+
+    
+
+    
+
+    // 表名
+    protected $name = 'orderpay';
+    
+    // 自动写入时间戳字段
+    protected $autoWriteTimestamp = false;
+
+    // 定义时间戳字段名
+    protected $createTime = false;
+    protected $updateTime = false;
+    protected $deleteTime = false;
+
+    // 追加属性
+    protected $append = [
+        'paystatus_text',
+        'isy_text',
+    ];
+
+    public function getPaystatusList()
+    {
+        //nopay,pay
+        return ['nopay' => __('Nopay'),'pay'=>__('Pay')];
+    }
+
+    public function getIsyList()
+    {
+        //nopay,pay
+        return ['0' => __('Deposit'),'1'=>__('Stages')];
+    }
+
+    public function getPaystatusTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['paystatus'] ?? '');
+        $list = $this->getPaystatusList();
+        return $list[$value] ?? '';
+    }
+
+    public function getIsyTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['isy'] ?? '');
+        $list = $this->getIsyList();
+        return $list[$value] ?? '';
+    }
+    
+
+
+
+
+
+
+
+}

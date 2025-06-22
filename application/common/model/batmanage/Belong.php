@@ -70,4 +70,8 @@ class Belong extends Model
     }
 
 
+    public function bat()
+    {
+        return $this->belongsTo('app\common\model\batmanage\Bat', 'batid', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
 }

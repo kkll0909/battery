@@ -181,7 +181,7 @@ return [
     'Click to uncheck all'                                  => '点击取消全部',
     'Multiple selection mode: %s checked'                   => '跨页选择模式，已选 %s 项',
     //菜单
-    'Dashboard'                                             => '控制台',
+    'Dashboard'                                             => '首页',
     'General'                                               => '常规管理',
     'Category'                                              => '分类管理',
     'Addon'                                                 => '插件管理',

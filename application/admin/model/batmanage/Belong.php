@@ -69,5 +69,8 @@ class Belong extends Model
         return $value === '' ? null : ($value && !is_numeric($value) ? strtotime($value) : $value);
     }
 
-
+    public function bat()
+    {
+        return $this->belongsTo('app\admin\model\batmanage\Bat', 'batid', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
 }

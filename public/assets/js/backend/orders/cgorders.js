@@ -42,6 +42,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
                             buttons:[
                                 {name:'ordersub',text:'明细',title:'订单明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'orders/cgordersub/index?cgid={id}'},
+                                {name:'orderpay',text:'分期',title:'分期明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'orders/orderpay/index?cgid={id}'},
+                                {name:'addr',text:'地址',title:'地址',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'orders/cgorderaddr/index?cgid={id}'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]
