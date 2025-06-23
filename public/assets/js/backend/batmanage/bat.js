@@ -53,6 +53,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                                 {name:'otalog',text:'日志',title:'OTA明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'Otalog/index?batid={id}'},
                                 {name:'otaopen',text:'打开充放电',title:'打开充放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=1'},
                                 {name:'otaclose',text:'关闭充放电',title:'关闭充放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=5'},
+                                {name:'towho',text:'所属',title:'所属关系',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'batmanage/belong/index?batid={id}'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]

@@ -34,7 +34,7 @@ class Orderpay extends Model
         return ['nopay' => __('Nopay'),'pay'=>__('Pay')];
     }
 
-    public function getStatusTextAttr($value, $data)
+    public function getPaystatusTextAttr($value, $data)
     {
         $value = $value ?: ($data['paystatus'] ?? '');
         $list = $this->getPaystatusList();

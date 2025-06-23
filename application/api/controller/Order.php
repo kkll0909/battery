@@ -143,11 +143,11 @@ class Order extends Api
      * 确认订单
      *
      * @ApiMethod (POST)
-     * @ApiParams (name="orderno", type="strin", required=true, description="订单号")
+     * @ApiParams (name="orderno", type="string", required=true, description="订单号")
      */
     public function confirmOrder()
     {
-        $orderno = empty($this->request->param('orderno'));
+        $orderno = $this->request->param('orderno');
         if(!$orderno){
             $this->error(__('Invalid parameters'));
         }
@@ -173,9 +173,9 @@ class Order extends Api
      */
     public function payorder()
     {
-        $orderno = empty($this->request->param('orderno'));
-        $addrid = empty($this->request->param('addrid'));
-        $type = empty($this->request->param('type'));
+        $orderno = $this->request->param('orderno');
+        $addrid = $this->request->param('addrid');
+        $type = $this->request->param('type');
         if(!$orderno){
             $this->error(__('Invalid parameters'));
         }
