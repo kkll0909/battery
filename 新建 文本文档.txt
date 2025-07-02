@@ -1,0 +1,17 @@
+ 【云服务器】请在安全组放行 32243 端口
+ 外网面板地址: http://8.153.195.1:32243/1924e7c5
+ 内网面板地址: http://172.30.11.64:32243/1924e7c5
+ username: bsoy27jv
+ password: 9ea19198
+
+
+SMS_488170077
+上海靖团
+上海靖团管理咨询
+
+ftp://8.153.195.1:2121
+battery
+B4cnk863NX75inxQ
+
+battery
+MjpJEjesXM4sdzAM

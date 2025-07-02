@@ -5,6 +5,7 @@ namespace app\api\controller;
 use app\common\controller\Api;
 use app\common\library\Ems;
 use app\common\library\Sms;
+use app\common\model\Feedback;
 use app\common\model\Messge;
 use app\common\model\Messgeread;
 use app\common\model\orders\Cgorders;
@@ -564,4 +565,52 @@ class User extends Api
         $this->success(__('Success'),$list);
     }
 
+    /**
+     * 反馈
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="pid", type="int", required=false, description="上级ID，默认为0")
+     * @ApiParams (name="desc", type="string", required=true, description="内容100字")
+     * @ApiParams (name="tel", type="string", required=true, description="联系方式")
+     */
+    public function feedback()
+    {
+        $pid = empty($this->request->post('pid'))?0:$this->request->post('pid');
+        $desc = $this->request->post('desc');
+        $tel = $this->request->post('tel');
+        if(!$desc || !$tel){
+            $this->error(__('Invalid parameters'));
+        }
+        $data['userid'] = $this->auth->id;
+        $data['pid'] = $pid;
+        $data['desc'] = $desc;
+        $data['tel'] = $tel;
+        $data['ctime'] = time();
+        $fback = new Feedback();
+        $fback->save($data);
+        $this->success(__('Success'));
+    }
+
+    /**
+     * 反馈列表
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="page", type="string", required=false, description="当前页码默认1")
+     * @ApiParams (name="pagesize", type="int", required=false, description="显示记录数默认5")
+     */
+    public function feedbacklist()
+    {
+        $page = empty($this->request->post('page'))?1:$this->request->post('page');
+        $pagesize = empty($this->request->post('pagesize'))?5:$this->request->post('pagesize');
+        $userid = $this->auth->id;
+        $fback = new Feedback();
+        $list = $fback
+            ->where(['userid'=>$userid,'pid'=>0])
+            ->order('id desc')
+            ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index) use ($fback){
+                $item['sublist']=$fback->where(['pid'=>$item['id']])->select();
+                return $item;
+            });
+        $this->success(__('Success'),$list);
+    }
 }
