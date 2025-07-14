@@ -12,7 +12,7 @@ use think\Log;
  */
 class Mysb extends Api
 {
-    protected $noNeedLogin = ['mySb'];
+    protected $noNeedLogin = [];
     protected $noNeedRight = '*';
 
     /**
