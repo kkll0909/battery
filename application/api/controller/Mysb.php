@@ -193,8 +193,8 @@ class Mysb extends Api
     {
         $page = empty($this->request->post('page'))?1:$this->request->post('page');
         $pagesize = empty($this->request->post('pagesize'))?20:$this->request->post('pagesize');
-        //$userid = $this->auth->id;
-        $userid = 2;
+        $userid = $this->auth->id;
+//        $userid = 2;
         $belong = new Belong();
         $list = $belong
             ->with('bat')
