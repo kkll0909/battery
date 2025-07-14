@@ -1,0 +1,51 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wxuser_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-wxuser_id" data-rule="required" data-source="wxuser/index" class="form-control selectpage" name="row[wxuser_id]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Maintid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-maintid" data-rule="required" class="form-control" name="row[maintid]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wximg')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-wximg" data-rule="required" class="form-control " rows="5" name="row[wximg]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wxvideo')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-wxvideo" data-rule="required" class="form-control " rows="5" name="row[wxvideo]" cols="50"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wxtime')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-wxtime" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[wxtime]" type="text" value="{:date('Y-m-d H:i:s')}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wxstatus')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-wxstatus" data-rule="required" class="form-control" name="row[wxstatus]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Wxdesc')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-wxdesc" data-rule="required" class="form-control" name="row[wxdesc]" type="text">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>
