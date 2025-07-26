@@ -2,6 +2,7 @@
 
 namespace app\admin\controller\user;
 
+use app\admin\model\maint\Maintenance;
 use app\common\controller\Backend;
 use app\common\library\Auth;
 
@@ -111,6 +112,49 @@ class User extends Backend
         //$this->dataLimit = 'auth';
         $this->dataLimitField = 'id';
         return parent::selectpage();
+    }
+
+    //获取维修人员并派单
+    public function maintuser()
+    {
+        $bxid=$this->request->param('bxid',0);
+        if (!$bxid){
+            $this->error(__("Invalid parameters"));
+        }
+        $this->assign('bxid',$bxid);
+        //$maint = new Maintenance();
+        $maintInfo = Maintenance::get($bxid);
+        $this->assign('mInfo',$maintInfo);
+        $maintuList = \app\admin\model\User::where(['ismaint'=>1,'status'=>'normal'])->field('id,username,nickname,ismaint')->select();
+        //wxjd维修派单 wxing正在维修 wxzd维修派单 wxwc维修完成
+        foreach ($maintuList as $key => $v){
+            $maintuList[$key]['wxjd'] = Maintenance::where(['wxuser_id'=>$v['id'],'bxstatus'=>'wxjd'])->count();
+            $maintuList[$key]['wxing'] = Maintenance::where(['wxuser_id'=>$v['id'],'bxstatus'=>'wxing'])->count();
+            $maintuList[$key]['wxwc'] = Maintenance::where(['wxuser_id'=>$v['id'],'bxstatus'=>'wxwc'])->count();
+            $maintuList[$key]['wxzd'] = Maintenance::where(['wxuser_id'=>$v['id'],'bxstatus'=>'wxzd'])->count();
+        }
+        //var_dump($maintuList);exit;
+        $this->assign('wxuser_id',$maintInfo->wxuser_id);
+        $this->assign('maintuList',$maintuList);
+        if ($this->request->isPost()){
+            $this->token();
+            if($maintInfo->bxstatus!='wxup'){
+                $this->error('不可派单','',[
+                    'callback' => 'parent.location.reload();parent.layer.closeAll();'
+                ]);
+            }
+            $uid = $this->request->param('uid',0);
+            if (!$uid){
+                $this->error(__("Invalid parameters"));
+            }
+            $maintInfo->wxuser_id = $uid;
+            $maintInfo->bxstatus = 'wxzd';
+            $maintInfo->save();
+            $this->success('派单成功','',[
+                'callback' => 'parent.location.reload();parent.layer.closeAll();'
+            ]);
+        }
+        return $this->view->fetch();
     }
 
 }

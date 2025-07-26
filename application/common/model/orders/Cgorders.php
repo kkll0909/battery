@@ -78,6 +78,10 @@ class Cgorders extends Model
     {
         return $this->belongsTo('app\admin\model\User', 'toid', 'id', [], 'LEFT')->setEagerlyType(0);
     }
+    public function shop()
+    {
+        return $this->belongsTo('app\admin\model\shop\Shop', 'shopid', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
 
 
 }

@@ -2,6 +2,7 @@
 
 namespace app\api\controller;
 
+use app\admin\model\shop\Shoplist;
 use app\common\controller\Api;
 use app\common\library\Ems;
 use app\common\library\Sms;
@@ -13,6 +14,7 @@ use app\common\model\orders\Cgordersub;
 use app\common\model\orders\Orderpay;
 use app\common\model\shop\Shoplike;
 use app\common\model\Useraddr;
+use fast\Http;
 use fast\Random;
 use think\Config;
 use think\Validate;
@@ -105,6 +107,22 @@ class User extends Api
         } else {
             $this->error($this->auth->getError());
         }
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @ApiMethod (POST)
+     */
+    public function getuinfo()
+    {
+        $user_id = $this->auth->id;
+        $miniuser = new \app\admin\model\miniprogram\User();
+        $data = [
+            'userinfo' => $this->auth->getUserinfo(),
+            'wxinfo' => $miniuser->where(['user_id'=>$user_id])->find(),
+        ];
+        $this->success(__('Logged in successful'), $data);
     }
 
     /**
@@ -453,9 +471,16 @@ class User extends Api
         $user = $this->auth->getUser();
         $where['toid'] = $user->id;
         $Cgo = new Cgorders();
-        $list = $Cgo->where($where)
+        $list = $Cgo
+            ->with('fromadmin,shop')
+            ->where($where)
             ->order('id desc')
-            ->paginate($pageSize,false,['page'=>$page]);
+            ->paginate($pageSize,false,['page'=>$page])->each(function ($item,$index){
+                $cgsub = new Cgordersub();
+                $preid = $cgsub->where(['oid'=>$item['id']])->value('preid');
+                $item['preinfo'] = Shoplist::get($preid);
+                return $item;
+            });
         $this->success(__('Success'),$list);
     }
 
@@ -496,7 +521,7 @@ class User extends Api
         $where['cgoid'] = $oid;
         $user = $this->auth->getUser();
         //$where['toid'] = $user->id;
-        $Cgo = new Cgorders();
+        $Cgo = new Orderpay();
         $list = $Cgo->where($where)
             ->order('id desc')
             ->select();
@@ -612,5 +637,47 @@ class User extends Api
                 return $item;
             });
         $this->success(__('Success'),$list);
+    }
+
+    /**
+     * 获取小程序openid
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="code", type="string", required=true, description="微信CODE")
+     */
+    public function getopenid()
+    {
+        $code = $this->request->post('code');
+        $appid = "";
+        $secret = "";
+        //获取小程序配置
+        $miniconfig = new \app\admin\model\miniprogram\Config();
+        $minicfg = $miniconfig->select();
+        foreach ($minicfg as $value){
+            if($value['name']=='app_id'){
+                $appid = $value['value'];
+            }
+            if($value['name']=='app_secret'){
+                $secret = $value['value'];
+            }
+        }
+        $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$appid}&secret={$secret}&js_code={$code}&grant_type=authorization_code";
+        $re = Http::get($url);
+        $userid = $this->auth->id;
+        $re = is_array($re)?$re:json_decode($re,true);
+        $miniuser = new \app\admin\model\miniprogram\User();
+        $uinfo = $miniuser->where(['user_id'=>$userid])->find();
+        if ($uinfo){
+            $in['openid'] = $re['openid'];
+            $in['createtime'] = time();
+            $miniuser->save($in,['user_id'=>$userid]);
+        }else{
+            $in['user_id'] = $userid;
+            $in['openid'] = $re['openid'];
+            $in['createtime'] = time();
+            $miniuser->save($in);
+        }
+
+        $this->success(__('Success'));
     }
 }

@@ -26,20 +26,34 @@ class Maintenance extends Model
     // 追加属性
     protected $append = [
         'bxtime_text',
-        'bxstauts_text'
+        'bxstauts_text',
+        'bxtype_text',
     ];
 
 
-    //wxup上报状态 wxjd维修接单 wxing正在维修 wxzd维修转单 wxwc维修完成
+    //wxup维修上报 wxjd维修派单 wxing正在维修 wxzd维修转单 wxwc维修完成
     public function getBxstautsList()
     {
         return ['wxup' => __('Wxup'), 'wxjd' => __('Wxjd'), 'wxing' => __('Wxing'), 'wxzd' => __('Wxzd'), 'wxwc' => __('Wxwc')];
+    }
+
+    //sbok可以使用 sbno无法使用 sbnoc无法充电
+    public function getBxtypeList()
+    {
+        return ['sbok' => __('Sbok'), 'sbno' => __('Sbno'), 'sbnoc' => __('Sbnoc')];
     }
 
     public function getBxstautsTextAttr($value, $data)
     {
         $value = $value ?: ($data['bxstauts'] ?? '');
         $list = $this->getBxstautsList();
+        return $list[$value] ?? '';
+    }
+
+    public function getBxtypeTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['bxtype'] ?? '');
+        $list = $this->getBxtypeList();
         return $list[$value] ?? '';
     }
 
@@ -56,5 +70,9 @@ class Maintenance extends Model
         return $value === '' ? null : ($value && !is_numeric($value) ? strtotime($value) : $value);
     }
 
+    public function user()
+    {
+        return $this->belongsTo('\app\admin\model\User', 'wxuser_id', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
 
 }

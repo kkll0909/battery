@@ -1,6 +1,7 @@
 <?php
 namespace app\api\controller;
 
+use addons\epay\library\Service;
 use app\common\controller\Api;
 use app\common\model\orders\Cgorderaddr;
 use app\common\model\orders\Cgorders;
@@ -164,7 +165,7 @@ class Order extends Api
     }
 
     /**
-     * 支付
+     * 押金或商品支付
      *
      * @ApiMethod (POST)
      * @ApiParams (name="orderno", type="string", required=true, description="订单号")
@@ -201,6 +202,46 @@ class Order extends Api
             $pay->save(['paystatus'=>'pay'],['oid'=>$list['id'],'isy'=>0]);
         }
         $this->success(__('success'));
+    }
+
+    /**
+     * 分期支付
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="orderid", type="string", required=true, description="订单ID")
+     * @ApiParams (name="ordersubid", type="string", required=true, description="支付订单ID")
+     */
+    public function wxpay()
+    {
+        $orderid = $this->request->param('orderid');
+        $ordersubid = $this->request->param('ordersubid');
+        if(!$orderid || !$ordersubid){
+            $this->error(__('Invalid parameters'));
+        }
+        //$cgorder = new Cgorders();
+        $pay = new Orderpay();
+        //$cgoinfo = $cgorder->where(['id'=>$orderid])->find();
+        //$cgosub = new Cgordersub();
+        $payInfo = $pay->where(['oid'=>$orderid,'id'=>$ordersubid])->find();
+        if (!$payInfo){
+            $this->error(__('Order does not exist'));
+        }
+        $suborno = $orderid.'O'.$ordersubid.'R'.Random::alnum(10);
+        $pay->save(['payor'=>$suborno],['id'=>$ordersubid]);
+        $miniu = new \app\admin\model\miniprogram\User();
+        $openid = $miniu->where(['user_id'=>$this->auth->id])->value('openid');
+        $params = [
+            'amount'=>$payInfo['paymoney'],
+            'orderid'=>$suborno,
+            'type'=>"wechat",
+            'title'=>"租金第{$payInfo['paysum']}期",
+            'notifyurl'=>"https://admin.yuanshc.com/addons/epay/index/notifyx?paytype=wechat",
+            'returnurl'=>"https://admin.yuanshc.com/",
+            'method'=>"miniapp",
+            'openid'=>$openid,
+        ];
+        $re = Service::submitOrder($params);
+        $this->success(__('success'),$re);
     }
 
 }

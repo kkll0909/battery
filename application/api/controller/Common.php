@@ -66,6 +66,7 @@ class Common extends Api
             $upload['uploadurl'] = preg_match("/^((?:[a-z]+:)?\/\/)(.*)/i", $upload['uploadurl']) ? $upload['uploadurl'] : url($upload['storage'] == 'local' ? '/api/common/upload' : $upload['uploadurl'], '', false, true);
 
             $content = [
+                'wxtype' => ['sbok' => __('Sbok'), 'sbno' => __('Sbno'), 'sbnoc' => __('Sbnoc')],
                 'citydata'    => Area::getCityFromLngLat($lng, $lat),
                 'versiondata' => Version::check($version),
                 'uploaddata'  => $upload,
