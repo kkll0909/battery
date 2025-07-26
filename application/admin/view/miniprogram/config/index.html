@@ -1,0 +1,334 @@
+<style>
+    #config-form table tr td {
+        border: none;
+        padding: 10px 8px;
+    }
+    #config-form div a.btn {
+        color: #fff;
+        text-decoration: none;
+    }
+    #config-form table.table-notice {
+        margin: 0 -8px;
+        width: 100%;
+    }
+    #config-form table.table-notice tr td {
+        padding: 5px 8px;
+        width: 50%;
+    }
+    #config-form table.table-notice tr td input:first-child {
+        width: 100%;
+    }
+    .table-striped > tbody > tr {
+        background-color:#fff!important;
+    }
+    label {
+        margin:5px 10px 0 0;
+    }
+    .n-default .msg-wrap {
+        margin-top:3px;
+    }
+    .list-inline .col-xs-3 {
+        width: 11%;
+    }
+    .title_td {
+        width: 12%;
+    }
+    @media (max-width: 500px) {
+        .table tr td input {
+            width: 70%;
+        }
+        .title_td {
+            width: 30%;
+        }
+    }
+    .n-right .msg-wrap {
+        margin-left: -1px;
+    }
+    .help-block {
+        color: #999;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+    .panel-intro > .panel-heading .panel-lead {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="panel panel-default panel-intro">
+    {:build_heading()}
+</div>
+<form id="config-form" class="edit-form form-horizontal" role="form" data-toggle="validator" method="POST" action="miniprogram/config/edit">
+    <div class="panel panel-default panel-intro" style="height: calc(78vh);overflow: hidden;overflow-y: auto;">
+        <div class="panel-body no-padding">
+            <div id="myTabContent" class="tab-content">
+                <div class='tab-pane fade active in' style="margin-top: 10px">
+                    <table class="table table-striped table-config mb-0">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;text-align: left;padding-left: 30px">
+                                微信小程序
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">小程序名称</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-name" type="text" name="row[name]" value="{$mpconfig.name|htmlentities}" class="form-control" data-rule="required"/>
+                                    </div>
+                                </div>
+                                <span class="help-block">登录微信小程序平台，设置 - 基本设置 - 账号信息，查看小程序名称</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="line-height: 33px;">原始ID</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-original_id" type="text" name="row[original_id]" value="{$mpconfig.original_id|htmlentities}" class="form-control" data-rule=""/>
+                                    </div>
+                                </div>
+                                <span class="help-block">登录微信小程序平台，设置 - 基本设置 - 账号信息，查看原始ID</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="line-height: 33px;">小程序码</td>
+                            <td>
+                                <div class="form-inline">
+                                    <input id="c-qr_code" class="form-control" size="28" name="row[qr_code]" type="text" value="{$mpconfig.qr_code|htmlentities}">
+                                    <span><button type="button" id="plupload-qr_code" class="btn btn-danger plupload" data-input-id="c-qr_code" data-mimetype="image/*" data-multiple="false" data-preview-id="p-qr_code"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                                    <span><button type="button" id="fachoose-qr_code" class="btn btn-primary fachoose" data-input-id="c-qr_code" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                                    <span class="msg-box n-right" for="c-qr_code"></span>
+                                    <ul class="row list-inline plupload-preview" id="p-qr_code"></ul>
+                                </div>
+                                <span class="help-block">登录微信小程序平台，设置 - 基本设置 - 基本信息，查看下载小程序码</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class='tab-pane fade active in' style="margin-top: 20px">
+                    <table class="table table-striped table-config mb-0">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;text-align: left;padding-left: 30px">
+                                开发者信息
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">AppID</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-app_id" type="text" name="row[app_id]" value="{$mpconfig.app_id|htmlentities}" class="form-control" data-rule="required"/>
+                                    </div>
+                                </div>
+                                <span class="help-block">登录微信小程序平台，开发 - 开发管理 - 开发设置，记录AppID (小程序ID)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="line-height: 33px;">AppSecret</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-app_secret" type="text" name="row[app_secret]" value="{$mpconfig.app_secret|htmlentities}" class="form-control" data-rule="required"/>
+                                    </div>
+                                </div>
+                                <span class="help-block">登录微信小程序平台，开发 - 开发管理 - 开发设置，记录AppSecret (小程序密钥)</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class='tab-pane fade active in' style="margin-top: 20px">
+                    <table class="table table-striped table-config mb-0">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;text-align: left;padding-left: 30px">
+                                消息推送
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">服务器URL</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-url" type="text" name="row[url]" value="{$mpconfig.url|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="url"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">登录微信公众平台，点击开发>基本配置>服务器配置，填写服务器地址（URL）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="line-height: 33px;">Token</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-token" type="text" name="row[token]" value="{$mpconfig.token|htmlentities}" class="form-control" data-rule=""/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-rand" data-name="token" data-len="12"><i class="fa fa-rotate-left"></i> 生成</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">登录微信公众平台，点击开发>基本配置>服务器配置，设置令牌Token。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="line-height: 33px;">EncodingAESKey</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-encoding_aes_key" type="text" name="row[encoding_aes_key]" value="{$mpconfig.encoding_aes_key|htmlentities}" class="form-control" data-rule=""/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-rand" data-name="encoding_aes_key" data-len="43"><i class="fa fa-rotate-left"></i> 生成</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">消息加密密钥由43位字符组成，字符范围为A-Z,a-z,0-9</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="line-height: 33px;">消息加密方式</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <label for="encryption_type-1">
+                                            <input id="encryption_type-1" name="row[encryption_type]" type="radio" value="1" {in name="$mpconfig.encryption_type" value="1" }checked{/in} /> 明文模式
+                                        </label>
+                                        <label for="encryption_type-2">
+                                            <input id="encryption_type-2" name="row[encryption_type]" type="radio" value="2" {in name="$mpconfig.encryption_type" value="2" }checked{/in} /> 兼容模式
+                                        </label>
+                                        <label for="encryption_type-3">
+                                            <input id="encryption_type-3" name="row[encryption_type]" type="radio" value="3" {in name="$mpconfig.encryption_type" value="3" }checked{/in} /> 安全模式（推荐）
+                                        </label>
+                                        <span class="help-block">明文模式(不使用消息体加解密功能)，兼容模式(明文密文将共存，方便开发者调试和维护)，安全模式(消息包为纯密文，安全系数高)</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class='tab-pane fade active in' style="margin-top: 20px">
+                    <table class="table table-striped table-config mb-0">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;text-align: left;padding-left: 30px">
+                                服务器域名
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">request合法域名</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-request_domain" type="text" name="row[request_domain]" value="{$mpconfig.request_domain|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="request_domain"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">小程序账号登录微信公众平台，点击开发>开发设置->服务器域名，填写https协议域名</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">socket合法域名</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-socket_domain" type="text" name="row[socket_domain]" value="{$mpconfig.socket_domain|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="socket_domain"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">小程序账号登录微信公众平台，点击开发>开发设置->服务器域名，填写wss协议域名</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">uploadFile合法域名</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-upload_file_domain" type="text" name="row[upload_file_domain]" value="{$mpconfig.upload_file_domain|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="upload_file_domain"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">小程序账号登录微信公众平台，点击开发>开发设置->服务器域名，填写https协议域名</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">downloadFile合法域名</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-download_file_domain" type="text" name="row[download_file_domain]" value="{$mpconfig.download_file_domain|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="download_file_domain"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">小程序账号登录微信公众平台，点击开发>开发设置->服务器域名，填写https协议域名</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">udp合法域名</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-udp_domain" type="text" name="row[udp_domain]" value="{$mpconfig.udp_domain|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="udp_domain"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">小程序账号登录微信公众平台，点击开发>开发设置->服务器域名，填写udp协议域名</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class='tab-pane fade active in' style="margin-top: 20px">
+                    <table class="table table-striped table-config mb-0">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold;text-align: left;padding-left: 30px">
+                                业务域名
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_td" align="right" style="line-height: 33px;">业务域名</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <input id="c-business_domain" type="text" name="row[business_domain]" value="{$mpconfig.business_domain|htmlentities}" readonly class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-4" style="padding-left: 0">
+                                        <button type="button" class="btn btn-default btn-embossed btn-copy" data-copy-name="business_domain"><i class="fa fa-copy"></i> 复制</button>
+                                    </div>
+                                </div>
+                                <span class="help-block">小程序账号登录微信公众平台，点击开发>开发设置->业务域名，填写业务域名</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <div  class="col-xs-12 col-sm-2" style="width:12.2%;"></div>
+        <div class="col-sm-8 col-xs-12" style="margin-top: 20px">
+            <button type="submit" class="btn btn-primary btn-embossed">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

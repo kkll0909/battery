@@ -1,0 +1,67 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <input type="hidden" name="row[id]" value="{$row.id|htmlentities}">
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tempkey')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-tempkey" data-rule="required" class="form-control" name="row[tempkey]" placeholder="自定义编号，用于调用模板消息" type="text" value="{$row.tempkey|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" data-rule="required" class="form-control" name="row[name]" placeholder="请输入小程序中的模板标题" type="text" value="{$row.name|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tempid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-tempid" data-rule="required" class="form-control" name="row[tempid]" type="text" placeholder="请输入小程序中的模板ID" value="{$row.tempid|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <span class="help-block">请根据模版消息内容设置以下信息，字段内容如果是动态替换可设为{变量名}，调用时会将其自动替换。</span>
+            <dl class="fieldlist" data-name="row[content]" data-template="contenttpl">
+                <dd>
+                    <ins>字段名称</ins>
+                    <ins style="width: 160px">关键词</ins>
+                    <ins>字段内容</ins>
+                </dd>
+                <dd>
+                    <a href="javascript:;" class="btn btn-sm btn-success btn-append"><i class="fa fa-plus"></i> 追加</a>
+                </dd>
+                <textarea name="row[content]" class="form-control hide" cols="30" rows="5">{$row.content|htmlentities}</textarea>
+            </dl>
+            <script type="text/html" id="contenttpl">
+                <dd class="form-inline">
+                    <input type="text" name="row[<%=content%>][<%=index%>][name]" class="form-control" value="<%=row['name']%>" size="15">
+                    <input type="text" name="row[<%=content%>][<%=index%>][keyword]" class="form-control" value="<%=row['keyword']%>" size="15">
+                    <input type="text" name="row[<%=content%>][<%=index%>][content]" class="form-control" value="<%=row['content']%>" size="20">
+                    <span class="btn btn-sm btn-danger btn-remove"><i class="fa fa-times"></i></span> <span class="btn btn-sm btn-primary btn-dragsort"><i class="fa fa-arrows"></i></span>
+                </dd>
+            </script>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('页面路径')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-pagepath" data-rule="required;length(~200, true)" class="form-control" name="row[pagepath]" type="text" value="{$row.pagepath|default=''}">
+            <span class="help-block">小程序的页面路径，跟app.json对齐，支持参数，比如pages/index/index?foo=bar</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_radios('row[status]', ['1'=>__('Normal'), '0'=>__('Hidden')], $row['status'])}
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

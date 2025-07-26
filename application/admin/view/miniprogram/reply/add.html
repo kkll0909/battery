@@ -1,0 +1,133 @@
+<link href="__CDN__/assets/addons/miniprogram/css/keyword_reply.css?v={$site['version']}" rel="stylesheet"/>
+<style>
+    .help-block {
+        color: #999;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+</style>
+<form id="add-form" class="form-horizontal hide" role="form" data-toggle="validator" method="POST" action="">
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('关键词类型')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="radio">
+                <label for="row[event_type]-ordinary">
+                    <input id="row[event_type]-ordinary" name="row[event_type]" type="radio" value="ordinary" checked /> 关键词回复
+                </label>
+                <label for="row[event_type]-default">
+                    <input id="row[event_type]-default" name="row[event_type]" type="radio" value="default" /> 万能关键词
+                </label>
+            </div>
+            <span class="help-block">用户输入时没有任何匹配将回复万能关键词内容</span>
+        </div>
+    </div>
+    <div class="form-group" data-favisible="event_type=ordinary">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Keyword')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-keyword" class="form-control" data-role="tagsinput" data-tagsinput-options='{"maxTags":10, "maxChars":64,"trimValue":true}' name="row[keyword]" type="text" value="">
+            <span class="help-block">输入后按“回车键”确认，最多添加10个关键词</span>
+        </div>
+    </div>
+    <div class="form-group" data-favisible="event_type=ordinary">
+        <label class="control-label col-xs-12 col-sm-2">{:__('匹配方式')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="radio">
+                <label for="row[matching_type]-1">
+                    <input id="row[matching_type]-1" name="row[matching_type]" type="radio" value="1" checked /> 全匹配
+                </label>
+                <label for="row[matching_type]-2">
+                    <input id="row[matching_type]-2" name="row[matching_type]" type="radio" value="2" /> 模糊匹配
+                </label>
+                <span class="help-block">模糊匹配时，关键词部分匹配用户输入的内容即可</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Reply_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="radio">
+                {foreach name="replyTypeList" item="vo"}
+                <label for="row[reply_type]-{$key|htmlentities}"><input id="row[reply_type]-{$key|htmlentities}" name="row[reply_type]" type="radio" value="{$key|htmlentities}" {in name="key" value="text"}checked{/in} /> {$vo|htmlentities}</label>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="form-group" data-favisible="reply_type='text'">
+        <label class="control-label col-xs-12 col-sm-2">{:__('回复内容')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-content-text" style="height: 200px;" data-rule="required" aria-invalid="true" class="form-control" name="row[content][text]"></textarea>
+            {include file="miniprogram/reply/emoji" /}
+        </div>
+    </div>
+    <div class="form-group" data-favisible="reply_type='image'">
+        <label class="control-label col-xs-12 col-sm-2">{:__('上传图片')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-content-image" data-rule="required" class="form-control" size="50" name="row[content][image]" type="text" value="">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-image" class="btn btn-danger plupload" data-maxsize="10M" data-input-id="c-content-image" data-mimetype="jpeg,png,jpg,bmp" data-multiple="false" data-preview-id="p-content-image"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-image" class="btn btn-primary fachoose" data-maxsize="10M" data-input-id="c-content-image" data-mimetype="jpeg,png,jpg,bmp" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-content-image"></span>
+            </div>
+            <ul class="row list-inline plupload-preview" id="p-content-image"></ul>
+            <span class="help-block">注意：微信图片上传服务有敏感检测系统，图片含有敏感内容，上传可能失败。</span>
+            <span class="help-block">临时素材有效期3天需要添加定时任务更新有效期，建议30分钟执行一次。</span>
+            <span class="help-block">定时任务访问URL：{:request()->domain()}/addons/miniprogram/index/updateMaterial</span>
+        </div>
+    </div>
+    <div class="form-group" data-favisible="reply_type='link'">
+        <label class="control-label col-xs-12 col-sm-2">{:__('选择图文')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-content-news" data-rule="required" data-source="miniprogram/news/index" data-field="title" class="form-control selectpage sp_input" name="row[content][news]" type="text" value="" autocomplete="off">
+        </div>
+    </div>
+    <div class="form-group" data-favisible="reply_type='miniprogrampage'">
+        <label class="control-label col-xs-12 col-sm-2">{:__('上传图片')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-content-miniprogrampage" data-rule="required" class="form-control" size="50" name="row[content][miniprogrampage]" type="text" value="">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-miniprogrampage" class="btn btn-danger plupload" data-maxsize="10M" data-input-id="c-content-miniprogrampage" data-mimetype="jpeg,png,jpg,bmp" data-multiple="false" data-preview-id="p-content-miniprogrampage"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-miniprogrampage" class="btn btn-primary fachoose" data-maxsize="10M" data-input-id="c-content-miniprogrampage" data-mimetype="jpeg,png,jpg,bmp" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-content-miniprogrampage"></span>
+            </div>
+            <ul class="row list-inline plupload-preview" id="p-content-miniprogrampage"></ul>
+            <span class="help-block">注意：微信图片上传服务有敏感检测系统，图片含有敏感内容，上传可能失败。</span>
+            <span class="help-block">临时素材有效期3天需要添加定时任务更新有效期，建议30分钟执行一次。</span>
+            <span class="help-block">定时任务访问URL：{:request()->domain()}/addons/miniprogram/index/updateMaterial</span>
+        </div>
+    </div>
+    <div class="form-group" data-favisible="reply_type='miniprogrampage'">
+        <label class="control-label col-xs-12 col-sm-2">{:__('消息标题')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-miniprogrampage_title" data-rule="length(~200, true)" class="form-control" name="row[content][miniprogrampage_title]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group" data-favisible="reply_type='miniprogrampage'">
+        <label class="control-label col-xs-12 col-sm-2">{:__('页面路径')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-miniprogrampage_pagepath" data-rule="required;length(~200, true)" class="form-control" name="row[content][miniprogrampage_pagepath]" type="text" value="">
+            <span class="help-block">小程序的页面路径，跟app.json对齐，支持参数，比如pages/index/index?foo=bar</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="radio">
+            {foreach name="statusList" item="vo"}
+                <label for="row[status]-{$key|htmlentities}"><input id="row[status]-{$key|htmlentities}" name="row[status]" type="radio" value="{$key|htmlentities}" {in name="key" value="normal"}checked{/in} /> {$vo|htmlentities}</label>
+            {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

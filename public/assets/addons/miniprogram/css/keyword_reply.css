@@ -1,0 +1,116 @@
+.emotions {
+    -moz-user-select: none;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+ul, ol {
+    padding-left: 0;
+    list-style-type: none;
+}
+.emotions_item {
+    float: left;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 0;
+    text-align: center;
+    background-color: var(--weuiDesktop_cardBgColor);
+}
+.icon_emotion_sprite {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    background: transparent url(../images/icon_emotion_panel.png) no-repeat 0 0;
+    background-size: 20px auto;
+}
+.js_emotion_i:hover, .icon_emotion:hover, .icon_url:hover, .icon_phone:hover{
+    background-color: #D8EAFC;
+}
+.weui-desktop-popover__inner {
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    position: absolute;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #fff;
+    z-index: 9;
+}
+.weui-desktop-popover__wrp {
+    display: inline;
+    position: relative;
+    font-size: 14px;
+    width: 100%;
+}
+.icon_emotion , .icon_url, .icon_phone{
+    float: left;
+    padding: 1px;
+    margin-top: 2px;
+    border-radius: 2px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 0;
+    cursor: pointer;
+    background-color: #F0F0F0;
+}
+.icon_emotion a {
+    text-decoration: none;
+    color: var(--weuiDesktop_FG_Text_linkColor);
+}
+.icon_emotion i {
+    background: transparent url(../images/icon_emotion.svg) no-repeat 0 0;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.icon_url {
+    margin-left:5px;
+}
+.icon_url a {
+    text-decoration: none;
+    color: var(--weuiDesktop_FG_Text_linkColor);
+}
+.icon_url i {
+    background: url(../images/icon_url.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 83%;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.icon_phone {
+    margin-left:5px;
+}
+.icon_phone a {
+    text-decoration: none;
+    color: var(--weuiDesktop_FG_Text_linkColor);
+}
+.icon_phone i {
+    background: url(../images/icon_phone.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 83%;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.weui-desktop-popover__wrp {
+    display: inline-block;
+    vertical-align: middle;
+}
