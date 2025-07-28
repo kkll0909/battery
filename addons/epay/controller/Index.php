@@ -3,6 +3,7 @@
 namespace addons\epay\controller;
 
 use addons\epay\library\Service;
+use app\admin\model\orders\Orderpay;
 use fast\Random;
 use think\addons\Controller;
 use Exception;
@@ -85,7 +86,7 @@ class Index extends Controller
 
         // 获取回调数据，V3和V2的回调接收不同
         $data = Service::isVersionV3() ? $pay->callback() : $pay->verify();
-
+        \think\Log::write("回调成功".json_encode($data));
         try {
             //微信支付V3返回和V2不同
             if (Service::isVersionV3() && $paytype === 'wechat') {
@@ -101,6 +102,14 @@ class Index extends Controller
             \think\Log::record("回调成功，订单号：{$out_trade_no}，金额：{$payamount}");
 
             //你可以在此编写订单逻辑
+            $payInfo = Orderpay::where(['payor'=>$out_trade_no])->find();
+            if(!$payInfo){
+                \think\Log::record("回调错误:订单号不存在", "error");
+            }
+            $payInfo->paystatus = 'pay';
+            $payInfo->wxorder = $data['transaction_id'];
+            $payInfo->save();
+            echo "success";
         } catch (Exception $e) {
             \think\Log::record("回调逻辑处理错误:" . $e->getMessage(), "error");
         }

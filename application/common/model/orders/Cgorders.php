@@ -83,5 +83,8 @@ class Cgorders extends Model
         return $this->belongsTo('app\admin\model\shop\Shop', 'shopid', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
-
+    public function cgaddr()
+    {
+        return $this->belongsTo('app\admin\model\orders\Cgorderaddr', 'oid', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
 }

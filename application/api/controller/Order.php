@@ -235,7 +235,7 @@ class Order extends Api
             'orderid'=>$suborno,
             'type'=>"wechat",
             'title'=>"租金第{$payInfo['paysum']}期",
-            'notifyurl'=>"https://admin.yuanshc.com/addons/epay/index/notifyx?paytype=wechat",
+            'notifyurl'=>"https://admin.yuanshc.com/addons/epay/index/notifyx/paytype/wechat",
             'returnurl'=>"https://admin.yuanshc.com/",
             'method'=>"miniapp",
             'openid'=>$openid,

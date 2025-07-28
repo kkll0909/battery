@@ -9,6 +9,7 @@ use app\common\library\Sms;
 use app\common\model\Feedback;
 use app\common\model\Messge;
 use app\common\model\Messgeread;
+use app\common\model\orders\Cgorderaddr;
 use app\common\model\orders\Cgorders;
 use app\common\model\orders\Cgordersub;
 use app\common\model\orders\Orderpay;
@@ -479,6 +480,9 @@ class User extends Api
                 $cgsub = new Cgordersub();
                 $preid = $cgsub->where(['oid'=>$item['id']])->value('preid');
                 $item['preinfo'] = Shoplist::get($preid);
+                $item['orderaddr'] = Cgorderaddr::where(['oid'=>$item['id']])->find();
+                $Cgo = new Orderpay();
+                $item['paytypesum'] = $Cgo->where(['oid'=>$item['id'],'isy'=>1])->count();
                 return $item;
             });
         $this->success(__('Success'),$list);
@@ -518,7 +522,7 @@ class User extends Api
         if (empty($oid)){
             $this->error(__('Invalid parameters'));
         }
-        $where['cgoid'] = $oid;
+        $where['oid'] = $oid;
         $user = $this->auth->getUser();
         //$where['toid'] = $user->id;
         $Cgo = new Orderpay();
