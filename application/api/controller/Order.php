@@ -116,6 +116,7 @@ class Order extends Api
                 }else{
                     $paydate = date('Y-m-d',strtotime("+1 month"));
                 }
+                $paydatestr = strtotime($paydate);
                 $paylist = [];
                 for ($i=0;$i<=$month;$i++){
                     $paylist[] = [
@@ -124,7 +125,7 @@ class Order extends Api
                         'isy'=>$i==0?0:1,
                         'paymoney'=>$i==0?$preInfo['deposit']:$preInfo['zpmoney'],
                         'paysum'=>$month,
-                        'paydate'=>$i==0?date('Y-m-d'):date("Y-m-d", strtotime("+{$i}} month", strtotime($paydate))),
+                        'paydate'=>$i==0?$paydate:date("Y-m-d", strtotime("+{$i} month",$paydatestr)),
                         'paystatus'=>'nopay'
                     ];
                 }
