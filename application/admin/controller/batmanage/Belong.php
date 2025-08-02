@@ -24,7 +24,7 @@ class Belong extends Backend
     {
         parent::_initialize();
         $this->model = new \app\admin\model\batmanage\Belong;
-        $this->view->assign("statusList", $this->model->getStatusList());
+        $this->view->assign("statusList", $this->model->getIsztList());
     }
 
 

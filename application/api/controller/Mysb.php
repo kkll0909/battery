@@ -5,6 +5,7 @@ namespace app\api\controller;
 use app\common\controller\Api;
 use app\common\model\batmanage\Bat;
 use app\common\model\batmanage\Belong;
+use think\Lang;
 use think\Log;
 
 /**
@@ -14,7 +15,11 @@ class Mysb extends Api
 {
     protected $noNeedLogin = [];
     protected $noNeedRight = '*';
-
+    public function _initialize()
+    {
+        parent::_initialize();
+        Lang::load(ROOT_PATH . 'application/api/lang/zh-cn/batmanage/belong.php');
+    }
     /**
      * 添加设备
      * @ApiTitle 当返回的isauth=1时表示可以走申请接口
@@ -84,9 +89,11 @@ class Mysb extends Api
         }
         //判断是否已经存在
         $belong = new Belong();
-        $beSelfInfo = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'ok'])->find();
-        if ($beSelfInfo){
+        $beSelfInfo = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'authorize'])->find();
+        if ($beSelfInfo && $beSelfInfo['iszt']=='ok'){
             $this->error(__('Sb already authorize'),['isauth'=>0]);
+        }elseif ($beSelfInfo && $beSelfInfo['iszt']=='apply'){
+            $this->error(__('Sb already have apply'),['isauth'=>0]);
         }
         $data['batid'] = $batinfo['id'];
         $data['belongid'] = $this->auth->id;
@@ -119,7 +126,7 @@ class Mysb extends Api
             $this->error(__('Sb does not exist'));
         }
         $belong = new Belong();
-        $list = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'apply'])->find();
+        $list = $belong->with('uinfo')->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'apply'])->find();
         $this->success(__('success'),$list);
     }
 
@@ -166,7 +173,7 @@ class Mysb extends Api
             }
         }
         $bat = new Bat();
-        $batinfo = $bat->where(['batno'=>$batno])->find();
+        $batinfo = $bat->where(['batno'=>$batno])->order('id desc')->find();
         if (empty($batinfo)){
             $this->error(__('Sb does not exist'));
         }
@@ -176,9 +183,9 @@ class Mysb extends Api
 //        $data['isuse'] = 'self';
 //        $data['status'] = 'show';
 //        $data['stime'] = time();
-        $data['iszt'] = 'no';
+        $data['iszt'] = 'unbind';
         $belong = new Belong();
-        $belong->save($data,['batid'=>$batinfo['id'],'belongid'=>$this->auth->id]);
+        $belong->save($data,['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'ok']);
         $this->success(__('success'));
     }
 
@@ -200,7 +207,17 @@ class Mysb extends Api
             ->with('bat')
             ->where(['belongid'=>$userid,'iszt'=>'ok','belongtype'=>'user','isuse'=>['in','self,authorize']])
             ->order('id desc')
-            ->paginate($pagesize,false,['page'=>$page]);
+            ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index){
+                $info = Belong::where(['isuse'=>'authorize','iszt'=>['in','apply,ok']])->find();
+                if($info && $info['iszt']=='apply'){
+                    $item['is_auth_applay'] = 1;
+                }elseif($info && $info['iszt']=='ok'){
+                    $item['is_auth_applay'] = 2;
+                }elseif(empty($info)){
+                    $item['is_auth_applay'] = 0;
+                }
+                return $item;
+            });
 //        Log::write($belong->getLastSql());
         $this->success(__('success'),$list);
     }

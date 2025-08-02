@@ -27,6 +27,7 @@ class User extends Backend
     {
         parent::_initialize();
         $this->model = new \app\admin\model\User;
+        $this->assign('ismaintList',$this->model->getIsmaintList());
     }
 
     /**

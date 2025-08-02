@@ -100,6 +100,7 @@ class Order extends Api
             $orderD['monay'] = $money;
             $orderD['deposit'] = $preInfo['deposit'];
             $orderD['status'] = 'nopay';
+            $orderD['stime'] = time();
             $cgorder = Cgorders::create($orderD);
             //子订单
             $orderSubD['preid'] = $preInfo['id'];
@@ -118,16 +119,18 @@ class Order extends Api
                 }
                 $paydatestr = strtotime($paydate);
                 $paylist = [];
+                $t=-1;
                 for ($i=0;$i<=$month;$i++){
                     $paylist[] = [
                         'userid'=>$userid,
                         'oid'=>$orderSubD['oid'],
                         'isy'=>$i==0?0:1,
                         'paymoney'=>$i==0?$preInfo['deposit']:$preInfo['zpmoney'],
-                        'paysum'=>$month,
-                        'paydate'=>$i==0?$paydate:date("Y-m-d", strtotime("+{$i} month",$paydatestr)),
+                        'paysum'=>$i,
+                        'paydate'=>$i==0?date('Y-m-d'):($i==1?$paydate:date("Y-m-d", strtotime("+{$t} month",$paydatestr))),
                         'paystatus'=>'nopay'
                     ];
+                    $t+=1;
                 }
                 $pay = new Orderpay();
                 $pay->saveAll($paylist);
@@ -190,9 +193,9 @@ class Order extends Api
         $addrinfo = Useraddr::get($addrid);
         $addr = new Cgorderaddr();
         $addrD['oid']=$list['id'];
-        $addrD['address']=$addrinfo['address'];
-        $addrD['tel']=$addrinfo['tel'];
-        $addrD['name']=$addrinfo['name'];
+        $addrD['address']=$addrinfo['address']??'';
+        $addrD['tel']=$addrinfo['tel']??'';
+        $addrD['name']=$addrinfo['name']??'';
         $addrD['type']=$type;
         $addr->save($addrD);
         if($list['deposit']==0){

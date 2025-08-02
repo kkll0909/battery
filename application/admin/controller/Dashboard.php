@@ -3,6 +3,10 @@
 namespace app\admin\controller;
 
 use app\admin\model\Admin;
+use app\admin\model\batmanage\Bat;
+use app\admin\model\orders\Cgorders;
+use app\admin\model\orders\Orderpay;
+use app\admin\model\shop\Shop;
 use app\admin\model\User;
 use app\common\controller\Backend;
 use app\common\model\Attachment;
@@ -55,8 +59,8 @@ class Dashboard extends Backend
         }
         $this->view->assign([
             'totaluser'         => User::count(),
-            'totalrevenue'        => 0,
-            'totalshops'        => 0,
+            'totalrevenue'        => Orderpay::where(['isy'=>1,'paystatus'=>'pay'])->sum('paymoney'),
+            'totalshops'        => Shop::count(),
             'totalcategory'     => \app\common\model\Category::count(),
             'todayusersignup'   => User::whereTime('jointime', 'today')->count(),
             'todayuserlogin'    => User::whereTime('logintime', 'today')->count(),
@@ -66,12 +70,12 @@ class Dashboard extends Backend
             'sevendnu'          => User::whereTime('jointime', '-7 days')->count(),
             'investornums'       => 0,
             'investorreturns'    => 0,
-            'todayorders' => 0,
-            'nextmonthmoney'    => 0,
-            'revenueday'    => 0,
-            'revenuemonth'    => 0,
-            'devicesidle'       => 0,
-            'devicesuse'       => 0,
+            'todayorders' => Cgorders::whereTime('stime','d')->where(['status'=>'pay'])->count(),
+            'nextmonthmoney'    => Orderpay::whereBetween('paydate',[time(),strtotime('+1 month')])->where(['isy'=>1,'paystatus'=>'nopay'])->sum('paymoney'),
+            'revenueday'    => Orderpay::whereTime('paydate','d')->where(['isy'=>1,'paystatus'=>'pay'])->sum('paymoney'),
+            'revenuemonth'    => Orderpay::whereTime('paydate','m')->where(['isy'=>1,'paystatus'=>'pay'])->sum('paymoney'),
+            'devicesidle'       => Bat::count(),
+            'devicesuse'       => Db::table('fa_viewbatx')->count(),
         ]);
 
         $this->assignconfig('column', array_keys($userlist));

@@ -48,7 +48,7 @@ return [
     'Language'                 => '语言',
     'View more'                => '查看更多',
     'Total revenue'            => '总营收额',
-    'Receive next month'       => '下月预计可收',
+    'Receive next month'       => '30天预计收',
     'Total shops'              => '总门店数',
     'Today orders'              => '日订单数',
     'Today orders tips'              => '今日实时订单数',
@@ -59,6 +59,6 @@ return [
     'Revenue day'              => '日营收',
     'Revenue month'              => '月营收',
     'Number of devices'              => '设备数量',
-    'Number of idle'              => '空闲',
+    'Number of all'              => '总数',
     'Number of use'              => '使用',
 ];

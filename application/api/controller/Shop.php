@@ -134,6 +134,25 @@ class Shop extends Api
     }
 
     /**
+     * 产品详情
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="preid", type="string", required=true, description="产品ID")
+     */
+    public function prodesc()
+    {
+        Lang::load(ROOT_PATH . 'application/api/lang/zh-cn/shop/shoplist.php');
+        $preid = $this->request->post('preid','');
+        if(!$preid){
+            $this->error(__("Invalid parameters"));
+        }
+        $where = ['id'=> $preid];
+        $shop = new \app\common\model\shop\Shoplist();
+        $info = $shop->where($where)->find();
+        $this->success(__('Success'), $info);
+    }
+
+    /**
      * 服务列表
      *
      * @ApiMethod (POST)

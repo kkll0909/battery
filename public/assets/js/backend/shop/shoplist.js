@@ -45,6 +45,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'buymoney', title: __('Buymoney'), operate:'BETWEEN'},
                         {field: 'zpmoney', title: __('Zpmoney'), operate:'BETWEEN'},
                         {field: 'deposit', title: __('Deposit'), operate:'BETWEEN'},
+                        {field: 'jzk', title: __('jzk'), operate:'BETWEEN'},
+                        {field: 'nzk', title: __('Nzk'), operate:'BETWEEN'},
                         {field: 'usetype', title: __('Usetype'), searchList: {"payuse":__('Payuse'),"usepay":__('Usepay')}, formatter: Table.api.formatter.status},
                         {field: 'status', title: __('Status'), searchList: {"1":__('Publish'),"0":__('Unpublish')}, formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
@@ -74,6 +76,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     $('.usetype-group').toggle(zpChecked);
                     $('.deposit-group').toggle(zpChecked);
                     $('.paytype-group').toggle(zpChecked);
+                    $('.jzk-group').toggle(zpChecked);
+                    $('.nzk-group').toggle(zpChecked);
                     $('.buymoney-group').toggle(buyChecked);
                 });
                 

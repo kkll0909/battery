@@ -20,7 +20,8 @@ class User extends Model
     protected $append = [
         'prevtime_text',
         'logintime_text',
-        'jointime_text'
+        'jointime_text',
+        'ismaint_text'
     ];
 
     public function getOriginData()
@@ -65,6 +66,18 @@ class User extends Model
     public function getStatusList()
     {
         return ['normal' => __('Normal'), 'hidden' => __('Hidden')];
+    }
+
+    public function getIsmaintList()
+    {
+        return ['1' => __('Yes'), '0' => __('No')];
+    }
+
+    public function getIsmaintTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['ismaint'] ?? '');
+        $list = $this->getIsmaintList();
+        return $list[$value] ?? '';
     }
 
 

@@ -11,7 +11,14 @@ return [
     'Sale'=>'销售',
     'Lease'=>'租赁',
     'Allocation'=>'分配',
+    'Authorize'=>'授权',
     'Status'     => '状态',
-    'Stime'      => '开始时间',
-    'Etime'      => '结束时间'
+    'Stime'      => '创建时间',
+    'Etime'      => '结束时间',
+    'Iszt'   => '状态',
+    'Yes'   => '打开',
+    'No'   => '关闭',
+    'Ok'   => '绑定',
+    'Apply'   => '申请',
+    'Unbind'   => '解除',
 ];

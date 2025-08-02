@@ -25,23 +25,23 @@ class Belong extends Model
 
     // 追加属性
     protected $append = [
-        'status_text',
+        'iszt_text',
         'stime_text',
         'etime_text'
     ];
     
 
     
-    public function getStatusList()
+    public function getIsztList()
     {
-        return ['show' => __('Show'),'close'=>__('Close')];
+        return ["yes"=>__('Yes'),"no"=>__('No'),"ok"=>__('Ok'),"apply"=>__('Apply'),"unbind"=>__('Unbind')];
     }
 
 
-    public function getStatusTextAttr($value, $data)
+    public function getIsztTextAttr($value, $data)
     {
-        $value = $value ?: ($data['status'] ?? '');
-        $list = $this->getStatusList();
+        $value = $value ?: ($data['iszt'] ?? '');
+        $list = $this->getIsztList();
         return $list[$value] ?? '';
     }
 

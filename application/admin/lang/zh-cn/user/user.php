@@ -29,5 +29,6 @@ return [
     'Updatetime'     => '更新时间',
     'Token'          => 'Token',
     'Status'         => '状态',
+    'Ismaint'         => '是否维修人员',
     'Leave password blank if dont want to change' => '不修改密码请留空',
 ];
