@@ -122,6 +122,7 @@ class Api extends Command
             'author'      => config('site.name'),
             'description' => '',
             'apiurl'      => $url,
+            'cdnurl'      => config('view_replace_str.__CDN__'),
             'language'    => $language,
         ];
 
