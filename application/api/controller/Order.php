@@ -33,6 +33,8 @@ class Order extends Api
     public function porder()
     {
         $userid = $this->auth->id;
+        $uuInfo = \app\common\model\User::get($userid);
+        if($uuInfo['isauth']!=1){$this->error(__('Realname does not auth'));}
         $shopid = $this->request->param('shopid');
         $preid = $this->request->param('preid');
         $type = empty($this->request->param('type'))?'zp':$this->request->param('type');
@@ -246,6 +248,34 @@ class Order extends Api
         ];
         $re = Service::submitOrder($params);
         $this->success(__('success'),$re);
+    }
+
+    /**
+     * 订单删除
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="orderid", type="string", required=true, description="订单ID")
+     */
+    public function delorder()
+    {
+        $orderid = $this->request->param('orderid');
+        if(!$orderid){
+            $this->error(__('Invalid parameters'));
+        }
+        $user_id = $this->auth->id;
+        $cgorder = new Cgorders();
+        $w = ['id'=>$orderid,'toid'=>$user_id];
+        $info = $cgorder->where($w)->find();
+        if(!$info){
+            $this->error(__('Order does not exist'));
+        }else{
+            if($info['status']=='nopay'){
+                $cgorder->where($w)->delete();
+            }else{
+                $this->error(__('Order pay'));
+            }
+        }
+        $this->success(__('success'));
     }
 
 }

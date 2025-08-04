@@ -31,6 +31,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'username', title: __('Username'), operate: 'LIKE'},
                         {field: 'nickname', title: __('Nickname'), operate: 'LIKE'},
                         {field: 'ismaint', title: __('Ismaint'), searchList: {1: __('Yes'), 0: __('No')}, formatter: Table.api.formatter.status},
+                        {field: 'isauth', title: __('Isauth'), searchList: {1: __('Yes'), 0: __('No')}, formatter: Table.api.formatter.status},
                         // {field: 'email', title: __('Email'), operate: 'LIKE'},
                         {field: 'mobile', title: __('Mobile'), operate: 'LIKE'},
                         {field: 'avatar', title: __('Avatar'), events: Table.api.events.image, formatter: Table.api.formatter.image, operate: false},

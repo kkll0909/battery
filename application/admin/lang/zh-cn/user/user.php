@@ -30,5 +30,6 @@ return [
     'Token'          => 'Token',
     'Status'         => '状态',
     'Ismaint'         => '是否维修人员',
+    'Isauth'         => '是否实名',
     'Leave password blank if dont want to change' => '不修改密码请留空',
 ];

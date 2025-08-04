@@ -29,6 +29,8 @@ class Mysb extends Api
      */
     public function addSb()
     {
+        $uuInfo = \app\common\model\User::get($this->auth->id);
+        if($uuInfo['isauth']!=1){$this->error(__('Realname does not auth'));}
         $batno = $this->request->post('batno');
         if(!$batno){
             if(!$batno){

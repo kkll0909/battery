@@ -107,4 +107,9 @@ return [
     'Pay'                                                  => '已支付',
     'Unpublish'                                                  => '下架',
     'Publish'                                                  => '上架',
+    'Order does not exist'                                                  => '订单不存在',
+    'Shop does not exist'                                                  => '门店不存在',
+    'Product does not exist'                                                  => '产品不存在',
+    'Order pay'                                                  => '订单已经支付，不可删除',
+    'Realname does not auth'                                                  => '请先实名再操作',
 ];

@@ -3,8 +3,11 @@
 namespace app\api\controller;
 
 use app\admin\model\shop\Shoplist;
+use app\admin\model\Shopapply;
+use app\admin\model\user\Usermailt;
 use app\common\controller\Api;
 use app\common\library\Ems;
+use app\common\library\Lib\Realauth;
 use app\common\library\Sms;
 use app\common\model\Feedback;
 use app\common\model\Messge;
@@ -25,7 +28,7 @@ use think\Validate;
  */
 class User extends Api
 {
-    protected $noNeedLogin = ['login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third'];
+    protected $noNeedLogin = ['login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third','shopapply'];
     protected $noNeedRight = '*';
 
     public function _initialize()
@@ -683,5 +686,195 @@ class User extends Api
         }
 
         $this->success(__('Success'));
+    }
+
+    /**
+     * 实名订证
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="idcardz", type="string", required=true, description="身份证正面")
+     * @ApiParams (name="idcardf", type="string", required=true, description="身份证反面")
+     * @ApiParams (name="idcard", type="string", required=true, description="身份证号")
+     * @ApiParams (name="realname", type="string", required=true, description="姓名")
+     */
+    public function realauth()
+    {
+        $idcardz = $this->request->post('idcardz');
+        $idcardf = $this->request->post('idcardf');
+        $idcard = $this->request->post('idcard');
+        $realname = $this->request->post('realname');
+        if(!$idcardz || !$idcardf || !$idcard || !$realname){
+            $this->error(__('Invalid parameters'));
+        }
+        //实名
+        $re = Realauth::realauth($realname,$idcard);
+        if($re && $re['result']==0){
+            $user_id = $this->auth->id;
+            $ind['user_id'] = $user_id;
+            $ind['idcardz'] = $idcardz;
+            $ind['idcardf'] = $idcardf;
+            $ind['idcard'] = $idcard;
+            $ind['realname'] = $realname;
+            $ind['status'] = 0;
+            $ind['reaon'] = $re['desc'];
+            \app\admin\model\user\Realauth::create($ind);
+            \app\common\model\User::update(['isauth'=>1],['id'=>$user_id]);
+            $this->success(__('Success'));
+        }else{
+            if(isset($re['desc'])){
+                $this->error(__($re['desc']));
+            }else{
+                $this->error(__('请检查身份证号的正确性'));
+            }
+        }
+
+    }
+
+    /**
+     * 维修人员申请
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="njimg", type="string", required=true, description="场地照片,多图用逗号分开")
+     * @ApiParams (name="workimg", type="string", required=true, description="工作证明,多图用逗号分开")
+     * @ApiParams (name="idcardz", type="string", required=true, description="身份证正面")
+     * @ApiParams (name="idcardf", type="string", required=true, description="身份证反面")
+     * @ApiParams (name="idcard", type="string", required=true, description="身份证号")
+     * @ApiParams (name="realname", type="string", required=true, description="姓名")
+     */
+    public function mailtapply()
+    {
+        $njimg = $this->request->post('njimg');
+        $workimg = $this->request->post('workimg');
+        $idcardz = $this->request->post('idcardz');
+        $idcardf = $this->request->post('idcardf');
+        $idcard = $this->request->post('idcard');
+        $realname = $this->request->post('realname');
+        if(!$idcardz || !$idcardf || !$idcard || !$realname ||!$njimg ||!$workimg){
+            $this->error(__('Invalid parameters'));
+        }
+        $user_id = $this->auth->id;
+        $ind['user_id'] = $user_id;
+        $ind['njimg'] = $njimg;
+        $ind['workimg'] = $workimg;
+        $ind['idcardz'] = $idcardz;
+        $ind['idcardf'] = $idcardf;
+        $ind['idcard'] = $idcard;
+        $ind['realname'] = $realname;
+        $ind['status'] = 'apply';
+        $ind['reaon'] = '';
+        Usermailt::create($ind);
+//        \app\common\model\User::update(['ismaint'=>1],['id'=>$user_id]);
+        $this->success(__('Success'));
+    }
+    /**
+     * 维修人员申请查询
+     *
+     * @ApiMethod (POST)
+     */
+    public function mailtapplysearch()
+    {
+        $user_id = $this->auth->id;
+        $info = Usermailt::where(['user_id'=>$user_id])->find();
+        $this->success(__('Success'),$info);
+    }
+
+
+    /**
+     * 商户入驻
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="qytype", type="int", required=true, description="企业类型1企业2个体")
+     * @ApiParams (name="usetype", type="int", required=true, description="场地类型1自有2租用")
+     * @ApiParams (name="yyzzimg", type="string", required=true, description="营业执照")
+     * @ApiParams (name="cdimg", type="string", required=true, description="场地照片,多图用逗号分开")
+     * @ApiParams (name="cqzimg", type="string", required=true, description="产权证")
+     * @ApiParams (name="zlhtimg", type="string", required=false, description="租用合同usetype为2时必传,多图用逗号分开")
+     * @ApiParams (name="jyimg", type="string", required=true, description="经营数据照片,多图用逗号分开")
+     * @ApiParams (name="idcardz", type="string", required=true, description="身份证正面")
+     * @ApiParams (name="idcardf", type="string", required=true, description="身份证反面")
+     * @ApiParams (name="idcard", type="string", required=true, description="身份证号")
+     * @ApiParams (name="realname", type="string", required=true, description="姓名")
+     * @ApiParams (name="shopname", type="string", required=true, description="商户名称")
+     * @ApiParams (name="address", type="string", required=true, description="经营地址")
+     */
+    public function shopapply()
+    {
+        $yyzzimg = $this->request->post('yyzzimg');
+        $cdimg = $this->request->post('cdimg');
+        $cqzimg = $this->request->post('cqzimg');
+        $zlhtimg = $this->request->post('zlhtimg');
+        $jyimg = $this->request->post('jyimg');
+        $idcardz = $this->request->post('idcardz');
+        $idcardf = $this->request->post('idcardf');
+        $idcard = $this->request->post('idcard');
+        $realname = $this->request->post('realname');
+        $qytype = $this->request->post('qytype');
+        $usetype = $this->request->post('usetype');
+        $address = $this->request->post('address');
+        $shopname = $this->request->post('shopname');
+        if(!$idcardz || !$idcardf || !$idcard || !$realname ||!$yyzzimg ||!$cdimg ||!$cqzimg ||!$jyimg){
+            $this->error(__('Invalid parameters'));
+        }
+        if(!$qytype || !$usetype || !$address || !$shopname){
+            $this->error(__('Invalid parameters'));
+        }
+        if($usetype==2){
+            if(!$zlhtimg){
+                $this->error(__('Invalid parameters'));
+            }
+        }
+        $ind['njimg'] = $yyzzimg;
+        $ind['cdimg'] = $cdimg;
+        $ind['cqzimg'] = $cqzimg;
+        $ind['zlhtimg'] = $zlhtimg;
+        $ind['jyimg'] = $jyimg;
+        $ind['workimg'] = $cdimg;
+        $ind['idcardz'] = $idcardz;
+        $ind['idcardf'] = $idcardf;
+        $ind['idcard'] = $idcard;
+        $ind['qytype'] = $qytype;
+        $ind['usetype'] = $usetype;
+        $ind['address'] = $address;
+        $ind['realname'] = $realname;
+        $ind['status'] = 'apply';
+        $ind['reaon'] = '';
+        Shopapply::create($ind);
+        $this->success(__('Success'));
+    }
+
+    /**
+     * 商户入驻申请查询
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="idcard", type="string", required=true, description="申请时的身份证号")
+     */
+    public function shopapplysearch()
+    {
+        $idcard = $this->request->post('idcard');
+        if(!$idcard){
+            $this->error(__('Invalid parameters'));
+        }
+        $info = Shopapply::where(['idcard'=>$idcard])->find();
+        $this->success(__('Success'),$info);
+    }
+
+    /**
+     * 身份证识别
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="img", type="string", required=true, description="身份证正面URL")
+     */
+    public function idcardocr()
+    {
+        $img = $this->request->post('img');
+        if(!$img){
+            $this->error(__('Invalid parameters'));
+        }
+        $re = Realauth::idcardocr($img);
+        if($re && $re['success']==true){
+            $this->success(__('Success'),$re);
+        }else{
+            $this->error('识别出错');
+        }
     }
 }
