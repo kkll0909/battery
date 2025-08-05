@@ -36,6 +36,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'shopname', title: __('Shopname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'idcard', title: __('Idcard'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'realname', title: __('Realname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
+                        {field: 'mobile', title: __('Mobile'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'qytype', title: __('Qytype')},
                         {field: 'usetype', title: __('Usetype')},
                         {field: 'status', title: __('Status'), searchList: {"10":__('Status 10')}, formatter: Table.api.formatter.status},

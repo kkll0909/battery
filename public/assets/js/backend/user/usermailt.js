@@ -6,11 +6,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             Table.api.init({
                 extend: {
                     index_url: 'user/usermailt/index' + location.search,
-                    add_url: 'user/usermailt/add',
+                    // add_url: 'user/usermailt/add',
                     edit_url: 'user/usermailt/edit',
-                    del_url: 'user/usermailt/del',
-                    multi_url: 'user/usermailt/multi',
-                    import_url: 'user/usermailt/import',
+                    // del_url: 'user/usermailt/del',
+                    // multi_url: 'user/usermailt/multi',
+                    // import_url: 'user/usermailt/import',
                     table: 'usermailt',
                 }
             });
@@ -29,11 +29,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         {field: 'user_id', title: __('User_id')},
-                        {field: 'idcardz', title: __('Idcardz'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
-                        {field: 'idcardf', title: __('Idcardf'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
+                        {field: 'njimg', title: __('Njimg'), operate: false, events: Table.api.events.image, formatter: Table.api.formatter.images},
+                        {field: 'workimg', title: __('Workimg'), operate: false, events: Table.api.events.image, formatter: Table.api.formatter.images},
+                        {field: 'idcardz', title: __('Idcardz'), operate: false, events: Table.api.events.image, formatter: Table.api.formatter.image},
+                        {field: 'idcardf', title: __('Idcardf'), operate: false, events: Table.api.events.image, formatter: Table.api.formatter.image},
                         {field: 'idcard', title: __('Idcard'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'realname', title: __('Realname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
-                        {field: 'status', title: __('Status'), searchList: {"255":__('Status 255')}, formatter: Table.api.formatter.status},
+                        {field: 'status', title: __('Status'), searchList: {"apply":__('Apply'),"pass":__('Pass'),"fail":__('Fail')}, formatter: Table.api.formatter.status},
                         {field: 'reaon', title: __('Reaon'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]

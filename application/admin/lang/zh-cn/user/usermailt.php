@@ -9,5 +9,6 @@ return [
     'Idcard'   => '身份证号',
     'Realname' => '姓名',
     'Status'   => '状态',
-    'Reaon'    => '原因'
+    'Reaon'    => '原因',
+    'Apply'    => '申请',
 ];

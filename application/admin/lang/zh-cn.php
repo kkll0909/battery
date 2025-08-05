@@ -229,4 +229,5 @@ return [
     'Pay'                                                  => '已支付',
     'Unpublish'                                                  => '下架',
     'Publish'                                                  => '上架',
+    'Pass'                                                  => '通过',
 ];

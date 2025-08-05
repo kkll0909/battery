@@ -32,7 +32,7 @@ class Usermailt extends Model
     
     public function getStatusList()
     {
-        return ['255' => __('Status 255')];
+        return ['apply' => __('Apply'),'pass' => __('Pass'),'fail' => __('Fail')];
     }
 
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>高德地图轨迹绘制</title>
+    <style>
+        #mapContainer { width: 100%; height: 600px; }
+    </style>
+</head>
+<body>
+<div id="mapContainer"></div>
+
+<!-- 引入高德地图 JSAPI -->
+<script src="https://webapi.amap.com/maps?v=2.0&key=35c09eb319d8508930acc0fecf221524"></script>
+
+<script>
+    // 初始化地图
+    var map = new AMap.Map('mapContainer', {
+        zoom: 14,  // 缩放级别
+        center: [116.397428, 39.90923]  // 初始中心点
+    });
+
+    // PHP 坐标数据传递给 JS（通过 JSON）
+    var coordinates = {$pot};
+
+    // 1. 标记所有点
+    var markers = [];
+    coordinates.forEach(function(coord, index) {
+        var marker = new AMap.Marker({
+            position: new AMap.LngLat(coord[0], coord[1]),
+            title: "点" + (index + 1),
+            label: {
+                content: (index + 1).toString(),
+                offset: new AMap.Pixel(10, 10)
+            }
+        });
+        markers.push(marker);
+    });
+
+    // 2. 将标记点添加到地图
+    map.add(markers);
+
+    // 3. 绘制轨迹线
+    var polyline = new AMap.Polyline({
+        path: coordinates,
+        strokeColor: "#3366FF",  // 线颜色
+        strokeWeight: 5,        // 线宽
+        strokeStyle: "solid"     // 线样式
+    });
+    map.add(polyline);
+
+    // 4. 自动调整地图视野以显示全部轨迹
+    map.setFitView();
+</script>
+</body>
+</html>

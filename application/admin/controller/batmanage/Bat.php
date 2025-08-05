@@ -87,4 +87,23 @@ class Bat extends Backend
         $re = exec($c);
         $this->success('指令下发成功，会自动更新电池数据');
     }
+
+    public function map($batid='')
+    {
+        $ids = $batid;
+//        $batinfo = $this->model->where(['id'=>$ids])->find();
+//        $this->assign('lng',$batinfo['lng']);
+//        $this->assign('lat',$batinfo['lat']);
+        $batloc = new \app\admin\model\batmanage\Batlocstate();
+        $pot = [];
+        $batlocinfo = $batloc->where(['batid'=>$ids])->limit(10)->order('id desc')->select();
+        if(!$batlocinfo){
+            $this->error('暂无定位数据!','');
+        }
+        foreach ($batlocinfo as $v){
+            $pot[] = [$v['longitude'],$v['latitude']];
+        }
+        $this->assign('pot',json_encode($pot));
+        return $this->view->fetch('map');
+    }
 }

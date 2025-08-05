@@ -28,7 +28,7 @@ use think\Validate;
  */
 class User extends Api
 {
-    protected $noNeedLogin = ['login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third','shopapply'];
+    protected $noNeedLogin = ['idcardocr','login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third','shopapply'];
     protected $noNeedRight = '*';
 
     public function _initialize()
@@ -715,7 +715,7 @@ class User extends Api
             $ind['idcardf'] = $idcardf;
             $ind['idcard'] = $idcard;
             $ind['realname'] = $realname;
-            $ind['status'] = 0;
+            $ind['status'] = 1;
             $ind['reaon'] = $re['desc'];
             \app\admin\model\user\Realauth::create($ind);
             \app\common\model\User::update(['isauth'=>1],['id'=>$user_id]);
@@ -796,6 +796,7 @@ class User extends Api
      * @ApiParams (name="realname", type="string", required=true, description="姓名")
      * @ApiParams (name="shopname", type="string", required=true, description="商户名称")
      * @ApiParams (name="address", type="string", required=true, description="经营地址")
+     * @ApiParams (name="mobile", type="string", required=true, description="联系电话")
      */
     public function shopapply()
     {
@@ -812,7 +813,8 @@ class User extends Api
         $usetype = $this->request->post('usetype');
         $address = $this->request->post('address');
         $shopname = $this->request->post('shopname');
-        if(!$idcardz || !$idcardf || !$idcard || !$realname ||!$yyzzimg ||!$cdimg ||!$cqzimg ||!$jyimg){
+        $mobile = $this->request->post('mobile');
+        if(!$mobile || !$idcardz || !$idcardf || !$idcard || !$realname ||!$yyzzimg ||!$cdimg ||!$cqzimg ||!$jyimg){
             $this->error(__('Invalid parameters'));
         }
         if(!$qytype || !$usetype || !$address || !$shopname){
@@ -836,6 +838,7 @@ class User extends Api
         $ind['usetype'] = $usetype;
         $ind['address'] = $address;
         $ind['realname'] = $realname;
+        $ind['mobile'] = $mobile;
         $ind['status'] = 'apply';
         $ind['reaon'] = '';
         Shopapply::create($ind);

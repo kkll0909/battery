@@ -3,12 +3,14 @@
 namespace app\index\controller;
 
 use app\admin\model\batmanage\Bat;
+use app\admin\model\batmanage\Batlocstate;
 use app\admin\model\Otalog;
 use app\common\controller\Frontend;
 use app\common\library\Log;
 
 class Mqtt extends Frontend
 {
+    //nohup php /www/wwwroot/battery/public/index.php /index/mqtt/sc > /dev/null 2>&1 &
     protected $noNeedLogin = ['*'];
     protected $noNeedRight = ['*'];
     const token = "DFXFyMg7VmQcFYfL7Q3RYxDL8Qs0EceL";
@@ -116,12 +118,33 @@ class Mqtt extends Frontend
     public static function updateJz($data)
     {
         \think\Log::write('基站信息:'.json_encode($data));
+
     }
 
     //坐标
     public static function updateMove($data)
     {
         \think\Log::write('运动坐标信息:'.json_encode($data));
+        $device_id = $data['device_id'];
+        $bat = new Bat();
+        $id = $bat->where(['batno'=>$device_id])->value('id');
+        if(empty($id)){
+            \think\Log::write("设备{$device_id}不存在");
+            return false;
+        }
+        $data = $data['status'];
+        $data_params['batid'] = $id;
+        $data_params['speed'] = $data['speed'];
+        $data_params['direction'] = $data['direction'];
+        $data_params['latitude'] = $data['latitude'];
+        $data_params['longitude'] = $data['longitude'];
+        $data_params['location_state'] = $data['location_state'];
+        $data_params['datet'] = $data['date'];
+        $batloc = new Batlocstate();
+        $batloc->insert($data_params);
+        $batin['lng'] = $data['longitude'];
+        $batin['lat'] = $data['latitude'];
+        $bat->save($batin,['batno'=>$device_id]);
     }
 
 }
