@@ -825,18 +825,19 @@ class User extends Api
                 $this->error(__('Invalid parameters'));
             }
         }
-        $ind['njimg'] = $yyzzimg;
-        $ind['cdimg'] = $cdimg;
+        $ind['yyzzimg'] = $yyzzimg;
+        //$ind['cdimg'] = $cdimg;
         $ind['cqzimg'] = $cqzimg;
         $ind['zlhtimg'] = $zlhtimg;
         $ind['jyimg'] = $jyimg;
-        $ind['workimg'] = $cdimg;
+        $ind['cdimg'] = $cdimg;
         $ind['idcardz'] = $idcardz;
         $ind['idcardf'] = $idcardf;
         $ind['idcard'] = $idcard;
         $ind['qytype'] = $qytype;
         $ind['usetype'] = $usetype;
         $ind['address'] = $address;
+        $ind['shopname'] = $shopname;
         $ind['realname'] = $realname;
         $ind['mobile'] = $mobile;
         $ind['status'] = 'apply';

@@ -32,7 +32,7 @@ class Shopapply extends Model
     
     public function getStatusList()
     {
-        return ['10' => __('Status 10')];
+        return ['apply' => __('Apply'),'success' => __('Success'),'fail' => __('Fail')];
     }
 
 

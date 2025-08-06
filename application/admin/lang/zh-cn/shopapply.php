@@ -15,5 +15,8 @@ return [
     'Qytype'   => '企业类型',
     'Usetype'  => '场地类型',
     'Status'   => '状态',
-    'Reaon'    => '原因'
+    'Reaon'    => '原因',
+    'Apply'    => '申请',
+    'Success'    => '完成',
+    'Fail'    => '失败',
 ];
