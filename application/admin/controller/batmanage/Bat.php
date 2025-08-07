@@ -3,6 +3,9 @@
 namespace app\admin\controller\batmanage;
 
 use app\common\controller\Backend;
+use think\Db;
+use think\exception\PDOException;
+use think\exception\ValidateException;
 
 /**
  * 电池管理
@@ -17,6 +20,7 @@ class Bat extends Backend
      * @var \app\admin\model\batmanage\Bat
      */
     protected $model = null;
+    protected $relationSearch = true;
 
     public function _initialize()
     {
@@ -61,6 +65,57 @@ class Bat extends Backend
             return json($result);
         }
         return $this->view->fetch();
+    }
+
+    /**
+     * 添加
+     *
+     * @return string
+     * @throws \think\Exception
+     */
+    public function add()
+    {
+        if (false === $this->request->isPost()) {
+            return $this->view->fetch();
+        }
+        $params = $this->request->post('row/a');
+        if (empty($params)) {
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params = $this->preExcludeFields($params);
+
+        if ($this->dataLimit && $this->dataLimitFieldAutoFill) {
+            $params[$this->dataLimitField] = $this->auth->id;
+        }
+        $result = false;
+        Db::startTrans();
+        try {
+            //是否采用模型验证
+            if ($this->modelValidate) {
+                $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : $name) : $this->modelValidate;
+                $this->model->validateFailException()->validate($validate);
+            }
+            $result = $this->model->allowField(true)->save($params);
+            $newId = $this->model->id;
+            $bein['admin_id'] = $params['admin_id'];
+            $bein['batid'] = $newId;
+            $bein['belongid'] = $params['admin_id'];
+            $bein['isuse'] = 'self';
+            $bein['belongtype'] = 'manage';
+            $bein['status'] = 'show';
+            $bein['stime'] = time();
+            $bein['iszt'] = 'yes';
+            \app\admin\model\batmanage\Belong::create($bein);
+            Db::commit();
+        } catch (ValidateException|PDOException|Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if ($result === false) {
+            $this->error(__('No rows were inserted'));
+        }
+        $this->success();
     }
 
 

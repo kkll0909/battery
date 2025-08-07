@@ -17,6 +17,7 @@ class Factory extends Backend
      * @var \app\admin\model\batmanage\Factory
      */
     protected $model = null;
+    protected $noNeedRight = ['selectpage'];
 
     public function _initialize()
     {
@@ -39,7 +40,7 @@ class Factory extends Backend
      */
     public function selectpage()
     {
-        //$this->dataLimit = 'auth';
+        $this->dataLimit = false;
         $this->dataLimitField = 'id';
         return parent::selectpage();
     }

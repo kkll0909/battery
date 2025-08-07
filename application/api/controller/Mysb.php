@@ -58,6 +58,7 @@ class Mysb extends Api
         if($beSelfInfo){
             $this->error(__('Sb already bind'),['isauth'=>1]);
         }
+        $data['admin_id'] = $batinfo['admin_id'];
         $data['batid'] = $batinfo['id'];
         $data['belongid'] = $this->auth->id;
         $data['belongtype'] = 'user';
@@ -97,6 +98,7 @@ class Mysb extends Api
         }elseif ($beSelfInfo && $beSelfInfo['iszt']=='apply'){
             $this->error(__('Sb already have apply'),['isauth'=>0]);
         }
+        $data['admin_id'] = $batinfo['admin_id'];
         $data['batid'] = $batinfo['id'];
         $data['belongid'] = $this->auth->id;
         $data['belongtype'] = 'user';

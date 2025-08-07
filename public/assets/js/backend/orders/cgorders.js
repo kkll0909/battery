@@ -38,7 +38,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'sum', title: __('Sum')},
                         {field: 'stime', title: __('Stime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         {field: 'etime', title: __('Etime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
-                        {field: 'status', title: __('Status'), searchList: {"nopay":__('Nopay'),"pay":__('Pay')}, formatter: Table.api.formatter.status},
+                        {field: 'cgorders.status', title: __('Status'), searchList: {"nopay":__('Nopay'),"pay":__('Pay')}, formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
                             buttons:[
                                 {name:'ordersub',text:'明细',title:'订单明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'orders/cgordersub/index?cgid={id}'},

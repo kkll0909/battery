@@ -8,6 +8,7 @@ return [
     'Isopen'        => '是否营业',
     'Tag'           => '标签',
     'Status'        => '状态',
+    'Shopmobile'        => '电话',
     'Splng' => '经度',
     'Splat' => '纬度',
     'Spaddr' => '定位地址',

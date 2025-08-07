@@ -20,6 +20,7 @@ class Shopservice extends Backend
      * @var \app\admin\model\shop\Shopservice
      */
     protected $model = null;
+    protected $noNeedRight = ['*'];
 
     public function _initialize()
     {
@@ -42,6 +43,7 @@ class Shopservice extends Backend
      */
     public function index()
     {
+        $this->dataLimit = false;
         $shopid = $this->request->get('shopid',0);
         $where2=[];
         if (!$shopid){
@@ -78,6 +80,7 @@ class Shopservice extends Backend
      */
     public function add()
     {
+        $this->dataLimit = false;
         $shopid = $this->request->get('shopid',0);
         if (!$shopid){
             $this->error(__('Parameter %s can not be empty', ''));
@@ -128,5 +131,21 @@ class Shopservice extends Backend
         $this->success();
     }
 
+    /**
+     * 编辑
+     */
+    public function edit($ids = null)
+    {
+        $this->dataLimit = false;
+        if ($this->request->isPost()) {
+            $this->token();
+        }
+        $row = $this->model->get($ids);
+        $this->modelValidate = true;
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        return parent::edit($ids);
+    }
 
 }

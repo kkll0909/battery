@@ -29,6 +29,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'admin.nickname', title: __('Admin_id'),operate: false},
                         {field: 'spimgs', title: __('Spimgs'),operate: false,formatter: Table.api.formatter.image},
                         {field: 'spname', title: __('Spname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
+                        {field: 'shopmobile', title: __('Shopmobile'), operate: false},
                         {field: 'opentime', title: __('Opentime'), operate: false},
                         {field: 'isopen', title: __('Isopen'),searchList: {"1":__('Opening'),"2":__('Closing')}, formatter: Table.api.formatter.status},
                         {field: 'tag', title: __('Tag'), operate: false, formatter: Table.api.formatter.flag},

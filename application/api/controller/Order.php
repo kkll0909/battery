@@ -93,6 +93,7 @@ class Order extends Api
             $orderD['orderno'] = "OR".Random::build('unique',10).rand(1000,9999);
             $orderD['shopid'] = $shopid;
             $orderD['fromid'] = $shopInfo['admin_id'];
+            $orderD['admin_id'] = $shopInfo['admin_id'];
             $orderD['toid'] = $userid;
             $orderD['payway'] = 'multiple';
             $orderD['type'] = $type;

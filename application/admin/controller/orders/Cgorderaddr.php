@@ -38,6 +38,7 @@ class Cgorderaddr extends Backend
      */
     public function index()
     {
+        $this->dataLimit = false;
         $cgid = $this->request->get('cgid',0);
         $where2=[];
         if ($cgid){$where2=['oid'=>$cgid];}

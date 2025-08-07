@@ -21,6 +21,7 @@ class Shoplist extends Backend
      * @var \app\admin\model\shop\Shoplist
      */
     protected $model = null;
+    protected $noNeedRight = ['*'];
 
     public function _initialize()
     {
@@ -46,6 +47,7 @@ class Shoplist extends Backend
      */
     public function index()
     {
+        $this->dataLimit = false;
         $shopid = $this->request->get('shopid',0);
         $where2=[];
         if (!$shopid){
@@ -82,6 +84,7 @@ class Shoplist extends Backend
      */
     public function add()
     {
+        $this->dataLimit = false;
         $shopid = $this->request->get('shopid',0);
         if (!$shopid){
             $this->error(__('Parameter %s can not be empty', ''));
@@ -137,6 +140,7 @@ class Shoplist extends Backend
      */
     public function edit($ids = null)
     {
+        $this->dataLimit = false;
         if ($this->request->isPost()) {
             $this->token();
         }

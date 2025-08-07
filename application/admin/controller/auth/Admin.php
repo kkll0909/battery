@@ -27,6 +27,7 @@ class Admin extends Backend
     protected $searchFields = 'id,username,nickname';
     protected $childrenGroupIds = [];
     protected $childrenAdminIds = [];
+    protected $noNeedRight = ['selectpage'];
 
     public function _initialize()
     {
@@ -290,7 +291,7 @@ class Admin extends Backend
      */
     public function selectpage()
     {
-        //$this->dataLimit = 'auth';
+//        $this->dataLimit = 'auth';
         $this->dataLimitField = 'id';
         return parent::selectpage();
     }

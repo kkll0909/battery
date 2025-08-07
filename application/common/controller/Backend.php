@@ -65,7 +65,7 @@ class Backend extends Controller
      * 表示按权限判断/仅限个人
      * 默认为禁用,若启用请务必保证表中存在admin_id字段
      */
-    protected $dataLimit = false;
+    protected $dataLimit = 'auth';
 
     /**
      * 数据限制字段

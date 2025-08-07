@@ -17,6 +17,7 @@ class Shoplike extends Backend
      * @var \app\admin\model\shop\Shoplike
      */
     protected $model = null;
+    protected $noNeedRight = ['*'];
 
     public function _initialize()
     {
