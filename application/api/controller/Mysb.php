@@ -212,7 +212,7 @@ class Mysb extends Api
             ->where(['belongid'=>$userid,'iszt'=>'ok','belongtype'=>'user','isuse'=>['in','self,authorize']])
             ->order('id desc')
             ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index){
-                $info = Belong::where(['isuse'=>'authorize','iszt'=>['in','apply,ok']])->find();
+                $info = Belong::where(['batid'=>$item['batid'],'isuse'=>'authorize','iszt'=>['in','apply,ok']])->find();
                 if($info && $info['iszt']=='apply'){
                     $item['is_auth_applay'] = 1;
                 }elseif($info && $info['iszt']=='ok'){

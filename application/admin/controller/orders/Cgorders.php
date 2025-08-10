@@ -54,7 +54,14 @@ class Cgorders extends Backend
                 ->with(['fromadmin','touser'])
                 ->where($where)
                 ->order($sort, $order)
-                ->paginate($limit);
+                ->paginate($limit)->each(function ($item,$index){
+                    $item['totalsum'] = \app\admin\model\orders\Orderpay::where(['oid'=>$item['id'],'paysum'=>['>',0]])->count();
+                    $item['yjpaysum'] = \app\admin\model\orders\Orderpay::where(['oid'=>$item['id'],'paysum'=>['>',0],'paystatus'=>'pay'])->count();
+                    $item['yjpaym'] = \app\admin\model\orders\Orderpay::where(['oid'=>$item['id'],'paysum'=>['>',0],'paystatus'=>'pay'])->sum('paymoney');
+                    $item['qs'] = $item['yjpaysum'].'/'.$item['totalsum'];
+                    $item['yjpaym'] = number_format($item['yjpaym'],2);
+                    return $item;
+                });
             $result = array("total" => $list->total(), "rows" => $list->items());
 
             return json($result);

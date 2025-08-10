@@ -33,5 +33,25 @@ class Userorders extends Backend
      * 需要将application/admin/library/traits/Backend.php中对应的方法复制到当前控制器,然后进行修改
      */
 
+    public function index(){
+        $this->dataLimit = false;
+        return parent::index();
+    }
 
+    /**
+     * 编辑
+     */
+    public function edit($ids = null)
+    {
+        $this->dataLimit = false;
+        if ($this->request->isPost()) {
+            $this->token();
+        }
+        $row = $this->model->get($ids);
+        $this->modelValidate = true;
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        return parent::edit($ids);
+    }
 }

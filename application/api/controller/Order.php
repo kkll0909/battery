@@ -63,28 +63,21 @@ class Order extends Api
         }else{
             switch ($zptype){
                 case 'm':
+                    $zk = 0;
                     $m = 1;
                     break;
                 case 'j':
+                    $zk = $preInfo['jzk'];
                     $m = 3;
                     break;
                 case 'n':
+                    $zk = $preInfo['nzk'];
                     $m = 12;
                     break;
             }
+            $preInfo['zpmoney'] = $zk==0?$preInfo['zpmoney']:$preInfo['zpmoney']*$zk/10;
             $money = $preInfo['zpmoney']*$presum*$zptypesum*$m;
-            switch ($preInfo['paytype']){
-                case 'm':
-                    $mm = 1;
-                    break;
-                case 'j':
-                    $mm = 3;
-                    break;
-                case 'n':
-                    $mm = 12;
-                    break;
-            }
-            $month = $m * $zptypesum;
+            $month = $zptypesum;
         }
         //事务处理
         Db::startTrans();
@@ -97,7 +90,7 @@ class Order extends Api
             $orderD['toid'] = $userid;
             $orderD['payway'] = 'multiple';
             $orderD['type'] = $type;
-            $orderD['paytype'] = $preInfo['paytype'];
+            $orderD['paytype'] = $zptype;
             $orderD['sum'] = $presum;
             $orderD['paytypesum'] = $type=='buy'?0:1;
             $orderD['monay'] = $money;
@@ -128,12 +121,12 @@ class Order extends Api
                         'userid'=>$userid,
                         'oid'=>$orderSubD['oid'],
                         'isy'=>$i==0?0:1,
-                        'paymoney'=>$i==0?$preInfo['deposit']:$preInfo['zpmoney'],
+                        'paymoney'=>$i==0?$preInfo['deposit']:$preInfo['zpmoney']*$m,
                         'paysum'=>$i,
                         'paydate'=>$i==0?date('Y-m-d'):($i==1?$paydate:date("Y-m-d", strtotime("+{$t} month",$paydatestr))),
                         'paystatus'=>'nopay'
                     ];
-                    $t+=1;
+                    $t+=$m;
                 }
                 $pay = new Orderpay();
                 $pay->saveAll($paylist);
