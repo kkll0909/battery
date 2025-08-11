@@ -2,6 +2,7 @@
 
 namespace app\admin\controller\orders;
 
+use app\admin\model\user\Realauth;
 use app\common\controller\Backend;
 use fast\Random;
 use think\Db;
@@ -60,6 +61,7 @@ class Cgorders extends Backend
                     $item['yjpaym'] = \app\admin\model\orders\Orderpay::where(['oid'=>$item['id'],'paysum'=>['>',0],'paystatus'=>'pay'])->sum('paymoney');
                     $item['qs'] = $item['yjpaysum'].'/'.$item['totalsum'];
                     $item['yjpaym'] = number_format($item['yjpaym'],2);
+                    $item['realname'] = Realauth::where(['user_id'=>$item['touser']['id']])->value('realname');
                     return $item;
                 });
             $result = array("total" => $list->total(), "rows" => $list->items());

@@ -31,6 +31,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'tel', title: __('Tel'), operate: 'LIKE'},
                         {field: 'name', title: __('Name'), operate: 'LIKE'},
                         {field: 'type', title: __('Type'), searchList:{"express" : __('Express'),"self":__('Self')},formatter: Table.api.formatter.status},
+                        {field: 'expresscompay', title: __('Expresscompay'), operate: 'LIKE'},
+                        {field: 'express', title: __('Express'), operate: 'LIKE'},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]

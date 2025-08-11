@@ -1,5 +1,5 @@
 <form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
-
+    {:token()}
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Oid')}:</label>
         <div class="col-xs-12 col-sm-8">
@@ -7,27 +7,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Batid')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-batid" class="form-control" name="row[batid]" type="number" value="{$row.batid|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Batno')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-batno" class="form-control" name="row[batno]" type="text" value="{$row.batno|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Sum')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-sum" class="form-control" name="row[sum]" type="number" value="{$row.sum|htmlentities}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Price')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-price" class="form-control" step="0.01" name="row[price]" type="number" value="{$row.price|htmlentities}">
+            <input id="c-batno" data-rule="required" data-source="batmanage/bat/selectpage" data-primary-key="batno" data-field="batno" data-search-field="batno" class="form-control selectpage" name="row[batno]" type="text" value="{$row.batno|htmlentities}">
         </div>
     </div>
     <div class="form-group layer-footer">

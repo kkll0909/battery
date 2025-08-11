@@ -6,6 +6,7 @@ use app\common\controller\Backend;
 use think\Db;
 use think\exception\PDOException;
 use think\exception\ValidateException;
+use think\Log;
 
 /**
  * 电池管理
@@ -21,6 +22,7 @@ class Bat extends Backend
      */
     protected $model = null;
     protected $relationSearch = true;
+    protected $noNeedRight = ['selectpage'];
 
     public function _initialize()
     {
@@ -138,9 +140,10 @@ class Bat extends Backend
         $commandt = "charge_control";
         $params = ['status'=>$status];
         $params = json_encode($params);
-        $c = "php /www/wwwroot/bat/public/index.php index/mqtt/sendc/deviceid/{$deviceid}/commandt/{$commandt}/params/{$params}";
-        $re = exec($c);
-        $this->success('指令下发成功，会自动更新电池数据');
+        $c = "php /www/wwwroot/battery/public/index.php index/mqtt/sendc/deviceid/{$deviceid}/commandt/{$commandt}/params/{$params}";
+        Log::write("发送指令:".$c);
+        $re = shell_exec($c);
+        $this->success("指令下发成功{$re}，会自动更新电池数据");
     }
 
     public function map($batid='')

@@ -2,6 +2,7 @@
 
 namespace app\admin\controller\user;
 
+use app\admin\model\batmanage\Belong;
 use app\admin\model\maint\Maintenance;
 use app\common\controller\Backend;
 use app\common\library\Auth;
@@ -51,6 +52,8 @@ class User extends Backend
             foreach ($list as $k => $v) {
                 $v->avatar = $v->avatar ? cdnurl($v->avatar, true) : letter_avatar($v->nickname);
                 $v->hidden(['password', 'salt']);
+                $v->batbindsum = Belong::where(['belongid' => $v->id,'isuse'=>'authorize','iszt'=>'ok'])->count();
+                $v->batselfsum = Belong::where(['belongid' => $v->id,'isuse'=>'self','iszt'=>'ok'])->count();
             }
             $result = array("total" => $list->total(), "rows" => $list->items());
 

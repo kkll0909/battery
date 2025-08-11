@@ -112,4 +112,6 @@ return [
     'Product does not exist'                                                  => '产品不存在',
     'Order pay'                                                  => '订单已经支付，不可删除',
     'Realname does not auth'                                                  => '请先实名再操作',
+    'Sb not bind order'                                                  => '设备没有绑定订单，联系商户处理',
+    'Sb not on your order'                                                  => '设备不是您的，无法绑定',
 ];

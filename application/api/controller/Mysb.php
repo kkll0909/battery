@@ -2,9 +2,12 @@
 
 namespace app\api\controller;
 
+use app\admin\model\user\Realauth;
 use app\common\controller\Api;
 use app\common\model\batmanage\Bat;
 use app\common\model\batmanage\Belong;
+use app\common\model\orders\Cgorders;
+use app\common\model\orders\Cgordersub;
 use think\Lang;
 use think\Log;
 
@@ -42,6 +45,12 @@ class Mysb extends Api
         if (empty($batinfo)){
             $this->error(__('Sb does not exist'));
         }
+        //判断是否绑定到订单
+        $cgsub = new Cgordersub();
+        $cgsubinfo = $cgsub->where(['batno'=>$batno])->find();
+        if (empty($cgsubinfo)){
+            $this->error(__('Sb not bind order'));
+        }
         //判断是否已经存在
         $belong = new Belong();
         $beAuthInfo = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'ok'])->find();
@@ -57,6 +66,12 @@ class Mysb extends Api
         }
         if($beSelfInfo){
             $this->error(__('Sb already bind'),['isauth'=>1]);
+        }
+        //判断绑定人与下单人
+        $order = new Cgorders();
+        $toid = $order->where(['id'=>$cgsubinfo['oid']])->value('toid');
+        if(empty($toid) || $toid !== $this->auth->id){
+            $this->error(__('Sb not on your order'));
         }
         $data['admin_id'] = $batinfo['admin_id'];
         $data['batid'] = $batinfo['id'];
@@ -131,6 +146,7 @@ class Mysb extends Api
         }
         $belong = new Belong();
         $list = $belong->with('uinfo')->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'apply'])->find();
+        $list['uinfo']['bind_realname'] = Realauth::where(['id'=>$list['belongid']])->value('realname');
         $this->success(__('success'),$list);
     }
 
@@ -220,6 +236,9 @@ class Mysb extends Api
                 }elseif(empty($info)){
                     $item['is_auth_applay'] = 0;
                 }
+                //实名信息
+                $item['bind_realname'] = Realauth::where(['id'=>$item['belongid']])->value('realname');
+                $item['shopmobile'] = \app\common\model\shop\Shop::where(['admin_id'=>$item['admin_id']])->value('shopmobile');
                 return $item;
             });
 //        Log::write($belong->getLastSql());

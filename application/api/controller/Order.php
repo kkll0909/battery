@@ -121,7 +121,7 @@ class Order extends Api
                         'userid'=>$userid,
                         'oid'=>$orderSubD['oid'],
                         'isy'=>$i==0?0:1,
-                        'paymoney'=>$i==0?$preInfo['deposit']:$preInfo['zpmoney']*$m,
+                        'paymoney'=>$i==0?$preInfo['deposit']:$preInfo['zpmoney']*$m*$presum,
                         'paysum'=>$i,
                         'paydate'=>$i==0?date('Y-m-d'):($i==1?$paydate:date("Y-m-d", strtotime("+{$t} month",$paydatestr))),
                         'paystatus'=>'nopay'

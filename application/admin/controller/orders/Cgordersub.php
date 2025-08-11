@@ -21,6 +21,7 @@ class Cgordersub extends Backend
      * @var \app\admin\model\orders\Cgordersub
      */
     protected $model = null;
+    protected $noNeedRight = ['*'];
 
     public function _initialize()
     {
@@ -74,6 +75,7 @@ class Cgordersub extends Backend
      */
     public function add()
     {
+        $this->dataLimit = false;
         $cgid = $this->request->get('cgid',0);
         if (false === $this->request->isPost()) {
             $cgo = new \app\admin\model\orders\Cgorders();
@@ -118,6 +120,7 @@ class Cgordersub extends Backend
      */
     public function edit($ids = null)
     {
+        $this->dataLimit = false;
         if ($this->request->isPost()) {
             $this->token();
         }

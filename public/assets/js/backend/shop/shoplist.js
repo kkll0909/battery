@@ -39,6 +39,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         // {field: 'shopid', title: __('Shopid')},
                         {field: 'sbimg', title: __('Sbimg'),operate: false,formatter: Table.api.formatter.image},
                         {field: 'sbname', title: __('Sbname'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
+                        {field: 'sbpp', title: __('Sbpp'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content},
                         {field: 'sbgg', title: __('Sbgg'), operate: 'LIKE'},
                         {field: 'sbtype', title: __('Sbtype'), searchList: {"zp":__('Zp'),"buy":__('Buy')}, formatter: Table.api.formatter.status},
                         {field: 'paytype', title: __('Paytype'), searchList: {"m":__('M'),"j":__('J'),"n":__('N')}, formatter: Table.api.formatter.status},

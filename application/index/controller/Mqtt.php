@@ -40,18 +40,19 @@ class Mqtt extends Frontend
     }
 
     //指令下发
+    //php /www/wwwroot/battery/public/index.php index/mqtt/sendc/deviceid/9135030017/commandt/charge_control/params/{'status':5}
     public function sendc()
     {
         $deviceid = $this->request->param('deviceid','');
         $commandt = $this->request->param('commandt','');
         $params = $this->request->param('params','');
-
         // 使用示例
         $token = self::token; // 替换为您的实际token
         $mqttClient = new \app\common\library\Lib\Mqtt($token);
 
         if ($mqttClient->connect()) {
             echo "成功连接到MQTT服务器\n";
+            \think\Log::write("设备发送指令,成功连接到MQTT服务器");
 
             // 示例：发送设置参数命令
             $mqttClient->sendCommand($deviceid, $commandt,$params);
@@ -62,7 +63,8 @@ class Mqtt extends Frontend
 //                sleep(1); // 避免CPU占用过高
 //            }
         } else {
-            echo "无法连接到MQTT服务器\n";
+//            echo "无法连接到MQTT服务器\n";
+            \think\Log::write("设备发送指令,无法连接到MQTT服务器");
         }
     }
 

@@ -17,6 +17,7 @@ class Cgorderaddr extends Backend
      * @var \app\admin\model\orders\Cgorderaddr
      */
     protected $model = null;
+    protected $noNeedRight = ['*'];
 
     public function _initialize()
     {
@@ -61,5 +62,22 @@ class Cgorderaddr extends Backend
             return json($result);
         }
         return $this->view->fetch();
+    }
+
+    /**
+     * 编辑
+     */
+    public function edit($ids = null)
+    {
+        $this->dataLimit = false;
+        if ($this->request->isPost()) {
+            $this->token();
+        }
+        $row = $this->model->get($ids);
+        $this->modelValidate = true;
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        return parent::edit($ids);
     }
 }

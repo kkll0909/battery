@@ -31,10 +31,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         {field: 'oid', title: __('Oid')},
-                        {field: 'batid', title: __('Batid')},
                         {field: 'batno', title: __('Batno'), operate: 'LIKE'},
-                        {field: 'sum', title: __('Sum')},
-                        {field: 'price', title: __('Price'), operate:'BETWEEN'},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]

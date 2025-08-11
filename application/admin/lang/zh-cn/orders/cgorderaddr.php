@@ -8,4 +8,5 @@ return [
     'Type'    => '取货方式',
     'Express'    => '快递',
     'Self'    => '自提',
+    'Expresscompay'    => '快递公司',
 ];
