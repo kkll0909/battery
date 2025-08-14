@@ -29,8 +29,8 @@ return [
     'Celltemperature'    => '电芯温度℃',
     'Boardtemperature'    => 'MOS温度℃',
     'Soh'    => '健康度%',
-    'Soc'    => '电量SOC',
-    'Remainingcapacity'    => '剩余电量',
+    'Soc'    => '剩余电量%',
+    'Remainingcapacity'    => '剩余容量Ah',
     'Balance'    => '电池均衡',
     //0 禁止 / 1 开启
     'Enabled'=>'开启',
@@ -43,7 +43,7 @@ return [
     'Nocharging'=>'禁充',
     'Nodischarging'=>'禁放',
 
-    'Mosstatus'    => 'MOS状态',
+    'Mosstatus'    => '使用状态',
     //0 空闲 / 1 充电中 / 2 放电中
     'Idle'=>'空闲',
     'Charging'=>'充电中',

@@ -65,7 +65,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="battypeList" item="vo"}
-                <label for="row[battype]-{$key}"><input id="row[battype]-{$key}" name="row[battype]" type="radio" value="{$key}" {in name="key" value="$row.battype"}checked{/in} /> {$vo}</label>
+                <label for="row[battype]-{$key}"><input disabled id="row[battype]-{$key}" name="row[battype]" type="radio" value="{$key}" {in name="key" value="$row.battype"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -75,7 +75,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="balanceList" item="vo"}
-                <label for="row[balance]-{$key}"><input id="row[balance]-{$key}" name="row[balance]" type="radio" value="{$key}" {in name="key" value="$row.balance"}checked{/in} /> {$vo}</label>
+                <label for="row[balance]-{$key}"><input disabled id="row[balance]-{$key}" name="row[balance]" type="radio" value="{$key}" {in name="key" value="$row.balance"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -85,7 +85,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="chargedischargeswitchList" item="vo"}
-                <label for="row[chargedischargeswitch]-{$key}"><input id="row[chargedischargeswitch]-{$key}" name="row[chargedischargeswitch]" type="radio" value="{$key}" {in name="key" value="$row.chargedischargeswitch"}checked{/in} /> {$vo}</label>
+                <label for="row[chargedischargeswitch]-{$key}"><input disabled id="row[chargedischargeswitch]-{$key}" name="row[chargedischargeswitch]" type="radio" value="{$key}" {in name="key" value="$row.chargedischargeswitch"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
@@ -95,29 +95,29 @@
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="mosstatusList" item="vo"}
-                <label for="row[mosstatus]-{$key}"><input id="row[mosstatus]-{$key}" name="row[mosstatus]" type="radio" value="{$key}" {in name="key" value="$row.mosstatus"}checked{/in} /> {$vo}</label>
+                <label for="row[mosstatus]-{$key}"><input disabled id="row[mosstatus]-{$key}" name="row[mosstatus]" type="radio" value="{$key}" {in name="key" value="$row.mosstatus"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
-        <div class="col-xs-12 col-sm-8">
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
 
-            <div class="radio">
-                {foreach name="statusList" item="vo"}
-                <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="$row.status"}checked{/in} /> {$vo}</label>
-                {/foreach}
-            </div>
+<!--            <div class="radio">-->
+<!--                {foreach name="statusList" item="vo"}-->
+<!--                <label for="row[status]-{$key}"><input disabled id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="$row.status"}checked{/in} /> {$vo}</label>-->
+<!--                {/foreach}-->
+<!--            </div>-->
 
-        </div>
-    </div>
+<!--        </div>-->
+<!--    </div>-->
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Islike')}:</label>
         <div class="col-xs-12 col-sm-8">
             <div class="radio">
                 {foreach name="islikeList" item="vo"}
-                <label for="row[islike]-{$key}"><input id="row[islike]-{$key}" name="row[islike]" type="radio" value="{$key}" {in name="key" value="auto"}checked{/in} /> {$vo}</label>
+                <label for="row[islike]-{$key}"><input disabled id="row[islike]-{$key}" name="row[islike]" type="radio" value="{$key}" {in name="key" value="auto"}checked{/in} /> {$vo}</label>
                 {/foreach}
             </div>
         </div>

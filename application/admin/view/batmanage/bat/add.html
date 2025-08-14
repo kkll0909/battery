@@ -60,68 +60,68 @@
 <!--            <input id="c-weigth" class="form-control" name="row[weigth]" type="text" value="0">-->
 <!--        </div>-->
 <!--    </div>-->
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Battype')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <div class="radio">
-                {foreach name="battypeList" item="vo"}
-                <label for="row[battype]-{$key}"><input id="row[battype]-{$key}" name="row[battype]" type="radio" value="{$key}" {in name="key" value="2"}checked{/in} /> {$vo}</label>
-                {/foreach}
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Balance')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <div class="radio">
-                {foreach name="balanceList" item="vo"}
-                <label for="row[balance]-{$key}"><input id="row[balance]-{$key}" name="row[balance]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>
-                {/foreach}
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Chargedischargeswitch')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <div class="radio">
-                {foreach name="chargedischargeswitchList" item="vo"}
-                <label for="row[chargedischargeswitch]-{$key}"><input id="row[chargedischargeswitch]-{$key}" name="row[chargedischargeswitch]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>
-                {/foreach}
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Mosstatus')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <div class="radio">
-                {foreach name="mosstatusList" item="vo"}
-                <label for="row[mosstatus]-{$key}"><input id="row[mosstatus]-{$key}" name="row[mosstatus]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>
-                {/foreach}
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            
-            <div class="radio">
-            {foreach name="statusList" item="vo"}
-            <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="show"}checked{/in} /> {$vo}</label>
-            {/foreach}
-            </div>
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Battype')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <div class="radio">-->
+<!--                {foreach name="battypeList" item="vo"}-->
+<!--                <label for="row[battype]-{$key}"><input id="row[battype]-{$key}" name="row[battype]" type="radio" value="{$key}" {in name="key" value="2"}checked{/in} /> {$vo}</label>-->
+<!--                {/foreach}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Balance')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <div class="radio">-->
+<!--                {foreach name="balanceList" item="vo"}-->
+<!--                <label for="row[balance]-{$key}"><input id="row[balance]-{$key}" name="row[balance]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>-->
+<!--                {/foreach}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Chargedischargeswitch')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <div class="radio">-->
+<!--                {foreach name="chargedischargeswitchList" item="vo"}-->
+<!--                <label for="row[chargedischargeswitch]-{$key}"><input id="row[chargedischargeswitch]-{$key}" name="row[chargedischargeswitch]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>-->
+<!--                {/foreach}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Mosstatus')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <div class="radio">-->
+<!--                {foreach name="mosstatusList" item="vo"}-->
+<!--                <label for="row[mosstatus]-{$key}"><input id="row[mosstatus]-{$key}" name="row[mosstatus]" type="radio" value="{$key}" {in name="key" value="0"}checked{/in} /> {$vo}</label>-->
+<!--                {/foreach}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            -->
+<!--            <div class="radio">-->
+<!--            {foreach name="statusList" item="vo"}-->
+<!--            <label for="row[status]-{$key}"><input id="row[status]-{$key}" name="row[status]" type="radio" value="{$key}" {in name="key" value="show"}checked{/in} /> {$vo}</label>-->
+<!--            {/foreach}-->
+<!--            </div>-->
 
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Islike')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <div class="radio">
-                {foreach name="islikeList" item="vo"}
-                <label for="row[islike]-{$key}"><input id="row[islike]-{$key}" name="row[islike]" type="radio" value="{$key}" {in name="key" value="auto"}checked{/in} /> {$vo}</label>
-                {/foreach}
-            </div>
-        </div>
-    </div>
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Islike')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <div class="radio">-->
+<!--                {foreach name="islikeList" item="vo"}-->
+<!--                <label for="row[islike]-{$key}"><input id="row[islike]-{$key}" name="row[islike]" type="radio" value="{$key}" {in name="key" value="auto"}checked{/in} /> {$vo}</label>-->
+<!--                {/foreach}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="form-group layer-footer">
         <label class="control-label col-xs-12 col-sm-2"></label>
         <div class="col-xs-12 col-sm-8">

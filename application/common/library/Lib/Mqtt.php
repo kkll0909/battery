@@ -64,7 +64,7 @@ class Mqtt
             ]
         ];
         //echo json_encode($command);
-        \think\Log::write('设备指命:',json_encode($command));
+        //\think\Log::write('设备指命:',json_encode($command));
         $this->client->publish("command/{$this->token}", json_encode($command), 0);
     }
 

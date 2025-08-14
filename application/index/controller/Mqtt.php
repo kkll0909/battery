@@ -52,7 +52,7 @@ class Mqtt extends Frontend
 
         if ($mqttClient->connect()) {
             echo "成功连接到MQTT服务器\n";
-            \think\Log::write("设备发送指令,成功连接到MQTT服务器");
+            //\think\Log::write("设备发送指令,成功连接到MQTT服务器");
 
             // 示例：发送设置参数命令
             $mqttClient->sendCommand($deviceid, $commandt,$params);
@@ -63,8 +63,8 @@ class Mqtt extends Frontend
 //                sleep(1); // 避免CPU占用过高
 //            }
         } else {
-//            echo "无法连接到MQTT服务器\n";
-            \think\Log::write("设备发送指令,无法连接到MQTT服务器");
+            echo "无法连接到MQTT服务器\n";
+//            \think\Log::write("设备发送指令,无法连接到MQTT服务器");
         }
     }
 
