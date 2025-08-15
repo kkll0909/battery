@@ -51,30 +51,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
                             buttons:[
                                 {name:'otalog',text:'日志',title:'OTA明细',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'Otalog/index?batid={id}'},
-                                {name:'otaopen',text:'打开充放电',title:'打开充放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=1',confirm: '确认要执行打开充放电吗？',
-                                    visible: function (row) {
-                                        if (row.chargedischargeswitch == "1") {
-                                            return false;
-                                        }else{
-                                            return true;
-                                        }
-                                    }},
-                                {name:'otaclosecd',text:'关闭充电',title:'关闭充电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=3',confirm: '确认要执行关闭充电吗？',
-                                    visible: function (row) {
-                                        if (row.chargedischargeswitch == "2") {
-                                            return false;
-                                        }else{
-                                            return true;
-                                        }
-                                    }},
-                                {name:'otaclosefd',text:'关闭放电',title:'关闭放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=4',confirm: '确认要执行关闭放电吗？',
-                                    visible: function (row) {
-                                        if (row.chargedischargeswitch == "3") {
-                                            return false;
-                                        }else{
-                                            return true;
-                                        }
-                                    }},
+                                {name:'otaopen',text:'打开充放电',title:'打开充放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=1',confirm: '确认要执行打开充放电吗？'},
+                                {name:'otaclosecd',text:'关闭充电',title:'关闭充电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=3',confirm: '确认要执行关闭充电吗？'},
+                                {name:'otaclosefd',text:'关闭放电',title:'关闭放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=4',confirm: '确认要执行关闭放电吗？'},
                                 {name:'towho',text:'所属',title:'所属关系',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'batmanage/belong/index?batid={id}'},
                                 {name:'map',text:'地图',title:'地图',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'batmanage/bat/map?batid={id}'},
                             ],

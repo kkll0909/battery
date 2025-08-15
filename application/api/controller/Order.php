@@ -115,7 +115,8 @@ class Order extends Api
                 }
                 $paydatestr = strtotime($paydate);
                 $paylist = [];
-                $t=-1;
+                $t=0;
+                $etime = 0;
                 for ($i=0;$i<=$month;$i++){
                     $paylist[] = [
                         'userid'=>$userid,
@@ -126,8 +127,12 @@ class Order extends Api
                         'paydate'=>$i==0?date('Y-m-d'):($i==1?$paydate:date("Y-m-d", strtotime("+{$t} month",$paydatestr))),
                         'paystatus'=>'nopay'
                     ];
-                    $t+=$m;
+                    if($i>0){$t+=$m;}
+                    if($i==$month){
+                        $etime = strtotime("+{$t} month",$paydatestr);
+                    }
                 }
+                Cgorders::update(['etime'=>$etime],['id'=>$orderSubD['oid']]);
                 $pay = new Orderpay();
                 $pay->saveAll($paylist);
             }

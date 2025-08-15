@@ -8,6 +8,7 @@ use app\common\model\batmanage\Bat;
 use app\common\model\batmanage\Belong;
 use app\common\model\orders\Cgorders;
 use app\common\model\orders\Cgordersub;
+use app\common\model\orders\Orderpay;
 use think\Lang;
 use think\Log;
 
@@ -236,9 +237,21 @@ class Mysb extends Api
                 }elseif(empty($info)){
                     $item['is_auth_applay'] = 0;
                 }
-                //实名信息
-                $item['bind_realname'] = Realauth::where(['id'=>$item['belongid']])->value('realname');
-                $item['shopmobile'] = \app\common\model\shop\Shop::where(['admin_id'=>$item['admin_id']])->value('shopmobile');
+                //打到对应的订单信息
+                $oid = Cgordersub::where(['batno'=>$item['bat']['batno']])->value('oid');
+                $shopid = Cgorders::where(['id'=>$oid])->value('shopid');
+                if($item['isuse']=='self'){
+                    $belongid = Belong::where(['belongtype'=>'user','isuse'=>'authorize','iszt'=>['in','apply,ok']])->value('belongid');
+                    //实名信息
+                    $item['bind_realname'] = Realauth::where(['id'=>$belongid])->value('realname');
+                }else{
+                    $belongid = Belong::where(['belongtype'=>'user','isuse'=>'self','iszt'=>'ok'])->value('belongid');
+                    $item['bind_realname'] = Realauth::where(['id'=>$belongid])->value('realname');
+                }
+                $item['shopmobile'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('shopmobile');
+                $item['shopname'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('spname');
+                $item['etime'] = Cgorders::where(['id'=>$oid])->value('etime');
+
                 return $item;
             });
 //        Log::write($belong->getLastSql());
