@@ -147,7 +147,7 @@ class Mysb extends Api
         }
         $belong = new Belong();
         $list = $belong->with('uinfo')->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'apply'])->find();
-        $list['uinfo']['bind_realname'] = Realauth::where(['id'=>$list['belongid']])->value('realname');
+        $list['uinfo']['bind_realname'] = Realauth::where(['user_id'=>$list['belongid']])->value('realname');
         $this->success(__('success'),$list);
     }
 
@@ -241,12 +241,12 @@ class Mysb extends Api
                 $oid = Cgordersub::where(['batno'=>$item['bat']['batno']])->value('oid');
                 $shopid = Cgorders::where(['id'=>$oid])->value('shopid');
                 if($item['isuse']=='self'){
-                    $belongid = Belong::where(['belongtype'=>'user','isuse'=>'authorize','iszt'=>['in','apply,ok']])->value('belongid');
+                    $belongid = Belong::where(['batid'=>$item['batid'],'belongtype'=>'user','isuse'=>'authorize','iszt'=>['in','apply,ok']])->value('belongid');
                     //实名信息
-                    $item['bind_realname'] = Realauth::where(['id'=>$belongid])->value('realname');
+                    $item['bind_realname'] = Realauth::where(['user_id'=>$belongid])->value('realname');
                 }else{
-                    $belongid = Belong::where(['belongtype'=>'user','isuse'=>'self','iszt'=>'ok'])->value('belongid');
-                    $item['bind_realname'] = Realauth::where(['id'=>$belongid])->value('realname');
+                    $belongid = Belong::where(['batid'=>$item['batid'],'belongtype'=>'user','isuse'=>'self','iszt'=>'ok'])->value('belongid');
+                    $item['bind_realname'] = Realauth::where(['user_id'=>$belongid])->value('realname');
                 }
                 $item['shopmobile'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('shopmobile');
                 $item['shopname'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('spname');

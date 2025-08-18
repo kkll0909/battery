@@ -5,5 +5,6 @@ return [
     'Batid' => '电池ID',
     'Batno' => '电池序号',
     'Sum'   => '数量',
-    'Price' => '价格'
+    'Price' => '价格',
+    'Realname' => '姓名',
 ];

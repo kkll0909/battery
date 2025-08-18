@@ -12,9 +12,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     index_url: 'orders/cgordersub/index' + location.search,
                     add_url: 'orders/cgordersub/add?cgid='+cgid,
                     edit_url: 'orders/cgordersub/edit?cgid='+cgid,
-                    del_url: 'orders/cgordersub/del',
-                    multi_url: 'orders/cgordersub/multi',
-                    import_url: 'orders/cgordersub/import',
+                    // del_url: 'orders/cgordersub/del',
+                    // multi_url: 'orders/cgordersub/multi',
+                    // import_url: 'orders/cgordersub/import',
                     table: 'cgordersub',
                 }
             });
@@ -31,8 +31,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         {field: 'oid', title: __('Oid')},
+                        {field: 'realname', title: __('Realname')},
                         {field: 'batno', title: __('Batno'), operate: 'LIKE'},
-                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
+                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
+                            buttons:[
+                                {name:'unbind',text:'解绑',title:'解绑',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'orders/cgordersub/munbind'},
+                            ],
+                            formatter: Table.api.formatter.operate}
                     ]
                 ]
             });

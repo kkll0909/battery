@@ -2,6 +2,9 @@
 
 namespace app\admin\controller\orders;
 
+use app\admin\model\batmanage\Bat;
+use app\admin\model\batmanage\Belong;
+use app\admin\model\user\Realauth;
 use app\common\controller\Backend;
 use fast\Random;
 use think\Db;
@@ -59,7 +62,11 @@ class Cgordersub extends Backend
                 ->where($where)
                 ->where($where2)
                 ->order($sort, $order)
-                ->paginate($limit);
+                ->paginate($limit)->each(function ($item, $key) {
+                    $item['toid'] = \app\admin\model\orders\Cgorders::where(['id'=>$item['oid']])->value('toid');
+                    $item['realname'] = Realauth::where(['user_id'=>$item['toid']])->value('realname');
+                    return $item;
+                });
             $result = array("total" => $list->total(), "rows" => $list->items());
 
             return json($result);
@@ -129,6 +136,25 @@ class Cgordersub extends Backend
         if (!$row) {
             $this->error(__('No Results were found'));
         }
+        $cgid = $this->request->get('cgid',0);
+        $cgo = new \app\admin\model\orders\Cgorders();
+        $orderno = $cgo->where(['id'=>$cgid])->value('orderno');
+        $this->assign('orderno',$orderno);
+        //return $this->view->fetch();
         return parent::edit($ids);
+    }
+
+    //解除商家与用户之间的关系
+    public function munbind($ids = ""){
+        $this->dataLimit = false;
+        if ($this->request->isAjax()) {
+            $row = $this->model->get($ids);
+            $batid = Bat::where(['batno'=>$row['batno']])->value('id');
+            $belong = new Belong();
+            $belong->save(['iszt'=>'unbind'],['batid'=>$batid,'belongtype'=>'user']);
+            $this->success('解除所有绑定关系');
+        }else{
+            $this->error('操作失败');
+        }
     }
 }
