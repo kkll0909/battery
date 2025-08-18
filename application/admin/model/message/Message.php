@@ -40,7 +40,7 @@ class Message extends Model
 
     public function getTypeList()
     {
-        return ['msg' => __('Msg'),'sys' => __('Sys'),'order' => __('Order'),'pay' => __('Pay')];
+        return ['msg' => __('Msg'),'sys' => __('Sys')];//,'order' => __('Order'),'pay' => __('Pay')
     }
 
     public function getTotypeList()

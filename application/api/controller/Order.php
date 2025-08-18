@@ -136,6 +136,9 @@ class Order extends Api
                 $pay = new Orderpay();
                 $pay->saveAll($paylist);
             }
+            $msgtype = $type=='buy'?"购买":"租赁";
+            \app\common\library\Lib\Message::sendInMessage('下单',"{$msgtype}单：{$msgtype}{$presum}设备，请尽快完成支付.",'user','sys',$userid);
+            \app\common\library\Lib\Message::sendInMessage('下单',"{$msgtype}单：{$msgtype}{$presum}设备，用户在你门店已经下单.",'member','sys',$shopInfo['admin_id']);
             Db::commit();
         }catch (\Exception $e){
             Db::rollback();

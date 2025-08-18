@@ -110,6 +110,9 @@ class Index extends Controller
             $payInfo->wxorder = $data['transaction_id'];
             $payInfo->save();
             echo "success";
+            //$msgtype = $type=='buy'?"购买":"租赁";
+            \app\common\library\Lib\Message::sendInMessage('订单支付',"支付订单金额:{$payInfo['paymoney']}元",'user','sys',$payInfo['userid']);
+//            \app\common\library\Lib\Message::sendInMessage('订单支付',"用户在你门店已经下单.",'member','order',$shopInfo['admin_id']);
         } catch (Exception $e) {
             \think\Log::record("回调逻辑处理错误:" . $e->getMessage(), "error");
         }

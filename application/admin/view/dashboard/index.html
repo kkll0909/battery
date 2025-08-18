@@ -175,19 +175,19 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-red"><i class="fa fa-users"></i></span>
-                            <div class="sm-st-info">
+                            <a href="{:url('/user/user/index')}"><div class="sm-st-info">
                                 <span>{$totaluser|htmlentities}</span>
                                 {:__('Total user')}
-                            </div>
+                            </div></a>
                         </div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-violet"><i class="fa fa-magic"></i></span>
-                            <div class="sm-st-info">
+                            <a href="{:url('/shop/shop/index')}"><div class="sm-st-info">
                                 <span>{$totalshops|htmlentities}</span>
                                 {:__('Total shops')}
-                            </div>
+                            </div></a>
                         </div>
                     </div>
                     <div class="col-sm-3 col-xs-6">
@@ -290,7 +290,7 @@
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <div class="panel bg-blue-gradient no-border">
-                            <div class="panel-body">
+                            <a href="{:url('orders/cgorders/index')}" style="color:#fff;"><div class="panel-body">
                                 <div class="panel-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
                                     <h5>{:__('Today orders')}</h5>
@@ -305,7 +305,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div></a>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-3">
@@ -364,6 +364,7 @@
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <div class="panel bg-green-gradient no-border">
+                            <a href="{:url('batmanage/bat/index')}" style="color:#fff;">
                             <div class="panel-body">
                                 <div class="ibox-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
@@ -387,6 +388,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </div>
