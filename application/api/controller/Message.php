@@ -31,17 +31,14 @@ class Message extends Api
      */
     public function msglist()
     {
-        $totype = $this->request->param('totype','user');
-        $type = $this->request->param('type','msg');
-        $page = $this->request->param('page','1');
-        $pagesize = $this->request->param('pagesize','15');
+        $totype = $this->request->param('totype')??'user';
+        $type = $this->request->param('type')??'msg';
+        $page = $this->request->param('page')??1;
+        $pagesize = $this->request->param('pagesize')??15;
         $user_id = $this->auth->id;
-        $list = \app\admin\model\message\Message::where('type',$type)
-            ->where('totype',$totype)
-            ->where(function($query) use ($user_id) {
-                $query->where('userid', 0) // userid=0
-                ->whereOr('FIND_IN_SET(:userid, userid)', ['userid' => $user_id]); // 或当前用户在userid字段内
-            })
+        $where = ['type'=>$type,'totype'=>$totype];
+        $list = \app\admin\model\message\Message::where($where)
+            ->where('userid = 0 OR FIND_IN_SET('.$user_id.', userid)')
             ->paginate($pagesize,false,['page'=>$page])->each(function($item,$key) use ($user_id){
                 $item['isread'] = Messageread::where(['totype'=>$item['totype'],'msgid'=>$item['id'],'userid'=>$user_id])->count();
                 return $item;
@@ -81,24 +78,18 @@ class Message extends Api
      * @ApiParams (name="totype", type="string", required=false, description="归属方:默认user")
      */
     public function msgnoreadsum(){
-        $totype = $this->request->param('totype','user');
+        $totype = $this->request->param('totype')??'user';
         $user_id = $this->auth->id;
         $msgtotal = \app\admin\model\message\Message::where('totype',$totype)
             ->where('type','msg')
-            ->where(function($query) use ($user_id) {
-                $query->where('userid', 0) // userid=0
-                ->whereOr('FIND_IN_SET(:userid, userid)', ['userid' => $user_id]); // 或当前用户在userid字段内
-            })
+            ->where('userid = 0 OR FIND_IN_SET('.$user_id.', userid)')
             ->count();
         $systotal = \app\admin\model\message\Message::where('totype',$totype)
             ->where('type','sys')
-            ->where(function($query) use ($user_id) {
-                $query->where('userid', 0) // userid=0
-                ->whereOr('FIND_IN_SET(:userid, userid)', ['userid' => $user_id]); // 或当前用户在userid字段内
-            })
+            ->where('userid = 0 OR FIND_IN_SET('.$user_id.', userid)')
             ->count();
-        $msgreadsum = \app\admin\model\message\Messageread::where('totype',$totype)->where('type','msg')->where('userid',$user_id)->count();
-        $sysreadsum = \app\admin\model\message\Messageread::where('totype',$totype)->where('type','sys')->where('userid',$user_id)->count();
+        $msgreadsum = \app\admin\model\message\Messageread::where('totype',$totype)->where('userid',$user_id)->count();
+        $sysreadsum = \app\admin\model\message\Messageread::where('totype',$totype)->where('userid',$user_id)->count();
         $this->success(__('success'),['msgnoreadsum'=>$msgtotal-$msgreadsum,'sysnoreadsum'=>$systotal-$sysreadsum]);
     }
 }

@@ -3,6 +3,7 @@
 namespace addons\epay\controller;
 
 use addons\epay\library\Service;
+use app\admin\model\orders\Cgorders;
 use app\admin\model\orders\Orderpay;
 use fast\Random;
 use think\addons\Controller;
@@ -25,9 +26,9 @@ class Index extends Controller
     public function _initialize()
     {
         parent::_initialize();
-        if (!config("app_debug")) {
-            $this->error("仅在开发环境下查看");
-        }
+//        if (!config("app_debug")) {
+//            $this->error("仅在开发环境下查看");
+//        }
     }
 
     public function index()
@@ -104,14 +105,27 @@ class Index extends Controller
             //你可以在此编写订单逻辑
             $payInfo = Orderpay::where(['payor'=>$out_trade_no])->find();
             if(!$payInfo){
-                \think\Log::record("回调错误:订单号不存在", "error");
+                $payInfo = Cgorders::where(['orderno'=>$out_trade_no])->find();
+                if(!$payInfo){
+                    \think\Log::record("回调错误:订单号不存在", "error");
+                }else{
+                    $payInfo->status = 'pay';
+                    //$payInfo->wxorder = $data['transaction_id'];
+                    $payInfo->save();
+                    $money = $payInfo['money'];
+                    $userid = $payInfo['toid'];
+                }
+            }else{
+                $payInfo->paystatus = 'pay';
+                $payInfo->wxorder = $data['transaction_id'];
+                $payInfo->save();
+                $money = $payInfo['paymoney'];
+                $userid = $payInfo['userid'];
             }
-            $payInfo->paystatus = 'pay';
-            $payInfo->wxorder = $data['transaction_id'];
-            $payInfo->save();
+
             echo "success";
             //$msgtype = $type=='buy'?"购买":"租赁";
-            \app\common\library\Lib\Message::sendInMessage('订单支付',"支付订单金额:{$payInfo['paymoney']}元",'user','sys',$payInfo['userid']);
+            \app\common\library\Lib\Message::sendInMessage('订单支付',"支付订单金额:{$money}元",'user','sys',$userid);
 //            \app\common\library\Lib\Message::sendInMessage('订单支付',"用户在你门店已经下单.",'member','order',$shopInfo['admin_id']);
         } catch (Exception $e) {
             \think\Log::record("回调逻辑处理错误:" . $e->getMessage(), "error");

@@ -60,6 +60,7 @@ class Order extends Api
         if($type=='buy'){
             $money = $preInfo['buymoney']*$presum;
             $m = 0;
+            $preInfo['deposit'] = 0;
         }else{
             switch ($zptype){
                 case 'm':
@@ -202,13 +203,31 @@ class Order extends Api
         $addrD['name']=$addrinfo['name']??'';
         $addrD['type']=$type;
         $addr->save($addrD);
-        if($list['deposit']==0){
-            $cgorder->save(['status'=>'pay'],['id'=>$list['id']]);
-            $pay->save(['paystatus'=>'pay'],['oid'=>$list['id'],'isy'=>0]);
+        if($list['type']=='zp'){
+            if($list['deposit']==0){
+                $cgorder->save(['status'=>'pay'],['id'=>$list['id']]);
+                $pay->save(['paystatus'=>'pay'],['oid'=>$list['id'],'isy'=>0]);
+            }else{
+                $cgorder->save(['status'=>'pay'],['id'=>$list['id']]);
+                $pay->save(['paystatus'=>'pay'],['oid'=>$list['id'],'isy'=>0]);
+            }
         }else{
-            $cgorder->save(['status'=>'pay'],['id'=>$list['id']]);
-            $pay->save(['paystatus'=>'pay'],['oid'=>$list['id'],'isy'=>0]);
+            $miniu = new \app\admin\model\miniprogram\User();
+            $openid = $miniu->where(['user_id'=>$this->auth->id])->value('openid');
+            $params = [
+                'amount'=>$list['money'],
+                'orderid'=>$list['orderno'],
+                'type'=>"wechat",
+                'title'=>"购买产品",
+                'notifyurl'=>"https://admin.yuanshc.com/addons/epay/index/notifyx/paytype/wechat",
+                'returnurl'=>"https://admin.yuanshc.com/",
+                'method'=>"miniapp",
+                'openid'=>$openid,
+            ];
+            $re = Service::submitOrder($params);
+            $this->success(__('success'),$re);
         }
+
         $this->success(__('success'));
     }
 
