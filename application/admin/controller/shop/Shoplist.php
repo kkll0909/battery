@@ -5,6 +5,7 @@ namespace app\admin\controller\shop;
 use app\common\controller\Backend;
 use fast\Random;
 use think\Db;
+use think\exception\DbException;
 use think\exception\PDOException;
 use think\exception\ValidateException;
 
@@ -137,18 +138,71 @@ class Shoplist extends Backend
 
     /**
      * 编辑
+     *
+     * @param $ids
+     * @return string
+     * @throws DbException
+     * @throws \think\Exception
      */
     public function edit($ids = null)
     {
         $this->dataLimit = false;
-        if ($this->request->isPost()) {
-            $this->token();
+        $shopid = $this->request->get('shopid',0);
+        if (!$shopid){
+            $this->error(__('Parameter %s can not be empty', ''));
+        }else{
+            $shop = new \app\admin\model\shop\Shop();
+            $spname=$shop->where(['id'=>$shopid])->value('spname');
+            $this->assign('spname',$spname);
         }
         $row = $this->model->get($ids);
-        $this->modelValidate = true;
         if (!$row) {
             $this->error(__('No Results were found'));
         }
-        return parent::edit($ids);
+        $adminIds = $this->getDataLimitAdminIds();
+        if (is_array($adminIds) && !in_array($row[$this->dataLimitField], $adminIds)) {
+            $this->error(__('You have no permission'));
+        }
+        if (false === $this->request->isPost()) {
+            if($row['sbtype']){
+                $row['sbtype'] = explode(',',$row['sbtype']);
+            }else{
+                $row['sbtype'] = '';
+                //$this->error(__('Parameter %s can not be empty', ''));
+            }
+            $this->view->assign('row', $row);
+            return $this->view->fetch();
+        }
+        $params = $this->request->post('row/a');
+        if (empty($params)) {
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params = $this->preExcludeFields($params);
+        if(isset($params['sbtype']) && is_array($params['sbtype'])){
+            $params['sbtype'] = implode(',',$params['sbtype']);
+        }else{
+            $params['sbtype'] = '';
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params['shopid'] = $shopid;
+        $result = false;
+        Db::startTrans();
+        try {
+            //是否采用模型验证
+            if ($this->modelValidate) {
+                $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : $name) : $this->modelValidate;
+                $row->validateFailException()->validate($validate);
+            }
+            $result = $row->allowField(true)->save($params);
+            Db::commit();
+        } catch (ValidateException|PDOException|Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if (false === $result) {
+            $this->error(__('No rows were updated'));
+        }
+        $this->success();
     }
 }

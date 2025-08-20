@@ -84,7 +84,8 @@ class Order extends Api
         Db::startTrans();
         try {
             //主订单
-            $orderD['orderno'] = "OR".Random::build('unique',10).rand(1000,9999);
+            //$orderD['orderno'] = "OR".Random::build('unique',10).rand(1000,9999);
+            $orderD['orderno'] = "OR".time();
             $orderD['shopid'] = $shopid;
             $orderD['fromid'] = $shopInfo['admin_id'];
             $orderD['admin_id'] = $shopInfo['admin_id'];
@@ -215,7 +216,7 @@ class Order extends Api
             $miniu = new \app\admin\model\miniprogram\User();
             $openid = $miniu->where(['user_id'=>$this->auth->id])->value('openid');
             $params = [
-                'amount'=>$list['money'],
+                'amount'=>$list['monay'],
                 'orderid'=>$list['orderno'],
                 'type'=>"wechat",
                 'title'=>"购买产品",
