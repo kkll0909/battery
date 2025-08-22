@@ -11,8 +11,21 @@ use think\Lang;
  */
 class Shop extends Api
 {
-    protected $noNeedLogin = ['shoplist','shopdetail','prelist','servicelist'];
+    protected $noNeedLogin = ['getcity','shoplist','shopdetail','prelist','servicelist'];
     protected $noNeedRight = '*';
+
+    /**
+     * 获取市列表
+     *
+     * @ApiMethod (POST)
+     */
+    public function getcity()
+    {
+        Lang::load(ROOT_PATH . 'application/api/lang/zh-cn/shop/shop.php');
+        $shop = new \app\common\model\shop\Shop();
+        $listcity = $shop->field('spcity')->group('spcity')->select();
+        $this->success(__('success'), $listcity);
+    }
 
     /**
      * 门店列表
@@ -21,6 +34,8 @@ class Shop extends Api
      * @ApiParams (name="lng", type="string", required=true, description="经度")
      * @ApiParams (name="lat", type="string", required=true, description="纬度")
      * @ApiParams (name="shopname", type="string", required=false, description="门店名称")
+     * @ApiParams (name="shopcity", type="string", required=false, description="城市")
+     * @ApiParams (name="shoptag", type="string", required=false, description="标签")
      * @ApiParams (name="page", type="string", required=false, description="当前页码默认1")
      * @ApiParams (name="pagesize", type="int", required=false, description="显示记录数默认20")
      */
@@ -29,7 +44,9 @@ class Shop extends Api
         Lang::load(ROOT_PATH . 'application/api/lang/zh-cn/shop/shop.php');
         $lng = $this->request->param('lng');
         $lat = $this->request->param('lat');
-        $shopname = $this->request->param('shopname');
+        $shopname = $this->request->param('shopname')??'';
+        $shopcity = $this->request->param('shopcity')??'';
+        $shoptag = $this->request->param('shoptag')??'';
         $page = empty($this->request->post('page'))?1:$this->request->post('page');
         $pagesize = empty($this->request->post('pagesize'))?20:$this->request->post('pagesize');
         if (!$lng || !$lat) {
@@ -37,8 +54,15 @@ class Shop extends Api
         }
         $where = [];
         if ($shopname) {
-            $where[] = ['shopname', 'like', "%{$shopname}%"];
+            $where['spname'] = ['like', "%{$shopname}%"];
         }
+        if ($shopcity) {
+            $where['spcity'] = $shopcity;
+        }
+        if ($shoptag) {
+            $where['tag'] = [ 'like', "%{$shoptag}%"];
+        }
+//        dump($where);
         $shop = new \app\common\model\shop\Shop();
         $list = $shop
             ->where($where)
@@ -58,6 +82,7 @@ class Shop extends Api
                 $item['like'] = empty($item['likecount']) ? 0 :  number_format($likesum / $item['likecount'],1);
                 return $item;
             });
+//        dump($shop->getLastSql());
         
         $this->success(__('Success'), $list);
     }
