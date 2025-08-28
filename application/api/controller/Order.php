@@ -300,4 +300,124 @@ class Order extends Api
         $this->success(__('success'));
     }
 
+    /**
+     * 租赁续租--数据确认
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="orderid", type="string", required=true, description="订单ID")
+     */
+    public function renewalConfirm()
+    {
+        $orderid = $this->request->param('orderid');
+        if(!$orderid){
+            $this->error(__('Invalid parameters'));
+        }
+        $user_id = $this->auth->id;
+//        $user_id = 5;
+        $cgorder = new Cgorders();
+        $payorder = new Orderpay();
+        $w = ['id'=>$orderid,'toid'=>$user_id];
+        $info = $cgorder->where($w)->find();
+        $payinfoe = $payorder->where(['oid'=>$orderid,'userid'=>$user_id,'isy'=>1])->order('id desc')->find();
+        switch ($info['paytype']){
+            case 'm':
+                $m = 1;
+                break;
+            case 'j':
+                $m = 3;
+                break;
+            case 'n':
+                $m = 12;
+                break;
+        }
+        $smm = $m * $info['paytypesum'];
+        $emm = $m * $info['paytypesum']*$payinfoe['paysum'];
+        $out['paytype'] = $info['paytype'];
+        $out['paytypesum'] = $info['paytypesum'];
+        $out['money'] = $info['monay'];
+        $out['deposit'] = $info['deposit'];
+        $out['oldstime'] = date('Y-m-d',$info['stime']);
+        $out['oldetime'] = date('Y-m-d',$info['etime']);
+        $paydate = strtotime("+{$smm} month",strtotime($payinfoe['paydate']));
+        if($paydate<=time()){
+            $paydate = date('Y-m-d');
+        }else{
+            $paydate = date('Y-m-d',$paydate);
+        }
+        $out['newstime'] = $paydate;
+        $out['newetime'] = date('Y-m-d',strtotime("+{$emm} month",strtotime($paydate)));
+        $this->success(__('success'),$out);
+    }
+
+    /**
+     * 租赁续租--提交
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="orderid", type="string", required=true, description="订单ID")
+     */
+    public function renewalSubmit()
+    {
+        $orderid = $this->request->param('orderid');
+        if(!$orderid){
+            $this->error(__('Invalid parameters'));
+        }
+        $user_id = $this->auth->id;
+//        $user_id = 5;
+        $cgorder = new Cgorders();
+        $payorder = new Orderpay();
+        $w = ['id'=>$orderid,'toid'=>$user_id];
+        $info = $cgorder->where($w)->find();
+        $payinfoe = $payorder->where(['oid'=>$orderid,'userid'=>$user_id,'isy'=>1])->order('id desc')->find();
+        switch ($info['paytype']){
+            case 'm':
+                $m = 1;
+                break;
+            case 'j':
+                $m = 3;
+                break;
+            case 'n':
+                $m = 12;
+                break;
+        }
+        $smm = $m * $info['paytypesum'];
+        $emm = $m * $info['paytypesum']*$payinfoe['paysum'];
+        $out['paytype'] = $info['paytype'];
+        $out['paytypesum'] = $info['paytypesum'];
+        $out['money'] = $info['monay'];
+        $out['deposit'] = $info['deposit'];
+        $out['oldstime'] = date('Y-m-d',$info['stime']);
+        $out['oldetime'] = date('Y-m-d',$info['etime']);
+        $paydate = strtotime("+{$smm} month",strtotime($payinfoe['paydate']));
+        if($paydate<=time()){
+            $paydate = date('Y-m-d');
+        }else{
+            $paydate = date('Y-m-d',$paydate);
+        }
+        $out['newstime'] = $paydate;
+        $out['newetime'] = date('Y-m-d',strtotime("+{$emm} month",strtotime($paydate)));
+        Db::startTrans();
+        try {
+            $cgorder->save(['stime'=>strtotime($out['newstime']),'etime'=>strtotime($out['newetime'])],['id'=>$orderid]);
+            $newlist = [];
+            for ($i=1;$i<=$payinfoe['paysum'];$i++){
+                $imm = $m*$i;
+                $newlist[] = [
+                    'userid'=>$user_id,
+                    'oid'=>$orderid,
+                    'isy'=>1,
+                    'paymoney'=>$payinfoe['paymoney'],
+                    'paysum'=>$payinfoe['paysum']+$i,
+                    'paydate'=>date('Y-m-d',strtotime("+{$imm} month",strtotime($payinfoe['paydate']))),
+                    'paystatus'=>'nopay',
+                ];
+            }
+            $payorder->insertAll($newlist);
+            Db::commit();
+        }catch (\Exception $e){
+            Db::rollback();
+            $this->error(__('续租失败'));
+        }
+        $this->success(__('success'),$newlist);
+    }
+
 }
