@@ -346,6 +346,19 @@ class Order extends Api
         }
         $out['newstime'] = $paydate;
         $out['newetime'] = date('Y-m-d',strtotime("+{$emm} month",strtotime($paydate)));
+        $out['newlist'] = [];
+        for ($i=1;$i<=$payinfoe['paysum'];$i++){
+            $imm = $m*$i;
+            $out['newlist'][] = [
+                'userid'=>$user_id,
+                'oid'=>$orderid,
+                'isy'=>1,
+                'paymoney'=>$payinfoe['paymoney'],
+                'paysum'=>$payinfoe['paysum']+$i,
+                'paydate'=>date('Y-m-d',strtotime("+{$imm} month",strtotime($payinfoe['paydate']))),
+                'paystatus'=>'nopay',
+            ];
+        }
         $this->success(__('success'),$out);
     }
 

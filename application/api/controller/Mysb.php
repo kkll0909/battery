@@ -251,7 +251,7 @@ class Mysb extends Api
                 $item['shopmobile'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('shopmobile');
                 $item['shopname'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('spname');
                 $item['etime'] = Cgorders::where(['id'=>$oid])->value('etime');
-
+                $item['orderid'] = $oid;
                 $item['orderpay'] = Orderpay::where(['oid'=>$oid,'userid'=>$userid,'paystatus'=>'nopay'])->order('id asc')->find();
 
                 return $item;
