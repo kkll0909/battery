@@ -34,6 +34,7 @@ class Shop extends Api
      * @ApiParams (name="lng", type="string", required=true, description="经度")
      * @ApiParams (name="lat", type="string", required=true, description="纬度")
      * @ApiParams (name="shopname", type="string", required=false, description="门店名称")
+     * @ApiParams (name="shoppp", type="string", required=false, description="产品品牌")
      * @ApiParams (name="shopcity", type="string", required=false, description="城市")
      * @ApiParams (name="shoptag", type="string", required=false, description="标签")
      * @ApiParams (name="page", type="string", required=false, description="当前页码默认1")
@@ -45,6 +46,7 @@ class Shop extends Api
         $lng = $this->request->param('lng');
         $lat = $this->request->param('lat');
         $shopname = $this->request->param('shopname')??'';
+        $shoppp = $this->request->param('shoppp')??'';
         $shopcity = $this->request->param('shopcity')??'';
         $shoptag = $this->request->param('shoptag')??'';
         $page = empty($this->request->post('page'))?1:$this->request->post('page');

@@ -60,5 +60,10 @@ class Shop extends Model
         return $this->belongsTo('app\admin\model\Admin', 'admin_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
+    public function shoplist(){
+        return $this->hasMany('app\common\model\shop\Shoplist','shopid','id')->bind('id,sbpp');
+//        return $this->belongsTo('app\common\model\shop\Shoplist', 'shop_id', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
+
 
 }
