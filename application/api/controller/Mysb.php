@@ -228,7 +228,7 @@ class Mysb extends Api
             ->with('bat')
             ->where(['belongid'=>$userid,'iszt'=>'ok','belongtype'=>'user','isuse'=>['in','self,authorize']])
             ->order('id desc')
-            ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index){
+            ->paginate($pagesize,false,['page'=>$page])->each(function ($item,$index) use ($userid){
                 $info = Belong::where(['batid'=>$item['batid'],'isuse'=>'authorize','iszt'=>['in','apply,ok']])->find();
                 if($info && $info['iszt']=='apply'){
                     $item['is_auth_applay'] = 1;
@@ -251,10 +251,42 @@ class Mysb extends Api
                 $item['shopmobile'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('shopmobile');
                 $item['shopname'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('spname');
                 $item['etime'] = Cgorders::where(['id'=>$oid])->value('etime');
+                $item['orderid'] = $oid;
+                $item['orderpay'] = Orderpay::where(['oid'=>$oid,'userid'=>$userid,'paystatus'=>'nopay'])->order('id asc')->find();
 
                 return $item;
             });
 //        Log::write($belong->getLastSql());
         $this->success(__('success'),$list);
+    }
+
+    /**
+     * 设备轨迹
+     *
+     * @ApiMethod (POST)
+     * @ApiParams (name="batno", type="string", required=true, description="设备号")
+     */
+    public function trajectory()
+    {
+        $batno = $this->request->post('batno');
+        if(!$batno){
+            $this->error(__('Invalid parameters'));
+        }
+        $bat = new Bat();
+        $batinfo = $bat->where(['batno'=>$batno])->order('id desc')->find();
+        $batloc = new \app\admin\model\batmanage\Batlocstate();
+        $pot = [];
+//        $st = date('Y-d-m').' 00:00:00';
+//        $et = date('Y-d-m').' 23:59:59';
+//        ->whereTime('datet', 'between', [$st, $et]);
+        $batlocinfo = $batloc->where(['batid'=>$batinfo['id']])->limit(100)->order('id desc')->select();
+        if(!$batlocinfo){
+            $this->error('暂无定位数据!','');
+        }
+        foreach ($batlocinfo as $v){
+            $pot[] = [$v['longitude'],$v['latitude']];
+        }
+//        $this->success('pot',json_encode());
+        $this->success(__('success'),$pot);
     }
 }
