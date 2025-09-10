@@ -101,13 +101,17 @@ class Order extends Api
             $orderD['stime'] = time();
             $cgorder = Cgorders::create($orderD);
             //子订单
-            $orderSubD['preid'] = $preInfo['id'];
-            $orderSubD['oid'] = $cgorder->id;
-            $orderSubD['sum'] = $presum;
-            //$orderSubD['price'] = "";
-            $orderSubD['totalprice'] = $money;
-            $orderSubD['status'] = "show";
-            Cgordersub::create($orderSubD);
+            for ($i=0;$i<$presum;$i++){
+                $orderSubD['preid'] = $preInfo['id'];
+                $orderSubD['oid'] = $cgorder->id;
+                $orderSubD['shopid'] = $shopid;
+//                $orderSubD['sum'] = $presum;
+//                $orderSubD['price'] = "";
+                $orderSubD['totalprice'] = $money;
+                $orderSubD['status'] = "show";
+                Cgordersub::create($orderSubD);
+            }
+
             //分期
             if($type=='zp'){
                 if($preInfo['usetype']=='payuse'){

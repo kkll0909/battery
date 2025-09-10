@@ -11,7 +11,7 @@ use think\Lang;
  */
 class Shop extends Api
 {
-    protected $noNeedLogin = ['getcity','shoplist','shopdetail','prelist','servicelist'];
+    protected $noNeedLogin = ['getcity','getpp','shoplist','shopdetail','prelist','servicelist'];
     protected $noNeedRight = '*';
 
     /**
@@ -24,6 +24,19 @@ class Shop extends Api
         Lang::load(ROOT_PATH . 'application/api/lang/zh-cn/shop/shop.php');
         $shop = new \app\common\model\shop\Shop();
         $listcity = $shop->field('spcity')->group('spcity')->select();
+        $this->success(__('success'), $listcity);
+    }
+
+    /**
+     * 获取品牌列表
+     *
+     * @ApiMethod (POST)
+     */
+    public function getpp()
+    {
+        Lang::load(ROOT_PATH . 'application/api/lang/zh-cn/shop/shop.php');
+        $shop = new \app\common\model\shop\Shoplist();
+        $listcity = $shop->field('sbpp')->group('sbpp')->select();
         $this->success(__('success'), $listcity);
     }
 
@@ -64,6 +77,9 @@ class Shop extends Api
         if ($shoptag) {
             $where['tag'] = [ 'like', "%{$shoptag}%"];
         }
+//        if ($shoptag) {
+//            $where['tag'] = [ 'like', "%{$shoppp}%"];
+//        }
 //        dump($where);
         $shop = new \app\common\model\shop\Shop();
         $list = $shop

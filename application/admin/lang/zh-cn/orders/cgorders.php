@@ -27,4 +27,6 @@ return [
     'Qs'  => '已付/总期',
     'Yjpaym'  => '已付金额',
     'Realname'  => '用户姓名',
+    'Likebatsum'  => '分配电池',
+    'Bindbatsum'  => '绑定电池',
 ];

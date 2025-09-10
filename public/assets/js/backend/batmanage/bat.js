@@ -16,6 +16,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             });
 
             var table = $("#table");
+            table.on('load-success.bs.table', function (e,data) {
+                $("#totalbs").text(data.extend.totalbs);
+                $("#totallbs").text(data.extend.totallbs);
+                $("#totalbbs").text(data.extend.totalbbs);
+            });
 
             // 初始化表格
             table.bootstrapTable({

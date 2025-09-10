@@ -2,6 +2,8 @@
 
 namespace app\admin\controller\orders;
 
+use app\admin\model\batmanage\Bat;
+use app\admin\model\batmanage\Belong;
 use app\admin\model\user\Realauth;
 use app\common\controller\Backend;
 use fast\Random;
@@ -22,6 +24,8 @@ class Cgorders extends Backend
      * @var \app\admin\model\orders\Cgorders
      */
     protected $model = null;
+    protected $batsum = 0;
+    protected $bbatsum = 0;
 
     public function _initialize()
     {
@@ -62,9 +66,44 @@ class Cgorders extends Backend
                     $item['qs'] = $item['yjpaysum'].'/'.$item['totalsum'];
                     $item['yjpaym'] = number_format($item['yjpaym'],2);
                     $item['realname'] = Realauth::where(['user_id'=>$item['touser']['id']])->value('realname');
+                    //分配电池数量
+                    $item['likebatsum'] = \app\admin\model\orders\Cgordersub::where(['oid'=>$item['id'],'batno'=>['<>','']])->count();
+                    //用户绑定数量
+                    $likebatlist = \app\admin\model\orders\Cgordersub::where(['oid'=>$item['id']])->select();
+                    $i=0;
+                    foreach ($likebatlist as $k=>$v){
+                        $batid = Bat::where(['batno'=>$v['batno']])->value('id');
+                        if($batid){
+                            $beInfo = Belong::where(['batid'=>$batid,'belongtype'=>'user','isuse'=>'self','iszt'=>'ok'])->count();
+                            if($beInfo){
+                                $i++;
+                            }
+                        }
+
+                    }
+                    $item['bindbatsum'] = $i;
+//                    $this->batsum += $item['likebatsum'];
+//                    $this->bbatsum += $item['bindbatsum'];
                     return $item;
                 });
-            $result = array("total" => $list->total(), "rows" => $list->items());
+
+            //分配电池数量
+            $this->batsum = \app\admin\model\orders\Cgordersub::where(['batno'=>['<>','']])->count();
+            //用户绑定数量
+            $likebatlist = \app\admin\model\orders\Cgordersub::select();
+            $i=0;
+            foreach ($likebatlist as $k=>$v){
+                $batid = Bat::where(['batno'=>$v['batno']])->value('id');
+                if($batid){
+                    $beInfo = Belong::where(['batid'=>$batid,'belongtype'=>'user','isuse'=>'self','iszt'=>'ok'])->count();
+                    if($beInfo){
+                        $i++;
+                    }
+                }
+
+            }
+            $this->bbatsum = $i;
+            $result = array("total" => $list->total(), "rows" => $list->items(),'extend'=>['totallbs'=>$this->batsum,'totalbbs'=>$this->bbatsum]);
 
             return json($result);
         }

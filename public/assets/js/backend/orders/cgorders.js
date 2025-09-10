@@ -6,16 +6,20 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             Table.api.init({
                 extend: {
                     index_url: 'orders/cgorders/index' + location.search,
-                    add_url: 'orders/cgorders/add',
-                    edit_url: 'orders/cgorders/edit',
-                    del_url: 'orders/cgorders/del',
-                    multi_url: 'orders/cgorders/multi',
-                    import_url: 'orders/cgorders/import',
+                    // add_url: 'orders/cgorders/add',
+                    // edit_url: 'orders/cgorders/edit',
+                    // del_url: 'orders/cgorders/del',
+                    // multi_url: 'orders/cgorders/multi',
+                    // import_url: 'orders/cgorders/import',
                     table: 'cgorders',
                 }
             });
 
             var table = $("#table");
+            table.on('load-success.bs.table', function (e,data) {
+                $("#totallbs").text(data.extend.totallbs);
+                $("#totalbbs").text(data.extend.totalbbs);
+            });
 
             // 初始化表格
             table.bootstrapTable({
@@ -29,12 +33,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         {field: 'orderno', title: __('Orderno'), operate: 'LIKE'},
-                        {field: 'fromadmin.nickname', title: __('Fromname')},
-                        {field: 'touser.nickname', title: __('Toname')},
+                        {field: 'fromadmin.nickname', title: __('Fromname'), operate: 'LIKE'},
+                        {field: 'touser.nickname', title: __('Toname'), operate: 'LIKE'},
                         {field: 'realname', title: __('Realname'),operate: false},
                         {field: 'monay', title: __('Monay'), operate:'BETWEEN'},//m,j,n,a
                         {field: 'yjpaym', title: __('yjpaym'),operate: false},
                         {field: 'qs', title: __('Qs'),operate: false},
+                        {field: 'likebatsum', title: __('Likebatsum'),operate: false},
+                        {field: 'bindbatsum', title: __('Bindbatsum'),operate: false},
+                        {field: 'sum', title: __('Sum'),operate: false},
                         {field: 'payway', title: __('Payway'),searchList: {"multiple":__('Multiple'),"single":__('Single')}, formatter: Table.api.formatter.status},
                         {field: 'type', title: __('Type'), searchList: {"buy":__('Buy'),"zp":__('Zp')}, formatter: Table.api.formatter.status},
                         {field: 'paytype', title: __('Paytype'), searchList: {"m":__('M'),"j":__('J'),"n":__('N'),"a":__('A')}, formatter: Table.api.formatter.status},

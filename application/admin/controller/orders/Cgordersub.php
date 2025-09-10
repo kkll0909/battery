@@ -152,6 +152,7 @@ class Cgordersub extends Backend
             $batid = Bat::where(['batno'=>$row['batno']])->value('id');
             $belong = new Belong();
             $belong->save(['iszt'=>'unbind'],['batid'=>$batid,'belongtype'=>'user']);
+            $this->model->save(['batno'=>''],['id'=>$ids]);
             $this->success('解除所有绑定关系');
         }else{
             $this->error('操作失败');

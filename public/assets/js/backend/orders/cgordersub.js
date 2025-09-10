@@ -10,7 +10,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             Table.api.init({
                 extend: {
                     index_url: 'orders/cgordersub/index' + location.search,
-                    add_url: 'orders/cgordersub/add?cgid='+cgid,
+                    // add_url: 'orders/cgordersub/add?cgid='+cgid,
                     edit_url: 'orders/cgordersub/edit?cgid='+cgid,
                     // del_url: 'orders/cgordersub/del',
                     // multi_url: 'orders/cgordersub/multi',

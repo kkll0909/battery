@@ -61,8 +61,8 @@ class Shop extends Model
     }
 
     public function shoplist(){
-        return $this->hasMany('app\common\model\shop\Shoplist','shopid','id')->bind('id,sbpp');
-//        return $this->belongsTo('app\common\model\shop\Shoplist', 'shop_id', 'id', [], 'LEFT')->setEagerlyType(0);
+//        return $this->hasMany('app\common\model\shop\Shoplist','shopid','id')->bind('id,sbpp');
+        return $this->belongsTo('app\common\model\shop\Shoplist', 'shop_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
 

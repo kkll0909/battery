@@ -123,6 +123,12 @@ class Mysb extends Api
         $data['stime'] = time();
         $data['iszt'] = 'apply';
         $belong->save($data);
+        //提交授权申请通知
+        $realname = \app\admin\model\user\Realauth::where(['user_id'=>$this->auth->id])->value('realname');
+        $bsquid = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'self','iszt'=>'ok'])->value('belongid');
+        \app\common\library\Lib\Message::sendInMessage('授权',"{$realname}申请设备使用授权：设备号({$batno})，请确认.",'user','sys',$bsquid);
+//        \app\common\library\Lib\Message::sendInMessage('授权',"{$msgtype}单：{$msgtype}{$presum}设备，用户在你门店已经下单.",'member','sys',$shopInfo['admin_id']);
+
         $this->success(__('success'));
     }
 
@@ -176,6 +182,16 @@ class Mysb extends Api
         }
         $cof = $confirm=='yes'?'ok':'no';
         $belong->save(['iszt'=>$cof],['id'=>$id]);
+        //提醒用户是否授权成功
+        $bat = new Bat();
+        $batinfo = $bat->where(['id'=>$beInfo['batid']])->find();
+        if (empty($batinfo)){
+            $this->error(__('Sb does not exist'));
+        }
+        $realname = \app\admin\model\user\Realauth::where(['user_id'=>$this->auth->id])->value('realname');
+        $cofInfo = $confirm=='yes'?'同意授权':'拒绝授权';
+        //$bsquid = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'self','iszt'=>'ok'])->value('belongid');
+        \app\common\library\Lib\Message::sendInMessage('授权',"{$realname}{$cofInfo}设备使用：设备号({$batinfo['batno']}).",'user','sys',$beInfo['belongid']);
         $this->success(__('success'));
     }
 
@@ -198,15 +214,17 @@ class Mysb extends Api
         if (empty($batinfo)){
             $this->error(__('Sb does not exist'));
         }
-//        $data['batid'] = $batinfo['id'];
-//        $data['belongid'] = $this->auth->id;
-//        $data['belongtype'] = 'user';
-//        $data['isuse'] = 'self';
-//        $data['status'] = 'show';
-//        $data['stime'] = time();
         $data['iszt'] = 'unbind';
         $belong = new Belong();
+        $beInfo = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'ok'])->find();
+        if(!$beInfo){
+            $this->error(__('Apply does not exist'));
+        }
         $belong->save($data,['batid'=>$batinfo['id'],'isuse'=>'authorize','iszt'=>'ok']);
+        //解除授权
+        $bsquid = $belong->where(['batid'=>$batinfo['id'],'isuse'=>'self','iszt'=>'ok'])->value('belongid');
+        $realname = \app\admin\model\user\Realauth::where(['user_id'=>$beInfo['belongid']])->value('realname');
+        \app\common\library\Lib\Message::sendInMessage('取消授权',"{$realname}取消了设备使用：设备号({$batno}).",'user','sys',$bsquid);
         $this->success(__('success'));
     }
 
