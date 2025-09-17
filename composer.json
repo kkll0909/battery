@@ -30,7 +30,8 @@
         "ext-curl": "*",
         "ext-pdo": "*",
         "ext-bcmath": "*",
-        "php-mqtt/client": "1.8.1"
+        "php-mqtt/client": "1.8.1",
+        "endroid/qr-code": "^4.6"
     },
     "config": {
         "preferred-install": "dist",
