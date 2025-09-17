@@ -61,10 +61,25 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                                 {name:'otaclosefd',text:'关闭放电',title:'关闭放电',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'batmanage/bat/sendcf?deviceid={batno}&status=4',confirm: '确认要执行关闭放电吗？'},
                                 {name:'towho',text:'所属',title:'所属关系',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'batmanage/belong/index?batid={id}'},
                                 {name:'map',text:'地图',title:'地图',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'batmanage/bat/map?batid={id}'},
+                                {name:'qrcode',text:'二维码',title:'二维码',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-dialog',url:'batmanage/bat/qrcode?batid={id}'},
                             ],
                             formatter: Table.api.formatter.operate}
                     ]
-                ]
+                ],
+                // 关键部分：根据ismt值设置行样式
+                rowStyle: function(row, index) {
+                    if (row.ismt == 1) {
+                        // 有报修的记录显示为警告背景色
+                        return {
+                            css: {
+                                'background-color': '#fff3cd',
+                                'border-left': '4px solid #ffc107'
+                            }
+                        };
+                    }
+                    // 正常记录保持默认样式
+                    return {};
+                }
             });
 
             // 为表格绑定事件

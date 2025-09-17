@@ -258,6 +258,7 @@ class Mysb extends Api
                 //打到对应的订单信息
                 $oid = Cgordersub::where(['batno'=>$item['bat']['batno']])->value('oid');
                 $shopid = Cgorders::where(['id'=>$oid])->value('shopid');
+                $orderno = Cgorders::where(['id'=>$oid])->value('orderno');
                 if($item['isuse']=='self'){
                     $belongid = Belong::where(['batid'=>$item['batid'],'belongtype'=>'user','isuse'=>'authorize','iszt'=>['in','apply,ok']])->value('belongid');
                     //实名信息
@@ -270,6 +271,7 @@ class Mysb extends Api
                 $item['shopname'] = \app\common\model\shop\Shop::where(['id'=>$shopid])->value('spname');
                 $item['etime'] = Cgorders::where(['id'=>$oid])->value('etime');
                 $item['orderid'] = $oid;
+                $item['orderno'] = $orderno;
                 $item['orderpay'] = Orderpay::where(['oid'=>$oid,'userid'=>$userid,'paystatus'=>'nopay'])->order('id asc')->find();
 
                 return $item;

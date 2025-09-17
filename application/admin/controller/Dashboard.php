@@ -121,7 +121,7 @@ class Dashboard extends Backend
         }
         $this->view->assign([
             'totaluser'         => User::count(),
-            'totalrevenue'        => Orderpay::where(['isy'=>1,'paystatus'=>'pay'])->sum('paymoney'),
+            'totalrevenue'        => Db::table('fa_viewopay')->where(['admin_id'=>$this->auth->id,'isy'=>1,'paystatus'=>'pay'])->sum('paymoney'),
             'totalshops'        => Shop::count(),
             'totalcategory'     => \app\common\model\Category::count(),
             'todayusersignup'   => User::whereTime('jointime', 'today')->count(),

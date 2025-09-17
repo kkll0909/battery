@@ -3,6 +3,7 @@
 namespace app\admin\controller\batmanage;
 
 use app\admin\model\batmanage\Belong;
+use app\admin\model\maint\Maintenance;
 use app\admin\model\orders\Cgordersub;
 use app\common\controller\Backend;
 use fast\Tree;
@@ -65,7 +66,10 @@ class Bat extends Backend
                 ->with(['admin','factory'])
                 ->where($where)
                 ->order($sort, $order)
-                ->paginate($limit);
+                ->paginate($limit)->each(function ($item,$index){
+                    $ismt =  Maintenance::where(['batno'=>$item['batno'],'bxstatus'=>['<>','wxwc']])->count();
+                    $item['ismt'] = $ismt>1?1:0;
+                });
             $ex['totalbs'] = $this->model->where($where)->count();
 
             //分配电池数量
@@ -315,5 +319,12 @@ class Bat extends Backend
         }
         $this->assign('pot',json_encode($pot));
         return $this->view->fetch('map');
+    }
+
+    //二维码
+    public function qrcode($batid=''){
+        $batinfo = $this->model->where(['id'=>$batid])->find();
+
+        return $this->view->fetch('qrcode');
     }
 }

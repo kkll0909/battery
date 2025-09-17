@@ -39,6 +39,7 @@ class Message extends Api
         $where = ['type'=>$type,'totype'=>$totype];
         $list = \app\admin\model\message\Message::where($where)
             ->where('userid = 0 OR FIND_IN_SET('.$user_id.', userid)')
+            ->order('id desc')
             ->paginate($pagesize,false,['page'=>$page])->each(function($item,$key) use ($user_id){
                 $item['isread'] = Messageread::where(['totype'=>$item['totype'],'msgid'=>$item['id'],'userid'=>$user_id])->count();
                 return $item;

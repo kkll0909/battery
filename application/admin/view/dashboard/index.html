@@ -175,7 +175,7 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-red"><i class="fa fa-users"></i></span>
-                            <a href="{:url('/user/user/index')}"><div class="sm-st-info">
+                            <a href="javascript:;" data-url="{:url('/user/user/index')}?ref=addtabs" data-title="会员管理" class="btn-addtabs"><div class="sm-st-info">
                                 <span>{$totaluser|htmlentities}</span>
                                 {:__('Total user')}
                             </div></a>
@@ -184,7 +184,7 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="sm-st clearfix">
                             <span class="sm-st-icon st-violet"><i class="fa fa-magic"></i></span>
-                            <a href="{:url('/shop/shop/index')}"><div class="sm-st-info">
+                                <a href="javascript:;" data-url="{:url('/shop/shop/index')}?ref=addtabs" data-title="门店" class="btn-addtabs"><div class="sm-st-info">
                                 <span>{$totalshops|htmlentities}</span>
                                 {:__('Total shops')}
                             </div></a>
@@ -290,7 +290,8 @@
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <div class="panel bg-blue-gradient no-border">
-                            <a href="{:url('orders/cgorders/index')}" style="color:#fff;"><div class="panel-body">
+                            <a href="javascript:;" data-url="{:url('orders/cgorders/index')}?ref=addtabs" data-title="订单列表" class="btn-addtabs" style="color:#fff;">
+                            <div class="panel-body">
                                 <div class="panel-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
                                     <h5>{:__('Today orders')}</h5>
@@ -364,7 +365,7 @@
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <div class="panel bg-green-gradient no-border">
-                            <a href="{:url('batmanage/bat/index')}" style="color:#fff;">
+                            <a href="javascript:;" data-url="{:url('batmanage/bat/index')}?ref=addtabs" data-title="设备列表" class="btn-addtabs" style="color:#fff;">
                             <div class="panel-body">
                                 <div class="ibox-title">
                                     <span class="label label-primary pull-right">{:__('Real time')}</span>
@@ -403,3 +404,19 @@
         </div>
     </div>
 </div>
+<script>
+    $(function() {
+        // 为所有带有btn-addtabs类的元素绑定点击事件
+        $(document).on('click', '.btn-addtabs', function() {
+            var url = $(this).data('url');
+            var title = $(this).data('title');
+            var id = $(this).data('id') || 'tab-' + Math.random().toString(36).substr(2);
+
+            Fast.api.addtabs({
+                title: title,
+                url: url,
+                id: id
+            });
+        });
+    });
+</script>

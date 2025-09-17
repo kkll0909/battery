@@ -459,6 +459,10 @@ class Auth extends \fast\Auth
             ->order('weigh', 'desc')
             ->cache("__menu__")
             ->select())->toArray();
+        if ($this->isSuperAdmin()) {
+            unset($ruleList[0]);
+            $ruleList = array_values($ruleList);
+        }
         $indexRuleList = \app\admin\model\AuthRule::where('status', 'normal')
             ->where('ismenu', 0)
             ->where('name', 'like', '%/index')

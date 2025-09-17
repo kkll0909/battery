@@ -813,8 +813,9 @@ class User extends Api
         $usetype = $this->request->post('usetype');
         $address = $this->request->post('address');
         $shopname = $this->request->post('shopname');
+        $jyname = $this->request->post('jyname');
         $mobile = $this->request->post('mobile');
-        if(!$mobile || !$idcardz || !$idcardf || !$idcard || !$realname ||!$yyzzimg ||!$cdimg ||!$cqzimg ||!$jyimg){
+        if(!$mobile || !$idcardz || !$idcardf || !$idcard || !$realname ||!$yyzzimg ||!$cdimg ||!$cqzimg ||!$jyimg || !$jyname){
             $this->error(__('Invalid parameters'));
         }
         if(!$qytype || !$usetype || !$address || !$shopname){
@@ -824,6 +825,10 @@ class User extends Api
             if(!$zlhtimg){
                 $this->error(__('Invalid parameters'));
             }
+        }
+        $is = Shopapply::where(['shopname'=>$shopname])->count();
+        if($is){
+            $this->error(__('商户简称已存在'));
         }
         $ind['yyzzimg'] = $yyzzimg;
         //$ind['cdimg'] = $cdimg;
@@ -837,6 +842,7 @@ class User extends Api
         $ind['qytype'] = $qytype;
         $ind['usetype'] = $usetype;
         $ind['address'] = $address;
+        $ind['jyname'] = $jyname;
         $ind['shopname'] = $shopname;
         $ind['realname'] = $realname;
         $ind['mobile'] = $mobile;
