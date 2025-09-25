@@ -28,6 +28,7 @@ class Maintenance extends Model
         'bxtime_text',
         'bxstauts_text',
         'bxtype_text',
+        'isok_text'
     ];
 
 
@@ -43,6 +44,11 @@ class Maintenance extends Model
         return ['sbok' => __('Sbok'), 'sbno' => __('Sbno'), 'sbnoc' => __('Sbnoc')];
     }
 
+    public function getIsokList()
+    {
+        return ['0' => __('Wait'), '1' => __('Ok'), '2' => __('Fail')];
+    }
+
     public function getBxstautsTextAttr($value, $data)
     {
         $value = $value ?: ($data['bxstauts'] ?? '');
@@ -54,6 +60,13 @@ class Maintenance extends Model
     {
         $value = $value ?: ($data['bxtype'] ?? '');
         $list = $this->getBxtypeList();
+        return $list[$value] ?? '';
+    }
+
+    public function getIsokTextAttr($value, $data)
+    {
+        $value = $value ?: ($data['isok'] ?? '');
+        $list = $this->getIsokList();
         return $list[$value] ?? '';
     }
 

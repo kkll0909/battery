@@ -27,6 +27,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         {field: 'admin_id', title: __('Admin_id')},
+                        {field: 'shopname', title: __('商家名称'),operate: false},
                         {field: 'payway', title: __('Payway'), operate: 'LIKE'},
                         {field: 'form', title: __('Form'), operate: 'LIKE'},
                         {field: 'money', title: __('Money'), operate:'BETWEEN'},

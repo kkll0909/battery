@@ -2,6 +2,7 @@
 
 namespace app\admin\model\department;
 
+use think\Db;
 use think\Model;
 
 
@@ -27,9 +28,6 @@ class Moneylog extends Model
     protected $append = [
 
     ];
-    
-
-    
 
 
 

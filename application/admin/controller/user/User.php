@@ -6,6 +6,7 @@ use app\admin\model\batmanage\Belong;
 use app\admin\model\maint\Maintenance;
 use app\common\controller\Backend;
 use app\common\library\Auth;
+use think\Lang;
 
 /**
  * 会员管理
@@ -121,6 +122,7 @@ class User extends Backend
     //获取维修人员并派单
     public function maintuser()
     {
+        Lang::load(ROOT_PATH . 'application/admin/lang/zh-cn/maint/maintenance.php');
         $bxid=$this->request->param('bxid',0);
         if (!$bxid){
             $this->error(__("Invalid parameters"));
@@ -142,6 +144,11 @@ class User extends Backend
         $this->assign('maintuList',$maintuList);
         if ($this->request->isPost()){
             $this->token();
+            if($maintInfo->isok!=1){
+                $this->error('等待商家操作','',[
+                    'callback' => 'parent.location.reload();parent.layer.closeAll();'
+                ]);
+            }
             if($maintInfo->bxstatus!='wxup'){
                 $this->error('不可派单','',[
                     'callback' => 'parent.location.reload();parent.layer.closeAll();'
@@ -155,6 +162,38 @@ class User extends Backend
             $maintInfo->bxstatus = 'wxzd';
             $maintInfo->save();
             $this->success('派单成功','',[
+                'callback' => 'parent.location.reload();parent.layer.closeAll();'
+            ]);
+        }
+        return $this->view->fetch();
+    }
+
+    //商家维修确认
+    public function memok()
+    {
+        Lang::load(ROOT_PATH . 'application/admin/lang/zh-cn/maint/maintenance.php');
+        $bxid=$this->request->param('bxid',0);
+        if (!$bxid){
+            $this->error(__("Invalid parameters"));
+        }
+        $this->assign('bxid',$bxid);
+        //$maint = new Maintenance();
+        $maintInfo = Maintenance::get($bxid);
+        $this->assign('mInfo',$maintInfo);
+        $maint = new Maintenance();
+        $this->assign('isokList',$maint->getIsokList());
+
+        if ($this->request->isPost()){
+            $this->token();
+            if($maintInfo->isok==1){
+                $this->error('已确认，无需重复操作','',[
+                    'callback' => 'parent.location.reload();parent.layer.closeAll();'
+                ]);
+            }
+            $isok = $this->request->param('isok',0);
+            $maintInfo->isok = $isok;
+            $maintInfo->save();
+            $this->success('操作成功','',[
                 'callback' => 'parent.location.reload();parent.layer.closeAll();'
             ]);
         }

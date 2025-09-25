@@ -3,6 +3,8 @@
 namespace addons\epay\controller;
 
 use addons\epay\library\Service;
+use app\admin\model\department\Admin;
+use app\admin\model\department\Department;
 use app\admin\model\orders\Cgorders;
 use app\admin\model\orders\Orderpay;
 use fast\Random;
@@ -114,6 +116,7 @@ class Index extends Controller
                     $payInfo->save();
                     $money = $payInfo['money'];
                     $userid = $payInfo['toid'];
+                    $admin_id = $payInfo['admin_id'];
                 }
             }else{
                 $payInfo->paystatus = 'pay';
@@ -121,6 +124,8 @@ class Index extends Controller
                 $payInfo->save();
                 $money = $payInfo['paymoney'];
                 $userid = $payInfo['userid'];
+                $oid = $payInfo['oid'];
+                $this->fz($oid,$payamount,'o');
             }
 
             echo "success";
@@ -153,5 +158,34 @@ class Index extends Controller
 
         //你可以在这里定义你的提示信息,但切记不可在此编写逻辑
         $this->success("请返回网站查看支付结果", addon_url("epay/index/index"));
+    }
+
+    protected function fz($id,$m=0,$t='a')
+    {
+        if($t=='a'){
+            $admin_id = $id;
+        }else{
+            $oInfo = Cgorders::get($id);
+            $admin_id = $oInfo->admin_id;
+        }
+        //分帐
+        $mm = new Admin();
+        $commrate = $mm->where(['admin_id'=>$admin_id])->value('commrate');
+        if(empty($commrate)){$commrate=0;}
+        if(strpos($commrate, '%')){
+            $commrate = str_replace('%', '', $commrate);
+            $commrate = floatval($commrate);
+            $commrate = round($m * $commrate / 100,2);
+        }
+        if($commrate>0){
+            \app\admin\model\Admin::money($commrate,$admin_id,'订单支付');
+        }
+    }
+
+    public function tst()
+    {
+        $oid = 277;
+        $payamount = 1;
+        $this->fz($oid,$payamount,'o');
     }
 }

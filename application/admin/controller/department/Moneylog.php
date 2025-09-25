@@ -2,6 +2,7 @@
 
 namespace app\admin\controller\department;
 
+use app\admin\model\shop\Shop;
 use app\common\controller\Backend;
 
 /**
@@ -33,5 +34,28 @@ class Moneylog extends Backend
      * 需要将application/admin/library/traits/Backend.php中对应的方法复制到当前控制器,然后进行修改
      */
 
+    /**
+     * 查看
+     */
+    public function index()
+    {
+        //设置过滤方法
+        $this->request->filter(['strip_tags', 'trim']);
+        if ($this->request->isAjax()) {
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
 
+            $list = $this->model
+                ->where($where)
+                ->order($sort, $order)
+                ->paginate($limit)->each(function ($item,$index){
+                    $item['shopname'] = Shop::where(['admin_id'=>$item['admin_id']])->value('spname');
+                    return $item;
+                });
+
+            $result = array("total" => $list->total(), "rows" => $list->items());
+
+            return json($result);
+        }
+        return $this->view->fetch();
+    }
 }

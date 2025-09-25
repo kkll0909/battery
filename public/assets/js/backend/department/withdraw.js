@@ -7,9 +7,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 extend: {
                     index_url: 'department/withdraw/index' + location.search,
                     add_url: 'department/withdraw/add',
-                    edit_url: 'department/withdraw/edit',
+                    // edit_url: 'department/withdraw/edit',
                     del_url: 'department/withdraw/del',
-                    multi_url: 'department/withdraw/multi',
+                    // multi_url: 'department/withdraw/multi',
                     import_url: 'department/withdraw/import',
                     table: 'withdraw',
                 }
@@ -27,13 +27,19 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {checkbox: true},
                         {field: 'id', title: __('Id')},
                         {field: 'admin_id', title: __('Admin_id')},
+                        {field: 'orderno', title: __('Orderno'), operate:'LIKE'},
                         {field: 'money', title: __('Money'), operate:'BETWEEN'},
                         {field: 'bankname', title: __('Bankname'), operate: 'LIKE'},
                         {field: 'bankno', title: __('Bankno'), operate: 'LIKE'},
                         {field: 'bankckr', title: __('Bankckr'), operate: 'LIKE'},
-                        {field: 'status', title: __('Status'), searchList: {"100":__('Status 100')}, formatter: Table.api.formatter.status},
+                        {field: 'status', title: __('Status'), searchList: {"nopay":__('Nopay'),"pay":__('Pay'),"fail":__('Fail')}, formatter: Table.api.formatter.status},
                         {field: 'note', title: __('Note'), operate: 'LIKE'},
-                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
+                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate,
+                            buttons:[
+                                {name:'withdraw',text:'提现通过',title:'提现通过',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'department/withdraw/confirmok',confirm: '是否已经打款？'},
+                                {name:'withdraw',text:'提现失败',title:'提现失败',icon:'fa fa-list',classname:'btn btn-xs btn-primary btn-ajax',url:'department/withdraw/confirmfail',confirm: '拒绝打款？'}
+                            ],
+                            formatter: Table.api.formatter.operate}
                     ]
                 ]
             });

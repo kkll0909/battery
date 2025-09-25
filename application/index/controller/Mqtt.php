@@ -113,7 +113,14 @@ class Mqtt extends Frontend
         $data_params['mosstatus'] = $data['mos_status']??0;
         $data_params['remainingcapacity'] = $data['remaining_capacity']??0;
         $bat = new Bat();
-        $bat->save($data_params,['batno'=>$device_id]);
+        $count = $bat->where(['batno'=>$device_id])->count();
+        if($count){
+            $bat->save($data_params,['batno'=>$device_id]);
+        }else{
+            $data_params['batno'] = $device_id;
+            $bat->save($data_params);
+        }
+
     }
 
     //基站

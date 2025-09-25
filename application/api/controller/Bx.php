@@ -20,7 +20,7 @@ class Bx extends Api
      *
      * @ApiMethod (POST)
      * @ApiParams (name="batno", type="string", required=true, description="设备号")
-     * @ApiParams (name="wxtype", type="string", required=true, description="上报类型:从init初始化接口拿")
+     * @ApiParams (name="bxtype", type="string", required=true, description="上报类型:从init初始化接口拿")
      * @ApiParams (name="bximg", type="string", required=true, description="上传图片多图用逗号分开:从init初始化接口拿")
      * @ApiParams (name="bxdesc", type="string", required=true, description="上报谫明")
      */
@@ -28,10 +28,10 @@ class Bx extends Api
     {
         $user_id = $this->auth->id;
         $batno = $this->request->param('batno');
-        $wxtype = $this->request->param('wxtype');
+        $bxtype = $this->request->param('bxtype');
         $bximg = $this->request->param('bximg');
         $bxdesc = $this->request->param('bxdesc');
-        if(!$batno || !$wxtype|| !$bximg|| !$bxdesc){
+        if(!$batno || !$bxtype|| !$bximg|| !$bxdesc){
             $this->error(__('Invalid parameters'));
         }
         $bat = new Bat();
@@ -42,13 +42,13 @@ class Bx extends Api
         $in['admin_id'] = $batinfo['admin_id'];
         $in['user_id'] = $user_id;
         $in['batno'] = $batno;
-        $in['wxtype'] = $wxtype;
+        $in['bxtype'] = $bxtype;
         $in['bximg'] = $bximg;
         $in['bxdesc'] = $bxdesc;
         $in['bxstatus'] = 'wxup';
         $in['bxtime'] = time();
         $in['orderno'] = date('YmdHis').\fast\Random::alnum(12);
-
+//        Maintenance::create($in);
         $maint = new Maintenance();
         $maint->save($in);
         $this->success(__('Success'));

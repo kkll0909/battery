@@ -22,7 +22,7 @@ class Maintenance extends Backend
     {
         parent::_initialize();
         $this->model = new \app\admin\model\maint\Maintenance;
-
+        $this->assign('isokList',$this->model->getIsokList());
     }
 
 

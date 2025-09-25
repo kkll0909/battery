@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'Admin_id'   => '会员ID',
-    'Payway'     => '方式 wx ali bank',
-    'Form'       => '来源 order comm withdraw',
+    'Admin_id'   => '帐户ID',
+    'Payway'     => '方式',
+    'Form'       => '来源',
     'Money'      => '变更余额',
     'Before'     => '变更前余额',
     'After'      => '变更后余额',

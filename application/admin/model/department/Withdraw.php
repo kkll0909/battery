@@ -29,10 +29,10 @@ class Withdraw extends Model
     ];
     
 
-    
+    //nopay,pay,fail
     public function getStatusList()
     {
-        return ['100' => __('Status 100')];
+        return ['nopay' => __('Nopay'),'pay' => __('Pay'),'fail' => __('Fail')];
     }
 
 

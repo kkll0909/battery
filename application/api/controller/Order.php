@@ -85,7 +85,7 @@ class Order extends Api
         try {
             //主订单
             //$orderD['orderno'] = "OR".Random::build('unique',10).rand(1000,9999);
-            $orderD['orderno'] = "OR".time();
+            $orderD['orderno'] = $shopInfo['admin_id'].'O'.date('ymdHis').rand(1000,9999);
             $orderD['shopid'] = $shopid;
             $orderD['fromid'] = $shopInfo['admin_id'];
             $orderD['admin_id'] = $shopInfo['admin_id'];

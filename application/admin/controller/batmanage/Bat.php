@@ -8,10 +8,18 @@ use app\admin\model\orders\Cgordersub;
 use app\common\controller\Backend;
 use fast\Tree;
 use think\Db;
+use think\exception\DbException;
 use think\exception\PDOException;
 use think\exception\ValidateException;
 use think\Log;
 use think\Model;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 
 /**
  * 电池管理
@@ -68,7 +76,7 @@ class Bat extends Backend
                 ->order($sort, $order)
                 ->paginate($limit)->each(function ($item,$index){
                     $ismt =  Maintenance::where(['batno'=>$item['batno'],'bxstatus'=>['<>','wxwc']])->count();
-                    $item['ismt'] = $ismt>1?1:0;
+                    $item['ismt'] = $ismt>=1?1:0;
                 });
             $ex['totalbs'] = $this->model->where($where)->count();
 
@@ -142,6 +150,70 @@ class Bat extends Backend
         }
         if ($result === false) {
             $this->error(__('No rows were inserted'));
+        }
+        $this->success();
+    }
+
+    /**
+     * 编辑
+     *
+     * @param $ids
+     * @return string
+     * @throws DbException
+     * @throws \think\Exception
+     */
+    public function edit($ids = null)
+    {
+        $row = $this->model->get($ids);
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        $adminIds = $this->getDataLimitAdminIds();
+        if (is_array($adminIds) && !in_array($row[$this->dataLimitField], $adminIds)) {
+            $this->error(__('You have no permission'));
+        }
+        if (false === $this->request->isPost()) {
+            $this->view->assign('row', $row);
+            return $this->view->fetch();
+        }
+        $params = $this->request->post('row/a');
+        if (empty($params)) {
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params = $this->preExcludeFields($params);
+        $result = false;
+        Db::startTrans();
+        try {
+            //是否采用模型验证
+            if ($this->modelValidate) {
+                $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : $name) : $this->modelValidate;
+                $row->validateFailException()->validate($validate);
+            }
+            $result = $row->allowField(true)->save($params);
+            $cc = \app\admin\model\batmanage\Belong::where(['batid'=>$ids,'isuse'=>'self','belongtype'=>'manage','status'=>'show'])->value('id');
+            //$newId = $this->model->id;
+            $bein['admin_id'] = $params['admin_id'];
+            $bein['batid'] = $ids;
+            $bein['belongid'] = $params['admin_id'];
+            $bein['isuse'] = 'self';
+            $bein['belongtype'] = 'manage';
+            $bein['status'] = 'show';
+            $bein['stime'] = time();
+            $bein['iszt'] = 'yes';
+            if($cc){
+                \app\admin\model\batmanage\Belong::update($bein,['id'=>$cc]);
+            }else{
+                \app\admin\model\batmanage\Belong::create($bein);
+            }
+
+            Db::commit();
+        } catch (ValidateException|PDOException|Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if (false === $result) {
+            $this->error(__('No rows were updated'));
         }
         $this->success();
     }
@@ -322,8 +394,21 @@ class Bat extends Backend
     }
 
     //二维码
-    public function qrcode($batid=''){
-        $batinfo = $this->model->where(['id'=>$batid])->find();
+    public function qrcode($batid = '')
+    {
+        $batinfo = $this->model->where(['id' => $batid])->find();
+        $qrCode = Builder::create()
+            ->writer(new PngWriter())
+            ->data($batinfo['batno'])
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->build();
+
+        $this->assign('qrCode', $qrCode->getDataUri());
+        $this->assign('qrCodeNo', $batinfo['batno']);
 
         return $this->view->fetch('qrcode');
     }
